@@ -79,6 +79,32 @@
             color: #fff;
             font-size: 20px;
         }
+		
+        /* 修改的橘色漂浮按鈕樣式 */
+        .float-button {
+            position: fixed;
+            cursor: pointer;
+            width: 50px; /* 調整按鈕寬度 */
+            height: 70px; /* 調整按鈕高度 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .float-button.top {
+            bottom: 35%;
+            right: 10px;
+        }
+
+        .float-button.bottom {
+            bottom: 20%;
+            right: 10px;
+        }
+		
+		.float-button > img {
+            width: 50px; /* 調整按鈕寬度 */
+            height: 50px; /* 調整按鈕高度 */
+        }
 
         @media only screen and (max-width: 600px) {
             .card {
@@ -114,6 +140,13 @@
                 <img id="modalImage" src="" alt="Modal Image">
             </div>
         </div>
+		<!-- 漂浮按鈕 -->
+		<div class="float-button top" onclick="openLink('line')">
+			<img src="./img/public/line-icon.png" alt="Line">
+		</div>
+		<div class="float-button bottom" onclick="openLink('ig')">
+			<img src="./img/public/Instagram_icon.png" alt="IG">
+		</div>
     </main>
 
     <script>
@@ -131,6 +164,15 @@
 			  setTimeout(function() {
                 closeModal();
 			  }, 3000);
+			}
+        }
+		
+		function openLink(position) {
+            if(position == 'line') {
+			window.open('https://www.google.com', '_blank');
+			}
+            else if (position == 'ig'){
+			window.open('https://www.instagram.com/', '_blank');
 			}
         }
 
