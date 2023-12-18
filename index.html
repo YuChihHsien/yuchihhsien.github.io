@@ -89,20 +89,20 @@
 </head>
 <body>
     <header>
-        <h1>歡迎DONATE, 謝謝您功德無量</h1>
+        <h1>歡迎DONATE, 功德無量謝謝您!</h1>
     </header>
     <main>
         <div class="card-container">
             <div class="card">
-                <img src="./img/gary/linepay.jpeg" alt="Image 1" onclick="openModal('./img/gary/linepay.jpeg')">
+                <img src="./img/gary/linepay.jpeg" alt="Image 1" onclick="openModal('./img/gary/linepay.jpeg',false)">
                 <p>歡迎使用 Line Pay ,提醒您要用Line付款相機哦~</p>
             </div>
             <div class="card">
-                <img src="./img/gary/jkpay.jpeg" alt="Image 2" onclick="openModal('./img/gary/jkpay.jpeg')">
+                <img src="./img/gary/jkpay.jpeg" alt="Image 2" onclick="openModal('./img/gary/jkpay.jpeg',false)">
                 <p>歡迎使用街口支付,謝謝您</p>
             </div>
             <div class="card">
-                <img src="./img/gary/ctbc.jpeg" alt="Image 3" onclick="openModal('./img/gary/ctbc.jpeg')">
+                <img src="./img/gary/ctbc.jpeg" alt="Image 3" onclick="openModal('./img/gary/ctbc.jpeg',false)">
                 <p>歡迎使用中國信託轉帳,謝謝您</p>
             </div>
         </div>
@@ -117,11 +117,21 @@
     </main>
 
     <script>
-        function openModal(imageSrc) {
+		window.onload = function() {
+            openModal('./img/public/sticker.png',true); // 請替換成你要顯示的預設圖片路徑
+        }
+		
+        function openModal(imageSrc,autoclose) {
             var modal = document.getElementById('myModal');
             var modalImage = document.getElementById('modalImage');
             modalImage.src = imageSrc;
             modal.style.display = 'flex';
+			
+			if(autoclose){
+			  setTimeout(function() {
+                closeModal();
+			  }, 3000);
+			}
         }
 
         function closeModal() {
