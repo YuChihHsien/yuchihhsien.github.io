@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ---- Global State: Theme & Language ----
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    const currentLang = localStorage.getItem('lang') || 'zh';
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    const currentLang = localStorage.getItem('lang') || 'en';
 
     // Apply initial state
     setTheme(currentTheme);
