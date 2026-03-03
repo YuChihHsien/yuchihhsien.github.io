@@ -195,12 +195,13 @@
         }
 
         @media (max-width: 768px) {
-            .nav-left {
-                gap: 1rem;
+            .contact-header h1 {
+                font-size: 1.75rem;
             }
 
-            .nav-links {
-                display: none;
+            .donation-card {
+                width: 100%;
+                max-width: 320px;
             }
         }
     </style>
@@ -221,6 +222,11 @@
                 <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
                 <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
                     title="Toggle Language">EN</button>
+                <div class="hamburger">
+                    <span class="line1"></span>
+                    <span class="line2"></span>
+                    <span class="line3"></span>
+                </div>
             </div>
         </div>
     </nav>

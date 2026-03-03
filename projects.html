@@ -101,16 +101,6 @@
             color: var(--accent-color);
             font-weight: 500;
         }
-
-        @media (max-width: 768px) {
-            .nav-left {
-                gap: 1rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-        }
     </style>
 </head>
 
@@ -129,6 +119,11 @@
                 <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
                 <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
                     title="Toggle Language">EN</button>
+                <div class="hamburger">
+                    <span class="line1"></span>
+                    <span class="line2"></span>
+                    <span class="line3"></span>
+                </div>
             </div>
         </div>
     </nav>
