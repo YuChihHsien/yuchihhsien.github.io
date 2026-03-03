@@ -115,6 +115,8 @@ nav {
     display: flex;
     align-items: center;
     gap: 1rem;
+    position: relative;
+    z-index: 100;
 }
 
 .icon-btn {
@@ -130,6 +132,8 @@ nav {
     cursor: pointer;
     transition: all var(--transition-fast);
     font-size: 1rem;
+    position: relative;
+    z-index: 100;
 }
 
 .icon-btn:hover {
@@ -490,49 +494,48 @@ footer {
     .form-title {
         font-size: 1.8rem;
     }
-}
 
-.nav-controls {
-    gap: 0.5rem;
-}
+    .nav-controls {
+        gap: 0.5rem;
+    }
 
-.nav-left {
-    gap: 0.25rem;
-}
+    .nav-left {
+        gap: 0.25rem;
+    }
 
-.nav-links li {
-    opacity: 0;
-    transform: translateX(50px);
-    transition: all 0.4s ease;
-}
+    .nav-links li {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 0.4s ease;
+    }
 
-.nav-links.open {
-    transform: translateX(0%);
-}
+    .nav-links.open {
+        transform: translateX(0%);
+    }
 
-.nav-links.open li {
-    opacity: 1;
-    transform: translateX(0);
-}
+    .nav-links.open li {
+        opacity: 1;
+        transform: translateX(0);
+    }
 
-/* Hamburger Animation */
-.toggle .line1 {
-    transform: rotate(-45deg) translate(-5px, 6px);
-}
+    /* Hamburger Animation */
+    .toggle .line1 {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
 
-.toggle .line2 {
-    opacity: 0;
-}
+    .toggle .line2 {
+        opacity: 0;
+    }
 
-.toggle .line3 {
-    transform: rotate(45deg) translate(-5px, -6px);
-}
+    .toggle .line3 {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
 
-h1 {
-    font-size: 2.25rem;
-}
+    h1 {
+        font-size: 2.25rem;
+    }
 
-h2 {
-    font-size: 1.75rem;
-}
+    h2 {
+        font-size: 1.75rem;
+    }
 }
