@@ -43,6 +43,46 @@ document.addEventListener('DOMContentLoaded', () => {
             hamburger.classList.toggle('toggle');
         });
     }
+
+    // Hacker Glitch Easter Egg
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const titleElement = document.querySelector('.hero h1');
+    if (titleElement) {
+        let h1TextNodes = Array.from(titleElement.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
+        let targetTextNode = h1TextNodes[0];
+
+        if (targetTextNode) {
+            let originalText = targetTextNode.textContent.trim();
+            // Wrap the text in a span so we can animate it without affecting the nested span.zh
+            let spanWrapper = document.createElement('span');
+            spanWrapper.textContent = originalText;
+            spanWrapper.style.cursor = "pointer";
+            titleElement.insertBefore(spanWrapper, targetTextNode);
+            titleElement.removeChild(targetTextNode);
+
+            spanWrapper.addEventListener('mouseover', event => {
+                let iterations = 0;
+                clearInterval(spanWrapper.dataset.interval);
+
+                spanWrapper.dataset.interval = setInterval(() => {
+                    event.target.innerText = originalText
+                        .split("")
+                        .map((letter, index) => {
+                            if (index < iterations) {
+                                return originalText[index];
+                            }
+                            return letters[Math.floor(Math.random() * 26)]
+                        })
+                        .join("");
+
+                    if (iterations >= originalText.length) {
+                        clearInterval(spanWrapper.dataset.interval);
+                    }
+                    iterations += 1 / 3;
+                }, 30);
+            });
+        }
+    }
 });
 
 // Theme Management
