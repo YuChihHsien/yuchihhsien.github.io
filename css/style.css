@@ -223,31 +223,98 @@ nav {
     min-height: 100vh;
 }
 
-.contact-form-section {
+.connect-banner {
     background-color: var(--card-bg-color);
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 3rem 2rem;
+    padding: 3rem;
     margin-bottom: 4rem;
+    margin-top: 5rem;
     box-shadow: var(--shadow-soft);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.banner-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .form-title {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
     color: var(--text-primary);
-    text-align: center;
+    text-align: left;
 }
 
 .form-subtitle {
     color: var(--text-secondary);
-    text-align: center;
+    text-align: left;
     margin-bottom: 2.5rem;
+    line-height: 1.7;
+}
+
+.social-links-compact {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.social-links-compact .social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="light"] .social-links-compact .social-btn {
+    background-color: #f8fafc;
+    border-color: var(--border-color);
+}
+
+.social-links-compact .social-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.social-links-compact .social-btn.line:hover {
+    background-color: #00C300;
+    border-color: #00C300;
+}
+
+.social-links-compact .social-btn.ig:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    border-color: transparent;
+}
+
+.social-links-compact .social-btn.linkedin:hover {
+    background-color: #0077b5;
+    border-color: #0077b5;
+}
+
+.social-links-compact .social-btn.email:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.banner-form {
+    width: 100%;
 }
 
 .contact-form {
-    max-width: 600px;
-    margin: 0 auto;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -411,50 +478,62 @@ footer {
         transform: translateX(100%);
         padding-top: 2rem;
         gap: 2rem;
-        border-top: 1px solid var(--glass-border);
     }
 
-    .nav-controls {
-        gap: 0.5rem;
+    .connect-banner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem 1.5rem;
     }
 
-    .nav-left {
-        gap: 0.25rem;
+    .form-title {
+        font-size: 1.8rem;
     }
 
-    .nav-links li {
-        opacity: 0;
-        transform: translateX(50px);
-        transition: all 0.4s ease;
-    }
+    border-top: 1px solid var(--glass-border);
+}
 
-    .nav-links.open {
-        transform: translateX(0%);
-    }
+.nav-controls {
+    gap: 0.5rem;
+}
 
-    .nav-links.open li {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.nav-left {
+    gap: 0.25rem;
+}
 
-    /* Hamburger Animation */
-    .toggle .line1 {
-        transform: rotate(-45deg) translate(-5px, 6px);
-    }
+.nav-links li {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.4s ease;
+}
 
-    .toggle .line2 {
-        opacity: 0;
-    }
+.nav-links.open {
+    transform: translateX(0%);
+}
 
-    .toggle .line3 {
-        transform: rotate(45deg) translate(-5px, -6px);
-    }
+.nav-links.open li {
+    opacity: 1;
+    transform: translateX(0);
+}
 
-    h1 {
-        font-size: 2.25rem;
-    }
+/* Hamburger Animation */
+.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
 
-    h2 {
-        font-size: 1.75rem;
-    }
+.toggle .line2 {
+    opacity: 0;
+}
+
+.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+h1 {
+    font-size: 2.25rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
 }
