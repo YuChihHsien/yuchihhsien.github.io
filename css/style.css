@@ -478,6 +478,7 @@ footer {
         transform: translateX(100%);
         padding-top: 2rem;
         gap: 2rem;
+        border-top: 1px solid var(--glass-border);
     }
 
     .connect-banner {
@@ -489,8 +490,6 @@ footer {
     .form-title {
         font-size: 1.8rem;
     }
-
-    border-top: 1px solid var(--glass-border);
 }
 
 .nav-controls {
