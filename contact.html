@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>贊助 Support | 余致賢 - Chih-Hsien Yu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=11">
+    <link rel="stylesheet" href="css/style.css?v=12">
     <style>
         .contact-header {
             text-align: center;
@@ -276,28 +276,23 @@
         <section class="donation-section animate-on-scroll">
             <h2 class="donation-title" data-zh="歡迎 DONATE，功德無量謝謝您！" data-en="Donations Welcome & Appreciated!">歡迎
                 DONATE，功德無量謝謝您！</h2>
-            <p class="donation-subtitle" data-zh="如果您覺得我的專案有幫助，歡迎請我喝杯咖啡 ☕"
-                data-en="If you find my work helpful, consider buying me a coffee ☕">如果您覺得我的專案有幫助，歡迎請我喝杯咖啡 ☕</p>
+            <p class="donation-subtitle" data-zh="您的支持將幫助我持續開源貢獻與分享技術文章 ☕"
+                data-en="Your support helps me continue open-source contributions and sharing tech articles ☕">
+                您的支持將幫助我持續開源貢獻與分享技術文章 ☕</p>
 
             <div class="donation-grid">
-
-                <div class="donation-card">
-                    <img src="./img/gary/ctbc.jpeg" alt="CTBC Transfer QR Code" onclick="openModal(this.src)">
-                    <h4 data-zh="中國信託 CTBC" data-en="CTBC Bank">中國信託 CTBC</h4>
-                    <p data-zh="國內銀行網銀轉帳<br>感謝您的支持" data-en="Domestic Bank Transfer<br>Thank you for your support!">
-                        國內銀行網銀轉帳<br>感謝您的支持</p>
+                <div class="donation-card bmac-card">
+                    <i class="fa-solid fa-mug-hot bmac-icon"></i>
+                    <h4 data-zh="Buy Me a Coffee" data-en="Buy Me a Coffee">Buy Me a Coffee</h4>
+                    <p data-zh="透過信用卡或 PayPal 贊助<br>安全又快速" data-en="Support via Credit Card or PayPal<br>Safe and fast">
+                        透過信用卡或 PayPal 贊助<br>安全又快速
+                    </p>
+                    <a href="https://buymeacoffee.com/garyyu" target="_blank" class="btn btn-primary bmac-btn">
+                        <span data-zh="前往贊助 ❤️" data-en="Support Now ❤️">前往贊助 ❤️</span>
+                    </a>
                 </div>
-
             </div>
         </section>
-
-        <!-- Modal -->
-        <div id="imageModal" class="modal" onclick="closeModal()">
-            <div class="modal-content" onclick="event.stopPropagation()">
-                <span class="close-btn" onclick="closeModal()">&times;</span>
-                <img id="modalImg" src="" alt="Zoomed QR Code">
-            </div>
-        </div>
 
     </div>
 
@@ -307,28 +302,6 @@
     </footer>
 
     <script src="js/main.js?v=7"></script>
-    <script>
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImg');
-
-        function openModal(src) {
-            modalImg.src = src;
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modal.classList.remove('show');
-            document.body.style.overflow = '';
-            setTimeout(() => { modalImg.src = ''; }, 300);
-        }
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === "Escape" && modal.classList.contains('show')) {
-                closeModal();
-            }
-        });
-    </script>
 </body>
 
 </html>
