@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聯絡及支持 Contact | 余致賢 - Chih-Hsien Yu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .contact-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-header h1 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .social-btn img {
+            width: 36px;
+            height: 36px;
+            transition: transform var(--transition-fast);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-5px);
+            border-color: var(--success-color);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .social-btn.ig:hover {
+            border-color: #e1306c;
+            box-shadow: 0 10px 20px rgba(225, 48, 108, 0.2);
+        }
+
+        .social-btn:hover img {
+            transform: scale(1.15);
+        }
+
+        /* Donation Section */
+        .donation-section {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .donation-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .donation-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .donation-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .donation-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 280px;
+            transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+        }
+
+        .donation-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .donation-card img {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            cursor: pointer;
+            transition: filter var(--transition-fast);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .donation-card img:hover {
+            filter: brightness(1.05);
+        }
+
+        .donation-card h4 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .donation-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Modal for images */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity var(--transition-medium);
+        }
+
+        [data-theme="dark"] .modal {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90vh;
+            text-align: center;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color var(--transition-fast);
+        }
+
+        .close-btn:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .nav-left {
+                gap: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-brand">C-H. Yu</div>
+        <div class="nav-left">
+            <ul class="nav-links">
+                <li><a href="index.html" data-zh="首頁" data-en="Home">首頁</a></li>
+                <li><a href="resume.html" data-zh="履歷" data-en="Resume">履歷</a></li>
+                <li><a href="projects.html" data-zh="專案" data-en="Projects">專案</a></li>
+                <li><a href="contact.html" class="active" data-zh="聯絡" data-en="Contact">聯絡</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
+                <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
+                    title="Toggle Language">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header class="contact-header fade-in">
+            <h1 data-zh="與我聯繫" data-en="Let's Connect">與我聯繫</h1>
+            <p data-zh="歡迎透過社群軟體聯繫，或請我喝杯咖啡！" data-en="Feel free to reach out through social media or support my work!">
+                歡迎透過社群軟體聯繫，或請我喝杯咖啡！</p>
+        </header>
+
+        <div class="social-links slide-up">
+            <a href="https://www.google.com" target="_blank" class="social-btn" aria-label="Line">
+                <img src="./img/public/line-icon.png" alt="Line"
+                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBDMzAwIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTIxIDEwLjVDMjEgNi4zNTggMTcuNjQyIDMgMTMuNSAzUzYgNi4zNTggNiAxMC41YzAgMS43OS42MjMgMy40NiAxLjY4NCA0LjczOC4zMDUuMzYuNDE2LjgzMi4yODUgMS4yODktLjEzLjQ1OC0uMzIgMS4xODQtLjQxOCAxLjUxNC0uMTM0LjQ0My4xOTcuNjc1LjU3NC40NyAxLjU1My0uODUxIDMuNTkzLTEuOTg0IDUuMTQtMi45NjIuNjk2LTEuMDUgMS40NDUtMS45NDggMi4yMzUtMi41VjUuNSIvPjwvc3ZnPg=='">
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="social-btn ig" aria-label="Instagram">
+                <img src="./img/public/Instagram_icon.png" alt="Instagram"
+                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTEzMDZjIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiByeD0iNSIgcnk9IjUiPjwvcmVjdD48cGF0aCBkPSJNMTYgMTEuMzdBMCA0IDAgMSAxIDEyLjYzIDggNCA0IDAgMCAxIDE2IDExLjM3eiI+PC9wYXRoPjxsaW5lIHgxPSIxNy41IiB5MT0iNi41IiB4Mj0iMTcuNTEiIHkyPSI2LjUiPjwvbGluZT48L3N2Zz4='">
+            </a>
+        </div>
+
+        <section class="donation-section animate-on-scroll delay-1">
+            <h2 class="donation-title" data-zh="歡迎 DONATE，功德無量謝謝您！" data-en="Donations Welcome & Appreciated!">歡迎
+                DONATE，功德無量謝謝您！</h2>
+            <p class="donation-subtitle" data-zh="如果您覺得我的專案有幫助，歡迎請我喝杯咖啡 ☕"
+                data-en="If you find my work helpful, consider buying me a coffee ☕">如果您覺得我的專案有幫助，歡迎請我喝杯咖啡 ☕</p>
+
+            <div class="donation-grid">
+
+                <div class="donation-card">
+                    <img src="./img/gary/linepay.jpeg" alt="Line Pay QR Code" onclick="openModal(this.src)">
+                    <h4>LINE Pay</h4>
+                    <p data-zh="歡迎使用 Line Pay<br>提醒您要用 Line 付款相機哦~"
+                        data-en="Welcome to use Line Pay<br>Remember to use the scanner in the Line app!">歡迎使用 Line
+                        Pay<br>提醒您要用 Line 付款相機哦~</p>
+                </div>
+
+                <div class="donation-card">
+                    <img src="./img/gary/jkpay.jpeg" alt="JKO Pay QR Code" onclick="openModal(this.src)">
+                    <h4 data-zh="街口支付 JKO Pay" data-en="JKO Pay">街口支付 JKO Pay</h4>
+                    <p data-zh="安全快速的街口轉帳<br>感謝您的支持"
+                        data-en="Secure and fast JKO Transfer<br>Thank you for your support!">安全快速的街口轉帳<br>感謝您的支持</p>
+                </div>
+
+                <div class="donation-card">
+                    <img src="./img/gary/ctbc.jpeg" alt="CTBC Transfer QR Code" onclick="openModal(this.src)">
+                    <h4 data-zh="中國信託 CTBC" data-en="CTBC Bank">中國信託 CTBC</h4>
+                    <p data-zh="國內銀行網銀轉帳<br>感謝您的支持" data-en="Domestic Bank Transfer<br>Thank you for your support!">
+                        國內銀行網銀轉帳<br>感謝您的支持</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Modal -->
+        <div id="imageModal" class="modal" onclick="closeModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <img id="modalImg" src="" alt="Zoomed QR Code">
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
+        </p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+
+        function openModal(src) {
+            modalImg.src = src;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+            setTimeout(() => { modalImg.src = ''; }, 300);
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === "Escape" && modal.classList.contains('show')) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

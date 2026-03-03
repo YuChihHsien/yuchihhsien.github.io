@@ -1,192 +1,251 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>拜託給我贊助我謝謝</title>
+    <meta name="description" content="Chih-Hsien Yu - Senior Software Engineer based in Taichung.">
+    <title>Chih-Hsien Yu | 余致賢 - Software Engineer</title>
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-
-        header {
-            text-align: center;
-            background-color: #ffcc00;
-            padding: 10px;
-            color: #fff;
-            font-size: 18px;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        .card-container {
+        .hero {
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
             justify-content: space-between;
+            min-height: calc(100vh - 160px);
+            gap: 4rem;
         }
 
-        .card {
-            box-sizing: border-box;
-            width: 48%;
-            margin-bottom: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 15px;
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
         }
 
-        .card img {
-            max-width: 300px;
-			max-height: 300px;
-            height: auto;
-            cursor: pointer;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+        .hero h1 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h1 span.zh {
+            font-size: 2.25rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-left: 1rem;
+        }
+
+        .hero h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .hero p.zh-desc {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            border-left: 3px solid var(--accent-color);
+            padding-left: 1rem;
+            margin-top: -1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+            min-height: 450px;
+        }
+
+        .particle-bg {
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: calc(100% + 100px);
+            height: calc(100% + 100px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            aspect-ratio: 4/5;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
             z-index: 1;
         }
 
-        .modal-content {
-            position: relative;
-            max-width: 80%;
-            max-height: 80%;
-        }
-
-        .modal-content img {
+        .image-wrapper img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            color: #fff;
-            font-size: 20px;
+        .image-wrapper:hover img {
+            transform: scale(1.05);
         }
-		
-        /* 修改的橘色漂浮按鈕樣式 */
-        .float-button {
-            position: fixed;
-            cursor: pointer;
-            width: 50px; /* 調整按鈕寬度 */
-            height: 70px; /* 調整按鈕高度 */
+
+        /* Skills preview */
+        .skills-preview {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
         }
 
-        .float-button.top {
-            bottom: 110px;
-            right: 10px;
+        .skill-tag {
+            padding: 0.5rem 1rem;
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow-soft);
         }
 
-        .float-button.bottom {
-            bottom: 50px;
-            right: 10px;
-        }
-		
-		.float-button > img {
-            width: 50px; /* 調整按鈕寬度 */
-            height: 50px; /* 調整按鈕高度 */
+        .skill-tag:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
         }
 
-        @media only screen and (max-width: 600px) {
-            .card {
-                width: 100%;
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                gap: 2rem;
+                padding-top: 2rem;
+            }
+
+            .hero-content {
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .hero p.zh-desc {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .cta-group,
+            .skills-preview {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-left {
+                gap: 1rem;
+            }
+
+            .nav-links {
+                display: none;
             }
         }
     </style>
 </head>
+
 <body>
-    <header>
-        <h1>歡迎DONATE, 功德無量謝謝您!</h1>
-    </header>
-    <main>
-        <div class="card-container">
-            <div class="card">
-                <img src="./img/gary/linepay.jpeg" alt="Image 1" onclick="openModal('./img/gary/linepay.jpeg',false)">
-                <p>歡迎使用 Line Pay ,提醒您要用Line付款相機哦~</p>
-            </div>
-            <div class="card">
-                <img src="./img/gary/jkpay.jpeg" alt="Image 2" onclick="openModal('./img/gary/jkpay.jpeg',false)">
-                <p>歡迎使用街口支付,謝謝您</p>
-            </div>
-            <div class="card">
-                <img src="./img/gary/ctbc.jpeg" alt="Image 3" onclick="openModal('./img/gary/ctbc.jpeg',false)">
-                <p>歡迎使用中國信託轉帳,謝謝您</p>
+
+    <nav>
+        <div class="nav-brand">C-H. Yu</div>
+        <div class="nav-left">
+            <ul class="nav-links">
+                <li><a href="index.html" class="active" data-zh="首頁" data-en="Home">首頁</a></li>
+                <li><a href="resume.html" data-zh="履歷" data-en="Resume">履歷</a></li>
+                <li><a href="projects.html" data-zh="專案" data-en="Projects">專案</a></li>
+                <li><a href="contact.html" data-zh="聯絡" data-en="Contact">聯絡</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
+                <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
+                    title="Toggle Language">EN</button>
             </div>
         </div>
+    </nav>
 
-        <!-- Modal -->
-        <div id="myModal" class="modal" onclick="closeModal()">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <img id="modalImage" src="" alt="Modal Image">
+    <div class="container">
+        <main class="hero">
+            <div class="hero-content">
+                <h2 class="slide-up">Senior Software Engineer</h2>
+                <h1 class="slide-up delay-1">Chih-Hsien Yu <span class="zh">余致賢</span></h1>
+
+                <p class="slide-up delay-2"
+                    data-zh="擁有跨國環境與多地開發經驗的資深軟體工程師，專注於系統穩定性、雲端架構 (AWS/K8s) 以及分散式後端系統 (.NET/Kafka) 的最佳化設計。"
+                    data-en="Delivering high-quality, scalable solutions through a proactive and determined approach. Specialized in backend architecture, system stability, and cloud infrastructure.">
+                    擁有跨國環境與多地開發經驗的資深軟體工程師，專注於系統穩定性、雲端架構 (AWS/K8s) 以及分散式後端系統 (.NET/Kafka) 的最佳化設計。
+                </p>
+                <p class="zh-desc slide-up delay-2" data-zh="具備前瞻性的技術視野，能在團隊中推動最佳實踐與程式碼品質。"
+                    data-en="With a forward-thinking technical vision, I drive best practices and code quality within the team.">
+                    具備前瞻性的技術視野，能在團隊中推動最佳實踐與程式碼品質。
+                </p>
+
+                <div class="cta-group slide-up delay-3">
+                    <a href="resume.html" class="btn btn-primary" data-zh="看履歷" data-en="View Resume">看履歷</a>
+                    <a href="projects.html" class="btn btn-outline" data-zh="看專案" data-en="Explore Projects">看專案</a>
+                    <a href="contact.html" class="btn btn-outline" data-zh="聯絡與支持" data-en="Let's Connect">聯絡與支持</a>
+                </div>
+
+                <div class="skills-preview slide-up delay-3">
+                    <span class="skill-tag">.NET Core / C#</span>
+                    <span class="skill-tag">AWS Cloud</span>
+                    <span class="skill-tag">Kubernetes</span>
+                    <span class="skill-tag">Microservices</span>
+                    <span class="skill-tag">Kafka</span>
+                </div>
             </div>
-        </div>
-		<!-- 漂浮按鈕 -->
-		<div class="float-button top" onclick="openLink('line')">
-			<img src="./img/public/line-icon.png" alt="Line">
-		</div>
-		<div class="float-button bottom" onclick="openLink('ig')">
-			<img src="./img/public/Instagram_icon.png" alt="IG">
-		</div>
-    </main>
 
-    <script>
-		window.onload = function() {
-            openModal('./img/public/sticker.png',true); // 請替換成你要顯示的預設圖片路徑
-        }
-		
-        function openModal(imageSrc,autoclose) {
-            var modal = document.getElementById('myModal');
-            var modalImage = document.getElementById('modalImage');
-            modalImage.src = imageSrc;
-            modal.style.display = 'flex';
-			
-			if(autoclose){
-			  setTimeout(function() {
-                closeModal();
-			  }, 3000);
-			}
-        }
-		
-		function openLink(position) {
-            if(position == 'line') {
-			window.open('https://www.google.com', '_blank');
-			}
-            else if (position == 'ig'){
-			window.open('https://www.instagram.com/', '_blank');
-			}
-        }
+            <div class="hero-image slide-up delay-1">
+                <canvas id="particle-canvas" class="particle-bg"></canvas>
+                <div class="image-wrapper">
+                    <img src="./img/public/my.jpg" alt="Profile Picture">
+                </div>
+            </div>
+        </main>
+    </div>
 
-        function closeModal() {
-            var modal = document.getElementById('myModal');
-            modal.style.display = 'none';
-        }
+    <footer>
+        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
+        </p>
+    </footer>
 
-        window.onclick = function(event) {
-            var modal = document.getElementById('myModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-    </script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>

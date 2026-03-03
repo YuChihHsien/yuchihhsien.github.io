@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>履歷 Resume | 余致賢 - Chih-Hsien Yu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .resume-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .resume-header h1 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .resume-header h1 span {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .resume-header p {
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Timeline / Experience */
+        .resume-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .experience-card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: transform var(--transition-medium), box-shadow var(--transition-medium);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent-color);
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+        }
+
+        .experience-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-color);
+        }
+
+        .experience-card:hover::before {
+            opacity: 1;
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .role-title {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .company-name {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .exp-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            background: rgba(128, 128, 128, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        .exp-details {
+            list-style-type: none;
+        }
+
+        .exp-details li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .exp-details li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            background-color: var(--card-bg-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+            transition: transform var(--transition-fast);
+        }
+
+        .skill-category:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }
+
+        .skill-category h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-item {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--text-primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            font-weight: 500;
+        }
+
+        .resume-actions {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .nav-left {
+                gap: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-brand">C-H. Yu</div>
+        <div class="nav-left">
+            <ul class="nav-links">
+                <li><a href="index.html" data-zh="首頁" data-en="Home">首頁</a></li>
+                <li><a href="resume.html" class="active" data-zh="履歷" data-en="Resume">履歷</a></li>
+                <li><a href="projects.html" data-zh="專案" data-en="Projects">專案</a></li>
+                <li><a href="contact.html" data-zh="聯絡" data-en="Contact">聯絡</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
+                <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
+                    title="Toggle Language">EN</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header class="resume-header fade-in">
+            <h1 data-zh="專業背景" data-en="Professional Background">專業背景</h1>
+            <p data-zh="一位積極進取的軟體工程師，具備台北、台中及跨國工作經驗。<br>我已經從單純的程式實作，轉型為專注於設計具高擴展性與可維護性架構的工程師。"
+                data-en="A proactive software engineer with experience across Taipei, Taichung, and an international setting.<br>I transitioned from focusing purely on code implementation to designing scalable, maintainable architectures.">
+                一位積極進取的軟體工程師，具備台北、台中及跨國工作經驗。<br>
+                我已經從單純的程式實作，轉型為專注於設計具高擴展性與可維護性架構的工程師。
+            </p>
+        </header>
+
+        <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
+            <h2 class="section-title" data-zh="核心能力" data-en="Core Competencies">核心能力</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 data-zh="後端開發" data-en="Backend Development">後端開發</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">.NET / C#</span>
+                        <span class="skill-item">Microservices</span>
+                        <span class="skill-item">API Design</span>
+                        <span class="skill-item">Distributed Systems</span>
+                        <span class="skill-item">Kafka</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-zh="雲端基礎設施" data-en="Cloud & Infrastructure">雲端基礎設施</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">AWS Cloud</span>
+                        <span class="skill-item">Kubernetes (K8s)</span>
+                        <span class="skill-item">Docker</span>
+                        <span class="skill-item">System Architecture</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-zh="軟實力與實務" data-en="Soft Skills & Practices">軟實力與實務</h3>
+                    <div class="skill-list">
+                        <span class="skill-item">Code Review</span>
+                        <span class="skill-item">Team Growth</span>
+                        <span class="skill-item">System Maintainability</span>
+                        <span class="skill-item">Problem Solving</span>
+                        <span class="skill-item">Cross-team Collaboration</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
+            <h2 class="section-title" data-zh="工作經歷" data-en="Experience">工作經歷</h2>
+
+            <div class="experience-card">
+                <div class="exp-header">
+                    <div>
+                        <div class="role-title" data-zh="軟體工程師" data-en="Software Engineer">軟體工程師</div>
+                        <div class="company-name" data-zh="多地駐點 (台北, 台中, 跨國)"
+                            data-en="Multiple Locations (Taipei, Taichung, International)">多地駐點 (台北, 台中, 跨國)</div>
+                    </div>
+                    <div class="exp-date" data-zh="全職 / 實習" data-en="Full-Time & Internships">全職 / 實習</div>
+                </div>
+                <ul class="exp-details">
+                    <li data-zh="成功從實習生晉升為全職開發者，並獨立管理系統專案的完整生命週期。"
+                        data-en="Transitioned from an intern to a full-time developer managing full project lifecycles.">
+                        成功從實習生晉升為全職開發者，並獨立管理系統專案的完整生命週期。</li>
+                    <li data-zh="負責設計最佳解決方案，在效能、成本與擴展性之間取得最佳平衡。"
+                        data-en="Designed optimal solutions balancing performance, cost, and scalability.">
+                        負責設計最佳解決方案，在效能、成本與擴展性之間取得最佳平衡。</li>
+                    <li data-zh="使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes 環境。"
+                        data-en="Developed backend systems using .NET/C# and deployed on varied AWS and Kubernetes environments.">
+                        使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes 環境。</li>
+                    <li data-zh="利用 Kafka 等分散式技術，整合即時串流資料架構。"
+                        data-en="Integrated real-time streaming architectures using distributed technologies like Kafka.">
+                        利用 Kafka 等分散式技術，整合即時串流資料架構。</li>
+                    <li data-zh="透過協作與 Code Review，積極促進團隊成長與技術精進。"
+                        data-en="Actively fostered team growth by enhancing collaborative efforts and enforcing technical excellence through code reviews.">
+                        透過協作與 Code Review，積極促進團隊成長與技術精進。</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
+            <h2 class="section-title" data-zh="學歷" data-en="Education">學歷</h2>
+            <div class="experience-card">
+                <div class="exp-header">
+                    <div>
+                        <div class="role-title" data-zh="資訊工程學系" data-en="Computer Science">資訊工程學系</div>
+                        <div class="company-name" data-zh="學術基礎" data-en="Academic Foundation">學術基礎</div>
+                    </div>
+                </div>
+                <ul class="exp-details">
+                    <li data-zh="在進入職場與實習快速成長前，打下了堅實的計算機科學基礎。"
+                        data-en="Built a strong foundation in computer science principles before accelerating growth during internships and professional roles.">
+                        在進入職場與實習快速成長前，打下了堅實的計算機科學基礎。</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="resume-actions animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
+            <a href="resume.pdf" target="_blank" class="btn btn-primary" data-zh="下載完整英文履歷 (PDF)"
+                data-en="Download Original PDF">
+                下載完整英文履歷 (PDF)
+            </a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
+        </p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
