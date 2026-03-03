@@ -39,7 +39,11 @@
     box-sizing: border-box;
 }
 
+html,
 body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
