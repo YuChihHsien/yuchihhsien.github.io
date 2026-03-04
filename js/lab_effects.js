@@ -338,79 +338,9 @@ function initOrbitalOdyssey(containerId) {
 }
 
 // Overlay Retreat Logic
+// Overlay Retreat Logic (Disabled: Fixed to bottom-left)
 function initOverlayRetreat() {
-    const overlays = document.querySelectorAll('.lab-overlay');
-    const sections = document.querySelectorAll('.lab-section');
-    const timers = new Map();
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const section = entry.target;
-            const overlay = section.querySelector('.lab-overlay');
-            if (!overlay) return;
-
-            // Behavior Refinement:
-            if (entry.isIntersecting) {
-                const rect = section.getBoundingClientRect();
-                const isCentered = rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3;
-
-                if (isCentered) {
-                    // Force Reset to Center
-                    overlay.classList.remove('mini');
-                    overlay.style.top = ''; // Clear JS overrides to let CSS take over
-                    overlay.style.left = '';
-                    overlay.style.bottom = '';
-                    overlay.style.transform = '';
-
-                    if (timers.has(section)) clearTimeout(timers.get(section));
-
-                    const timer = setTimeout(() => {
-                        const currentRect = section.getBoundingClientRect();
-                        const center = window.innerHeight / 2;
-                        if (currentRect.top < center && currentRect.bottom > center) {
-                            // Let the .mini class handle it, but can force if needed
-                            overlay.classList.add('mini');
-                            // Ensure any residual inline styles from center don't break it
-                            overlay.style.top = 'auto';
-                        }
-                    }, 3000);
-                    timers.set(section, timer);
-                }
-            } else {
-                overlay.classList.remove('mini');
-                overlay.style.top = '';
-                overlay.style.left = '';
-                overlay.style.bottom = '';
-                overlay.style.transform = '';
-
-                if (timers.has(section)) {
-                    clearTimeout(timers.get(section));
-                    timers.delete(section);
-                }
-            }
-        });
-    }, { threshold: [0, 0.2, 0.5, 0.9] });
-
-    sections.forEach(section => observer.observe(section));
-
-    // Allow user to toggle back by clicking
-    overlays.forEach(overlay => {
-        overlay.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (overlay.classList.contains('mini')) {
-                overlay.classList.remove('mini');
-                // Re-retreat after 5 seconds if still in view
-                const section = overlay.parentElement;
-                if (timers.has(section)) clearTimeout(timers.get(section));
-                const timer = setTimeout(() => {
-                    if (document.visibilityState === 'visible') {
-                        overlay.classList.add('mini');
-                    }
-                }, 5000);
-                timers.set(section, timer);
-            }
-        });
-    });
+    // Logic removed as per user request to keep it fixed in bottom-left.
 }
 
 // Global initialization
