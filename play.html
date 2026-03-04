@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play & Experiments | 余致賢 - Chih-Hsien Yu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=11">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .play-overlay h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            opacity: 0.8;
+        }
+
+        .play-overlay p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+            z-index: 10;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-brand"><i class="fa-solid fa-code"></i> C-H. Yu</a>
+        <div class="nav-left">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> <span data-zh="首頁"
+                            data-en="Home">Home</span></a></li>
+                <li><a href="resume.html"><i class="fa-solid fa-file-lines"></i> <span data-zh="履歷"
+                            data-en="Resume">Resume</span></a></li>
+                <li><a href="projects.html"><i class="fa-solid fa-laptop-code"></i> <span data-zh="專案"
+                            data-en="Projects">Projects</span></a></li>
+                <li><a href="play.html" class="active"><i class="fa-solid fa-gamepad"></i> <span data-zh="遊玩"
+                            data-en="Play">Play</span></a></li>
+                <li><a href="contact.html"><i class="fa-solid fa-mug-hot"></i> <span data-zh="贊助"
+                            data-en="Support">Support</span></a></li>
+            </ul>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
+                <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
+                    title="Toggle Language">EN</button>
+                <div class="hamburger">
+                    <span class="line1"></span>
+                    <span class="line2"></span>
+                    <span class="line3"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="play-overlay">
+        <h1 data-zh="互動實驗" data-en="PLAYGROUND">PLAYGROUND</h1>
+        <p data-zh="探索流體與光影的互動" data-en="Interactive Fluid Simulation">Interactive Fluid Simulation</p>
+    </div>
+
+    <div class="hint" data-zh="點擊或滑動滑鼠感受流體變化" data-en="Click and move your mouse to interact">Click and move your mouse
+        to interact</div>
+
+    <canvas id="fluid-canvas"></canvas>
+
+    <!-- Fluid Simulation Script from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/webgl-fluid-simulation/dist/fluid-simulation.min.js"></script>
+    <script src="js/main.js?v=8"></script>
+    <script>
+        // Fluid Simulation Configuration
+        window.onload = () => {
+            if (typeof FluidSimulation !== 'undefined') {
+                const canvas = document.getElementById('fluid-canvas');
+                FluidSimulation.init(canvas, {
+                    SIM_RESOLUTION: 128,
+                    DYE_RESOLUTION: 1024,
+                    DENSITY_DISSIPATION: 1,
+                    VELOCITY_DISSIPATION: 0.2,
+                    PRESSURE_DISSIPATION: 0.8,
+                    PRESSURE_ITERATIONS: 20,
+                    CURL: 30,
+                    SPLAT_RADIUS: 0.25,
+                    SPLAT_FORCE: 6000,
+                    SHADING: true,
+                    COLORFUL: true,
+                    COLOR_UPDATE_SPEED: 10,
+                    PAUSED: false,
+                    BACK_COLOR: { r: 0, g: 0, b: 0 },
+                    TRANSPARENT: false,
+                    BLOOM: true,
+                    BLOOM_ITERATIONS: 8,
+                    BLOOM_RESOLUTION: 256,
+                    BLOOM_INTENSITY: 0.8,
+                    BLOOM_THRESHOLD: 0.6,
+                    BLOOM_SOFT_KNEE: 0.7,
+                    SUNRAYS: true,
+                    SUNRAYS_RESOLUTION: 196,
+                    SUNRAYS_WEIGHT: 1.0,
+                });
+            }
+        };
+    </script>
+</body>
+
+</html>
