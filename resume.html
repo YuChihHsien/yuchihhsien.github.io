@@ -189,8 +189,6 @@
                             data-en="Home">首頁</span></a></li>
                 <li><a href="resume.html" class="active"><i class="fa-solid fa-file-lines"></i> <span data-zh="履歷"
                             data-en="Resume">履歷</span></a></li>
-                <li><a href="projects.html"><i class="fa-solid fa-laptop-code"></i> <span data-zh="專案"
-                            data-en="Projects">專案</span></a></li>
                 <li><a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-zh="實驗室"
                             data-en="Lab">實驗室</span></a></li>
                 <li><a href="contact.html"><i class="fa-solid fa-mug-hot"></i> <span data-zh="贊助"
@@ -256,14 +254,53 @@
         </section>
 
         <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
+            <h2 class="section-title" data-zh="專業證照" data-en="Certifications">專業證照</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 data-zh="Amazon Web Services" data-en="Amazon Web Services">Amazon Web Services</h3>
+                    <div class="skill-list" style="flex-direction: column; align-items: flex-start;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                            <i class="fa-brands fa-aws" style="font-size: 1.5rem; color: #FF9900;"></i>
+                            <span class="role-title" style="font-size: 1rem;">AWS Certified Cloud Practitioner
+                                (CLF-C02)</span>
+                        </div>
+                        <span class="exp-date" data-zh="取得日期: 2025年 12月" data-en="Issued: Dec 2025">取得日期: 2025年
+                            12月</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
             <h2 class="section-title" data-zh="工作經歷" data-en="Experience">工作經歷</h2>
 
             <div class="experience-card">
                 <div class="exp-header">
                     <div>
-                        <div class="role-title" data-zh="軟體工程師" data-en="Software Engineer">軟體工程師</div>
-                        <div class="company-name" data-zh="多地駐點 (台北, 台中, 跨國)"
-                            data-en="Multiple Locations (Taipei, Taichung, International)">多地駐點 (台北, 台中, 跨國)</div>
+                        <div class="role-title" data-zh="後端全端工程師" data-en="Backend-focused Full-Stack Engineer">後端全端工程師
+                        </div>
+                        <div class="company-name" data-zh="希格斯資訊科技有限公司"
+                            data-en="Higgs Information Technology Co., Ltd.">希格斯資訊科技有限公司</div>
+                    </div>
+                    <div class="exp-date" data-zh="2024 - 目前" data-en="2024 - Present">2024 - Currently</div>
+                </div>
+                <ul class="exp-details">
+                    <li data-zh="負責大型分散式系統架構設計，專注於高併發處理與系統擴展性。"
+                        data-en="Responsible for large-scale distributed system architecture, focusing on high concurrency and scalability.">
+                        負責大型分散式系統架構設計，專注於高併發處理與系統擴展性。</li>
+                    <li data-zh="主導核心後端服務開發，優化 API 效能及資料庫存取效率。"
+                        data-en="Led core backend service development, optimizing API performance and DB access efficiency.">
+                        主導核心後端服務開發，優化 API 效能及資料庫存取效率。</li>
+                </ul>
+            </div>
+
+            <div class="experience-card">
+                <div class="exp-header">
+                    <div>
+                        <div class="role-title" data-zh="軟體工程師 (多地駐點)" data-en="Software Engineer (Multiple Locations)">
+                            軟體工程師 (多地駐點)</div>
+                        <div class="company-name" data-zh="台北, 台中, 跨國專案"
+                            data-en="Taipei, Taichung, International Projects">台北, 台中, 跨國專案</div>
                     </div>
                     <div class="exp-date" data-zh="全職 / 實習" data-en="Full-Time & Internships">全職 / 實習</div>
                 </div>
@@ -271,21 +308,44 @@
                     <li data-zh="成功從實習生晉升為全職開發者，並獨立管理系統專案的完整生命週期。"
                         data-en="Transitioned from an intern to a full-time developer managing full project lifecycles.">
                         成功從實習生晉升為全職開發者，並獨立管理系統專案的完整生命週期。</li>
-                    <li data-zh="負責設計最佳解決方案，在效能、成本與擴展性之間取得最佳平衡。"
-                        data-en="Designed optimal solutions balancing performance, cost, and scalability.">
-                        負責設計最佳解決方案，在效能、成本與擴展性之間取得最佳平衡。</li>
-                    <li data-zh="使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes 環境。"
-                        data-en="Developed backend systems using .NET/C# and deployed on varied AWS and Kubernetes environments.">
-                        使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes 環境。</li>
+                    <li data-zh="使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes (EKS) 環境。"
+                        data-en="Developed backend systems using .NET/C# and deployed on varied AWS and Kubernetes (EKS) environments.">
+                        使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes (EKS) 環境。</li>
                     <li data-zh="利用 Kafka 等分散式技術，整合即時串流資料架構。"
                         data-en="Integrated real-time streaming architectures using distributed technologies like Kafka.">
                         利用 Kafka 等分散式技術，整合即時串流資料架構。</li>
-                    <li data-zh="透過協作與 Code Review，積極促進團隊成長與技術精進。"
-                        data-en="Actively fostered team growth by enhancing collaborative efforts and enforcing technical excellence through code reviews.">
-                        透過協作與 Code Review，積極促進團隊成長與技術精進。</li>
                 </ul>
             </div>
+        </section>
 
+        <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
+            <h2 class="section-title" data-zh="精選專案" data-en="Featured Projects">精選專案</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 data-zh="分散式資料處理流水線" data-en="Distributed Data Processing Pipeline">分散式資料處理流水線</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;"
+                        data-zh="利用 Kafka 攝取和處理即時資料流，專為高可用性與低延遲而設計。"
+                        data-en="Leveraging Kafka to ingest and process real-time data streams for HA and low latency.">
+                        利用 Kafka 攝取和處理即時資料流，專為高可用性與低延遲而設計。</p>
+                    <div class="skill-list">
+                        <span class="skill-item">Kafka</span>
+                        <span class="skill-item">.NET Core</span>
+                        <span class="skill-item">Docker</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 data-zh="雲端架構轉型" data-en="Cloud Infrastructure Migration">雲端架構轉型</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;"
+                        data-zh="主導將單體式應用程式遷移至 AWS EKS 微服務架構，部署時間縮短 40%。"
+                        data-en="Led migration of monolithic apps to AWS EKS microservices, reducing deployment time by 40%.">
+                        主導將單體式應用程式遷移至 AWS EKS 微服務架構，部署時間縮短 40%。</p>
+                    <div class="skill-list">
+                        <span class="skill-item">AWS EKS</span>
+                        <span class="skill-item">Microservices</span>
+                        <span class="skill-item">CI/CD</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
