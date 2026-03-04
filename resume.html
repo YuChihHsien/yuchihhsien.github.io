@@ -26,16 +26,72 @@
             --book-width: 450px;
             --book-height: 600px;
             --page-bg: var(--card-bg-color);
+            --paper-texture: url("https://www.transparenttextures.com/patterns/p6.png");
         }
 
+        /* --- View Toggle Switch --- */
+        .view-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            background: transparent;
+            z-index: 2;
+        }
+
+        .toggle-btn.active {
+            color: white;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            height: calc(100% - 8px);
+            width: calc(50% - 4px);
+            background: var(--accent-color);
+            border-radius: 25px;
+            left: 4px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1;
+        }
+
+        body.view-classic .toggle-slider {
+            left: 50%;
+        }
+
+        /* --- Book Layout Animations --- */
         .resume-page-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 160px);
+            min-height: calc(100vh - 250px);
             perspective: 2000px;
             padding: 2rem 0;
-            margin-top: 2rem;
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
 
         .book {
@@ -44,6 +100,7 @@
             height: var(--book-height);
             transition: transform 0.5s;
             transform-style: preserve-3d;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         }
 
         .page {
@@ -53,21 +110,94 @@
             top: 0;
             left: 0;
             background-color: var(--page-bg);
+            background-image: var(--paper-texture);
             border: 1px solid var(--border-color);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease;
             transform-origin: left;
             transform-style: preserve-3d;
             z-index: 1;
-            padding: 2.5rem;
+            padding: 3rem;
             overflow-y: auto;
-            border-radius: 0 10px 10px 0;
+            border-radius: 0 12px 12px 0;
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* Customize scrollbar for pages */
+        .page::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 5px 0 15px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        /* Shadow decoration for the "spine" area */
+        .page.flipped::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 100%;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent);
+            z-index: 10;
+        }
+
+        .page.flipped {
+            transform: rotateY(-180deg);
+            z-index: 2;
+        }
+
+        .page.active {
+            z-index: 3;
+        }
+
+        /* --- Classic (Vertical) View --- */
+        body.view-classic .resume-page-wrapper {
+            display: block;
+            perspective: none;
+            padding: 0;
+        }
+
+        body.view-classic .book {
+            width: 100%;
+            height: auto;
+            transform: none !important;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            box-shadow: none;
+        }
+
+        body.view-classic .page {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            height: auto;
+            transform: none !important;
+            opacity: 1 !important;
+            border-radius: 16px;
+            background-color: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: none;
+        }
+
+        body.view-classic .page.flipped {
+            transform: none !important;
+        }
+
+        body.view-classic .book-nav {
+            display: none;
+        }
+
+        /* --- UI Components --- */
         .page::-webkit-scrollbar {
             width: 5px;
         }
@@ -81,21 +211,11 @@
             border-radius: 10px;
         }
 
-        .page.flipped {
-            transform: rotateY(-180deg);
-            z-index: 2;
-        }
-
-        .page.active {
-            z-index: 3;
-        }
-
-        /* Navigation Buttons */
         .book-nav {
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin-top: 3rem;
+            margin-top: 3.5rem;
             align-items: center;
         }
 
@@ -103,173 +223,153 @@
             background: rgba(59, 130, 246, 0.1);
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            width: 48px;
-            height: 48px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.1rem;
         }
 
         .page-nav-btn:hover:not(:disabled) {
             background: var(--accent-color);
             color: white;
-            box-shadow: 0 0 15px var(--accent-color);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            transform: scale(1.1);
         }
 
         .page-nav-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
-            border-color: var(--border-color);
-            color: var(--text-secondary);
+            filter: grayscale(1);
         }
 
         .page-indicator {
             font-family: 'Space Grotesk', monospace;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 500;
         }
 
-        /* Resume Section Styles */
+        /* Section Styles Enhancement */
         .section-title {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            margin-bottom: 2rem;
-            display: block;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.75rem;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
             font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 35px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
         }
 
         .role-title {
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.25rem;
-            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
         }
 
         .company-name {
             color: var(--accent-color);
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
         }
 
         .exp-date {
             font-size: 0.85rem;
-            opacity: 0.6;
-            margin-bottom: 1.25rem;
+            opacity: 0.5;
+            margin-bottom: 1.5rem;
             display: block;
             font-family: 'Space Grotesk', monospace;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 12px;
+            border-radius: 4px;
+            width: fit-content;
         }
 
         .exp-details {
             list-style: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .exp-details li {
             position: relative;
-            padding-left: 1.25rem;
-            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .exp-details li::before {
-            content: "▹";
+            content: "→";
             position: absolute;
             left: 0;
             color: var(--accent-color);
+            font-weight: bold;
         }
 
         .skills-mini-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.75rem;
+            gap: 2rem;
         }
 
         .skill-group h4 {
-            font-size: 0.95rem;
-            margin-bottom: 0.9rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
             color: var(--text-primary);
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .skill-group h4::before {
-            content: "";
-            width: 4px;
-            height: 12px;
-            background: var(--accent-color);
-            border-radius: 2px;
+        .skill-group h4 i {
+            color: var(--accent-color);
+            font-size: 0.9rem;
         }
 
         .skill-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.6rem;
+            gap: 0.75rem;
         }
 
         .skill-tag {
-            font-size: 0.75rem;
-            padding: 5px 12px;
-            background: rgba(59, 130, 246, 0.05);
-            border: 1px solid rgba(59, 130, 246, 0.15);
-            border-radius: 6px;
+            font-size: 0.8rem;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             color: var(--text-secondary);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .skill-tag:hover {
             border-color: var(--accent-color);
-            color: var(--text-primary);
-            background: rgba(59, 130, 246, 0.1);
+            color: white;
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* Responsive Mobile Layout */
-        @media (max-width: 768px) {
-            .resume-page-wrapper {
-                perspective: none;
-                display: block;
-                height: auto;
-                padding-top: 1rem;
-                margin-top: 0;
-            }
-
-            .book {
-                width: 100%;
-                height: auto;
-                transform: none !important;
-            }
-
-            .page {
-                position: relative;
-                width: 100%;
-                height: auto;
-                transform: none !important;
-                box-shadow: none;
-                padding: 2rem 1.5rem;
-                border: none;
-                border-bottom: 1px solid var(--border-color);
-                border-radius: 0;
-                opacity: 1 !important;
-                display: block;
-            }
-
-            .book-nav {
-                display: none;
-            }
-        }
-
-        /* Intro Page Styles */
+        /* --- Intro Page Styles --- */
         .intro-content {
             display: flex;
             flex-direction: column;
@@ -280,13 +380,14 @@
         }
 
         .intro-avatar {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            border: 4px solid var(--accent-color);
-            margin-bottom: 2rem;
-            padding: 5px;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+            border: 5px solid var(--accent-color);
+            margin-bottom: 2.5rem;
+            padding: 6px;
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+            background: var(--page-bg);
         }
 
         .intro-avatar img {
@@ -294,6 +395,65 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
+        }
+
+        .intro-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        /* --- Footer Stats --- */
+        .footer-tech-stats {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Responsive Mobile Layout Override */
+        @media (max-width: 768px) {
+            .view-controls {
+                display: none;
+                /* Hide toggle on mobile, always vertical */
+            }
+
+            .resume-page-wrapper {
+                perspective: none;
+                display: block;
+                height: auto;
+                padding-top: 0;
+            }
+
+            .book {
+                width: 100%;
+                height: auto;
+                transform: none !important;
+                box-shadow: none;
+            }
+
+            .page {
+                position: relative;
+                width: 100%;
+                height: auto;
+                transform: none !important;
+                box-shadow: none;
+                padding: 2.5rem 1.5rem;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+                border-radius: 0;
+                opacity: 1 !important;
+                display: block;
+                background-image: none;
+            }
+
+            .book-nav {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -328,6 +488,19 @@
 
     <div class="container" style="padding-top: 5rem;">
 
+        <!-- View Controls -->
+        <div class="view-controls">
+            <div class="toggle-container">
+                <div class="toggle-slider" id="toggleSlider"></div>
+                <button class="toggle-btn active" id="btnBook" onclick="setViewMode('book')">
+                    <i class="fa-solid fa-book-open"></i> <span data-zh="書本模式" data-en="Book Mode">書本模式</span>
+                </button>
+                <button class="toggle-btn" id="btnClassic" onclick="setViewMode('classic')">
+                    <i class="fa-solid fa-list-ul"></i> <span data-zh="列表模式" data-en="Classic Mode">列表模式</span>
+                </button>
+            </div>
+        </div>
+
         <div class="resume-page-wrapper">
             <div class="book" id="resumeBook">
 
@@ -338,25 +511,24 @@
                             <img src="img/public/my.jpg" alt="Chih-Hsien Yu">
                         </div>
                         <div class="badge-tech">SYS_ENTRY // PROFILE</div>
-                        <h2 data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</h2>
-                        <p style="font-size: 1rem; color: var(--accent-color); font-weight: 500;" data-zh="資深軟體工程師"
-                            data-en="Senior Software Engineer">資深軟體工程師</p>
-                        <hr style="width: 60px; border-color: var(--accent-color); margin: 2rem auto; opacity: 0.3;">
-                        <p style="font-size: 0.95rem; line-height: 1.8; color: var(--text-secondary);"
+                        <h2 class="intro-title" data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</h2>
+                        <p style="font-size: 1.1rem; color: var(--accent-color); font-weight: 600; margin-bottom: 2rem;"
+                            data-zh="資深軟體工程師" data-en="Senior Software Engineer">資深軟體工程師</p>
+                        <p style="font-size: 1rem; line-height: 1.8; color: var(--text-secondary); max-width: 90%;"
                             data-zh="專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。"
                             data-en="Software Engineer specializing in scalable and maintainable architectures. Experienced in international projects, distributed systems, and cloud-native technologies.">
                             專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。
                         </p>
-                        <div
-                            style="margin-top: 3rem; color: var(--accent-color); font-size: 0.8rem; letter-spacing: 3px; font-weight: 600;">
-                            FLIP TO EXPLORE <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>
+                        <div class="book-nav-hint"
+                            style="margin-top: 3.5rem; color: var(--accent-color); font-size: 0.85rem; letter-spacing: 4px; font-weight: 700; text-transform: uppercase;">
+                            Start Exploring <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Page 2: Experience 1 -->
                 <div class="page" id="p2">
-                    <h3 class="section-title" data-zh="工作經歷 I" data-en="Experience I">工作經歷 I</h3>
+                    <h3 class="section-title"><span data-zh="工作經歷 I" data-en="Experience I">工作經歷 I</span></h3>
                     <div class="role-title" data-zh="後端全端工程師" data-en="Backend-focused Full-Stack Engineer">後端全端工程師
                     </div>
                     <div class="company-name" data-zh="希格斯資訊科技有限公司" data-en="Higgs Info Tech">希格斯資訊科技有限公司</div>
@@ -379,7 +551,7 @@
 
                 <!-- Page 3: Experience 2 -->
                 <div class="page" id="p3">
-                    <h3 class="section-title" data-zh="工作經歷 II" data-en="Experience II">工作經歷 II</h3>
+                    <h3 class="section-title"><span data-zh="工作經歷 II" data-en="Experience II">工作經歷 II</span></h3>
                     <div class="role-title" data-zh="軟體工程師 (多地駐點)" data-en="Software Engineer">軟體工程師 (多地駐點)</div>
                     <div class="company-name" data-zh="台北, 台中, 跨國專案" data-en="Taipei, Taichung, International">台北, 台中,
                         跨國專案</div>
@@ -398,31 +570,35 @@
 
                 <!-- Page 4: Skills -->
                 <div class="page" id="p4">
-                    <h3 class="section-title" data-zh="核心能力" data-en="Core Skills">核心能力</h3>
+                    <h3 class="section-title"><span data-zh="核心能力" data-en="Core Skills">核心能力</span></h3>
                     <div class="skills-mini-grid">
                         <div class="skill-group">
-                            <h4 data-zh="後端開發" data-en="Backend">後端開發</h4>
+                            <h4><i class="fa-solid fa-server"></i> <span data-zh="後端開發" data-en="Backend">後端開發</span>
+                            </h4>
                             <div class="skill-tags">
                                 <span class="skill-tag">.NET Core</span><span class="skill-tag">C#</span>
                                 <span class="skill-tag">Orleans</span><span class="skill-tag">DDD</span>
                             </div>
                         </div>
                         <div class="skill-group">
-                            <h4 data-zh="基礎建設" data-en="Infrastructure">基礎建設</h4>
+                            <h4><i class="fa-solid fa-cloud"></i> <span data-zh="基礎建設"
+                                    data-en="Infrastructure">基礎建設</span></h4>
                             <div class="skill-tags">
                                 <span class="skill-tag">AWS</span><span class="skill-tag">Kubernetes</span>
                                 <span class="skill-tag">Docker</span><span class="skill-tag">GitLab CI</span>
                             </div>
                         </div>
                         <div class="skill-group">
-                            <h4 data-zh="資料技術" data-en="Data">資料技術</h4>
+                            <h4><i class="fa-solid fa-database"></i> <span data-zh="資料技術" data-en="Data">資料技術</span>
+                            </h4>
                             <div class="skill-tags">
                                 <span class="skill-tag">Kafka</span><span class="skill-tag">Redis</span>
                                 <span class="skill-tag">MongoDB</span><span class="skill-tag">SQL Server</span>
                             </div>
                         </div>
                         <div class="skill-group">
-                            <h4 data-zh="前端技術" data-en="Frontend">前端技術</h4>
+                            <h4><i class="fa-solid fa-code"></i> <span data-zh="前端技術" data-en="Frontend">前端技術</span>
+                            </h4>
                             <div class="skill-tags">
                                 <span class="skill-tag">Vue 3</span><span class="skill-tag">ES6+</span>
                                 <span class="skill-tag">Three.js</span>
@@ -444,9 +620,9 @@
 
     <footer>
         <div class="footer-tech-stats">
-            <span><i class="fa-solid fa-gauge-high"></i> Performance: 100/100</span>
+            <span><i class="fa-solid fa-bolt"></i> OS: GA-RY_OS v2.4</span>
             <span class="separator">|</span>
-            <span><i class="fa-solid fa-book-open"></i> Interactive Reader v1.0.1</span>
+            <span><i class="fa-solid fa-desktop"></i> GUI: Hybrid View</span>
         </div>
         <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
         </p>
@@ -454,7 +630,27 @@
 
     <script src="js/main.js?v=13"></script>
     <script>
-        // Book Navigation Controller
+        // --- View Mode Controller ---
+        const body = document.body;
+        const btnBook = document.getElementById('btnBook');
+        const btnClassic = document.getElementById('btnClassic');
+
+        function setViewMode(mode) {
+            if (mode === 'classic') {
+                body.classList.add('view-classic');
+                btnClassic.classList.add('active');
+                btnBook.classList.remove('active');
+                localStorage.setItem('resumeViewMode', 'classic');
+            } else {
+                body.classList.remove('view-classic');
+                btnBook.classList.add('active');
+                btnClassic.classList.remove('active');
+                localStorage.setItem('resumeViewMode', 'book');
+                updateBook(); // Ensure book state is correct when switching back
+            }
+        }
+
+        // --- Book Navigation Controller ---
         const pages = document.querySelectorAll('.page');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
@@ -463,6 +659,8 @@
         const totalPages = pages.length;
 
         function updateBook() {
+            if (body.classList.contains('view-classic')) return;
+
             pages.forEach((page, index) => {
                 const pageNum = index + 1;
                 if (pageNum < currentPage) {
@@ -498,12 +696,18 @@
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
+            if (body.classList.contains('view-classic')) return;
             if (e.key === 'ArrowRight') nextBtn.click();
             if (e.key === 'ArrowLeft') prevBtn.click();
         });
 
-        // Initialize
-        updateBook();
+        // --- Initialize ---
+        const savedMode = localStorage.getItem('resumeViewMode');
+        if (savedMode === 'classic') {
+            setViewMode('classic');
+        } else {
+            updateBook();
+        }
     </script>
 </body>
 
