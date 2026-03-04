@@ -83,6 +83,51 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // ---- Professional Polish: Custom Cursor ----
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    const interactiveElements = document.querySelectorAll('a, button, .social-btn, .skill-tag, .nav-brand');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+    });
+
+    // ---- Professional Polish: Scroll Progress ----
+    const progressContainer = document.createElement('div');
+    progressContainer.className = 'scroll-progress-container';
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress-bar';
+    progressContainer.appendChild(progressBar);
+    document.body.appendChild(progressContainer);
+
+    window.addEventListener('scroll', () => {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.scrollY / windowHeight) * 100;
+        progressBar.style.width = scrolled + '%';
+    });
+
+    // ---- Professional Polish: Typing Effect ----
+    const typingElement = document.getElementById('typing-text');
+    if (typingElement) {
+        const text = "Senior Software Engineer";
+        let index = 0;
+        function type() {
+            if (index < text.length) {
+                typingElement.textContent += text.charAt(index);
+                index++;
+                setTimeout(type, 100);
+            }
+        }
+        type();
+    }
 });
 
 // Theme Management
