@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - SYSTEM_BREACH | GA-RY_OS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=21">
+</head>
+
+<body>
+    <div class="grain-overlay"></div>
+
+    <main class="error-page premium-hero">
+        <div class="glitch-container">
+            <h1 class="glitch-text" data-text="404">404</h1>
+        </div>
+
+        <div class="error-content fade-in">
+            <div class="badge-tech slide-up">ERR_FILE_NOT_FOUND // SYSTEM_UNSTABLE</div>
+            <h2 class="error-title slide-up delay-1">CRITICAL_EXCEPTION_OCCURRED</h2>
+            <p class="error-message slide-up delay-1">
+                The requested resource has been moved, deleted, or never existed in this sector of the matrix.
+            </p>
+
+            <div class="error-terminal slide-up delay-2">
+                <p><span class="cmd">></span> system_scan --path current_url</p>
+                <p>Searching for sector...</p>
+                <p class="error">[!] ERROR: Sector 0x404 inaccessible.</p>
+                <p>Attempting recovery...</p>
+                <p class="error">[!] RECOVERY_FAILED: Data corrupted or missing.</p>
+                <p><span class="cmd">></span> suggestion --action</p>
+                <p class="success">[+] Manual extraction required. Initiate return sequence.</p>
+            </div>
+
+            <div class="cta-group slide-up delay-3 centered">
+                <a href="index.html" class="btn btn-primary btn-premium">
+                    <i class="fa-solid fa-house-chimney" style="margin-right: 10px;"></i>
+                    RETURN_TO_CORE
+                </a>
+                <a href="lab.html" class="btn btn-outline btn-premium">
+                    <i class="fa-solid fa-flask" style="margin-right: 10px;"></i>
+                    ACCESS_LAB
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- UI Enhancement Overlay -->
+    <svg style="display:none">
+        <filter id="grainy">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="0.35" />
+                <feFuncG type="linear" slope="0.35" />
+                <feFuncB type="linear" slope="0.35" />
+            </feComponentTransfer>
+        </filter>
+    </svg>
+
+    <script>
+        // Simple interactive effect for the terminal
+        document.addEventListener('DOMContentLoaded', () => {
+            const lines = document.querySelectorAll('.error-terminal p');
+            lines.forEach((line, index) => {
+                line.style.opacity = '0';
+                line.style.transform = 'translateX(-10px)';
+                line.style.transition = 'all 0.3s ease';
+                setTimeout(() => {
+                    line.style.opacity = '1';
+                    line.style.transform = 'translateX(0)';
+                }, 1000 + (index * 400));
+            });
+        });
+    </script>
+</body>
+
+</html>
