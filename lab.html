@@ -16,15 +16,27 @@
             height: 100%;
             background-color: #000;
             color: #fff;
-            scroll-behavior: smooth;
-            /* Snap Scrolling */
+            overflow: hidden;
+            /* Prevent body scroll */
+        }
+
+        /* Scroll Container for Snap Scrolling */
+        #lab-scroll-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
             scroll-snap-type: y mandatory;
-            overflow-y: scroll;
+            scroll-behavior: smooth;
         }
 
         /* Navbar Hiding Logic */
         nav {
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
         }
 
         nav.nav-hidden {
@@ -41,7 +53,6 @@
             justify-content: center;
             overflow: hidden;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            /* Snap Scaling */
             scroll-snap-align: start;
             scroll-snap-stop: always;
         }
@@ -146,38 +157,42 @@
         </div>
     </nav>
 
-    <!-- Section 1: Fluid Simulation -->
-    <section class="lab-section">
-        <canvas id="fluid-canvas"></canvas>
-        <div class="lab-overlay">
-            <h2 data-zh="流體動力學" data-en="Fluid Dynamics">Fluid Dynamics</h2>
-            <p data-zh="實驗 01: 基於 WebGL 的氣流與流體運動模擬。" data-en="Exp 01: WebGL-based air and fluid motion simulation."></p>
-        </div>
-        <div class="scroll-hint">
-            <p data-zh="向下滾動探索更多" data-en="Scroll Down to Explore">Scroll Down to Explore</p>
-            <i class="fa-solid fa-chevron-down"></i>
-        </div>
-    </section>
+    <div id="lab-scroll-container">
+        <!-- Section 1: Fluid Simulation -->
+        <section class="lab-section">
+            <canvas id="fluid-canvas"></canvas>
+            <div class="lab-overlay">
+                <h2 data-zh="流體動力學" data-en="Fluid Dynamics">Fluid Dynamics</h2>
+                <p data-zh="實驗 01: 基於 WebGL 的氣流與流體運動模擬。" data-en="Exp 01: WebGL-based air and fluid motion simulation.">
+                </p>
+            </div>
+            <div class="scroll-hint">
+                <p data-zh="向下滾動探索更多" data-en="Scroll Down to Explore">Scroll Down to Explore</p>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </section>
 
-    <!-- Section 2: Gravity Particles -->
-    <section class="lab-section">
-        <canvas id="gravity-canvas"></canvas>
-        <div class="lab-overlay">
-            <h2 data-zh="重力粒子" data-en="Gravity Particles">Gravity Particles</h2>
-            <p data-zh="實驗 02: 具備滑鼠斥力與引力的粒子系統，模擬微觀物理。"
-                data-en="Exp 02: Particle system with mouse repulsion and attraction."></p>
-        </div>
-    </section>
+        <!-- Section 2: Gravity Particles -->
+        <section class="lab-section">
+            <canvas id="gravity-canvas"></canvas>
+            <div class="lab-overlay">
+                <h2 data-zh="重力粒子" data-en="Gravity Particles">Gravity Particles</h2>
+                <p data-zh="實驗 02: 具備滑鼠斥力與引力的粒子系統，模擬微觀物理。"
+                    data-en="Exp 02: Particle system with mouse repulsion and attraction."></p>
+            </div>
+        </section>
 
-    <!-- Section 3: 3D Morphing Sphere -->
-    <section class="lab-section">
-        <div id="morph-container" class="morph-container"></div>
-        <div class="lab-overlay">
-            <h2 data-zh="3D 幾何形變" data-en="3D Morphing">3D Morphing</h2>
-            <p data-zh="實驗 03: 使用 Three.js 構建的參數化 3D 形變幾何體。"
-                data-en="Exp 03: Parametric 3D morphing geometry built with Three.js."></p>
-        </div>
-    </section>
+        <!-- Section 3: 3D Morphing Sphere -->
+        <section class="lab-section">
+            <div id="morph-container" class="morph-container"></div>
+            <div class="lab-overlay">
+                <h2 data-zh="3D 幾何形變" data-en="3D Morphing">3D Morphing</h2>
+                <p data-zh="實驗 03: 使用 Three.js 構建的參數化 3D 形變幾何體。"
+                    data-en="Exp 03: Parametric 3D morphing geometry built with Three.js."></p>
+            </div>
+        </section>
+
+    </div> <!-- End #lab-scroll-container -->
 
     <!-- Back to Top Button -->
     <button class="back-to-top" id="backToTop" title="Back to Top" onclick="scrollToTop()">
@@ -185,7 +200,6 @@
     </button>
 
     <div class="terminal-widget">
-
         <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
             <i class="fa-solid fa-terminal"></i>
         </button>
@@ -253,18 +267,19 @@
 
         // Scroll Logic for Back to Top Button & Navbar Hiding
         let lastScrollTop = 0;
+        const scrollContainer = document.getElementById('lab-scroll-container');
 
         function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Use scroll event on window but check documentElement
-        window.addEventListener('scroll', () => {
+        // Listen to the container scroll instead of window
+        scrollContainer.addEventListener('scroll', () => {
             const btn = document.getElementById('backToTop');
             const nav = document.querySelector('nav');
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let scrollTop = scrollContainer.scrollTop;
 
-            // Back to Top visibility - More sensitive
+            // Back to Top visibility
             if (scrollTop > 100) {
                 btn.classList.add('visible');
             } else {
@@ -287,7 +302,6 @@
 
             lastScrollTop = scrollTop;
         }, { passive: true });
-
     </script>
 </body>
 
