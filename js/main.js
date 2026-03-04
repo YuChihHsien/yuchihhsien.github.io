@@ -128,6 +128,108 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         type();
     }
+
+    // ---- Professional Gift: Easter Egg Console ----
+    let keySequence = "";
+    const secretWord = "gary";
+
+    document.addEventListener('keydown', (e) => {
+        keySequence += e.key.toLowerCase();
+        if (keySequence.length > 4) keySequence = keySequence.slice(-4);
+
+        if (keySequence === secretWord) {
+            toggleAdminOverlay();
+            keySequence = "";
+        }
+    });
+
+    const overlay = document.createElement('div');
+    overlay.className = 'admin-overlay';
+    overlay.innerHTML = `
+        <div class="admin-header">
+            <span>GA-RY_SYSTEM_ADMIN [AUTHORIZED_ACCESS]</span>
+            <button class="admin-close" onclick="toggleAdminOverlay()">CLOSE_SIGNAL</button>
+        </div>
+        <div class="admin-content">
+            <div class="ascii-art">
+   _____  _____  _____ __     __
+  / ____|/ ____||  __ \\\\ \\   / /
+ | |  __| (___  | |__) |\\ \\_/ / 
+ | | |_ |\\___ \\ |  _  /  \\   /  
+ | |__| |____) || | \\ \\   | |   
+  \\_____|_____/ |_|  \\_\\  |_|   
+            </div>
+            <div id="admin-logs"></div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    window.toggleAdminOverlay = function () {
+        overlay.classList.toggle('active');
+        if (overlay.classList.contains('active')) {
+            startAdminLogs();
+        }
+    };
+
+    function startAdminLogs() {
+        const logsContainer = document.getElementById('admin-logs');
+        logsContainer.innerHTML = "";
+        const logs = [
+            "> INITIALIZING SYSTEM_KERNEL_V4.0...",
+            "> AUTHENTICATING USER: GARY_YU",
+            "> DEPLOYING CLOUD_INFRASTRUCTURE: AWS_EKS",
+            "> CORE_SYSTEM: .NET_MICROSERVICES_ACTIVE",
+            "> MESSAGE_BROKER: KAFKA_CLUSTER_STABLE",
+            "> DATA_LAYER: ORLEANS_SILO_RUNNING",
+            "> SECURITY_STATUS: HCAPTCHA_ENABLED",
+            "> ANALYTICS: GA4_STREAMING_DATA",
+            "> WELCOME BACK, ARCHITECT.",
+            "---------------------------------------",
+            "> VIEWING_SESSION_METRICS...",
+            `> REFRESH_RATE: ${window.screen.refreshRate || 60}Hz`,
+            `> CLIENT_OS: ${navigator.platform}`,
+            `> BROWSER: ${navigator.userAgent.split(' ')[0]}`,
+            "---------------------------------------",
+            "> LOG_STREAM: [INFO] Packet 0xc0ffee captured.",
+            "> LOG_STREAM: [SUCCESS] Neural interface synced."
+        ];
+
+        let i = 0;
+        function showNextLog() {
+            if (i < logs.length) {
+                const p = document.createElement('p');
+                p.textContent = logs[i];
+                logsContainer.appendChild(p);
+                i++;
+                setTimeout(showNextLog, 150);
+            }
+        }
+        showNextLog();
+    }
+
+    // ---- Professional Gift: System Monitor ----
+    const monitor = document.createElement('div');
+    monitor.className = 'system-monitor-widget';
+    monitor.innerHTML = `
+        <div class="monitor-line"><span>CPU_LOAD</span><span id="mon-cpu">0%</span></div>
+        <div class="monitor-bar-bg"><div class="monitor-bar-fill" id="bar-cpu"></div></div>
+        <div style="margin-top:8px" class="monitor-line"><span>MEM_USAGE</span><span id="mon-mem">0%</span></div>
+        <div class="monitor-bar-bg"><div class="monitor-bar-fill" id="bar-mem"></div></div>
+        <div style="margin-top:8px" class="monitor-line"><span>NET_TRAFFIC</span><span id="mon-net">0kb/s</span></div>
+    `;
+    document.body.appendChild(monitor);
+
+    setInterval(() => {
+        const cpu = Math.floor(Math.random() * 15) + 5;
+        const mem = Math.floor(Math.random() * 10) + 40;
+        const net = (Math.random() * 50).toFixed(1);
+
+        document.getElementById('mon-cpu').textContent = cpu + '%';
+        document.getElementById('bar-cpu').style.width = cpu + '%';
+        document.getElementById('mon-mem').textContent = mem + '%';
+        document.getElementById('bar-mem').style.width = mem + '%';
+        document.getElementById('mon-net').textContent = net + 'kb/s';
+    }, 2000);
 });
 
 // Theme Management
