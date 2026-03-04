@@ -1,196 +1,270 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<style>
+    :root {
+        --book-width: 450px;
+        --book-height: 600px;
+        --page-bg: var(--card-bg-color);
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>履歷 Resume | 余致賢 - Chih-Hsien Yu</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=12">
+    .resume-page-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 160px);
+        perspective: 2000px;
+        padding: 2rem 0;
+    }
 
-    <!-- Google Analytics (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEYHDVGJ8C"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-WEYHDVGJ8C');
-    </script>
-    <style>
-        .resume-header {
-            text-align: center;
-            margin-bottom: 4rem;
+    .book {
+        position: relative;
+        width: var(--book-width);
+        height: var(--book-height);
+        transition: transform 0.5s;
+        transform-style: preserve-3d;
+    }
+
+    .page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: var(--page-bg);
+        border: 1px solid var(--border-color);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+        transform-origin: left;
+        transform-style: preserve-3d;
+        z-index: 1;
+        padding: 2rem;
+        overflow-y: auto;
+        border-radius: 0 10px 10px 0;
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Customize scrollbar for pages */
+    .page::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .page::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .page::-webkit-scrollbar-thumb {
+        background: var(--accent-color);
+        border-radius: 10px;
+    }
+
+    .page.flipped {
+        transform: rotateY(-180deg);
+        z-index: 2;
+    }
+
+    .page.active {
+        z-index: 3;
+    }
+
+    .page-content {
+        height: 100%;
+    }
+
+    .page-front,
+    .page-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        padding: 2.5rem;
+        backface-visibility: hidden;
+        background: var(--page-bg);
+    }
+
+    .page-back {
+        transform: rotateY(180deg);
+    }
+
+    /* Navigation Buttons */
+    .book-nav {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 2rem;
+        align-items: center;
+    }
+
+    .page-nav-btn {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+
+    .page-nav-btn:hover:not(:disabled) {
+        background: var(--accent-color);
+        color: white;
+        box-shadow: 0 0 15px var(--accent-color);
+    }
+
+    .page-nav-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        border-color: var(--border-color);
+        color: var(--text-secondary);
+    }
+
+    .page-indicator {
+        font-family: 'Space Grotesk', monospace;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        letter-spacing: 2px;
+    }
+
+    /* Resume Section Styles */
+    .section-title {
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        margin-bottom: 1.5rem;
+        display: block;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
+    }
+
+    .role-title {
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .company-name {
+        color: var(--accent-color);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .exp-date {
+        font-size: 0.8rem;
+        opacity: 0.7;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .exp-details {
+        list-style: none;
+        font-size: 0.9rem;
+    }
+
+    .exp-details li {
+        position: relative;
+        padding-left: 1.2rem;
+        margin-bottom: 0.6rem;
+        color: var(--text-secondary);
+    }
+
+    .exp-details li::before {
+        content: "▹";
+        position: absolute;
+        left: 0;
+        color: var(--accent-color);
+    }
+
+    .skills-mini-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .skill-group h4 {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+        color: var(--text-primary);
+    }
+
+    .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .skill-tag {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        background: rgba(59, 130, 246, 0.05);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 4px;
+        color: var(--text-secondary);
+    }
+
+    /* Responsive Mobile Layout */
+    @media (max-width: 768px) {
+        .resume-page-wrapper {
+            perspective: none;
+            flex-direction: column;
+            height: auto;
+            padding-top: 5rem;
         }
 
-        .resume-header h1 {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-        }
-
-        .resume-header h1 span {
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            font-weight: 500;
-        }
-
-        .resume-header p {
-            max-width: 800px;
-            margin: 0 auto;
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Timeline / Experience */
-        .resume-section {
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: 1.75rem;
-            color: var(--text-primary);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-        }
-
-        .experience-card {
-            background-color: var(--card-bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: transform var(--transition-medium), box-shadow var(--transition-medium);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .experience-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background-color: var(--accent-color);
-            opacity: 0;
-            transition: opacity var(--transition-fast);
-        }
-
-        .experience-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--accent-color);
-        }
-
-        .experience-card:hover::before {
-            opacity: 1;
-        }
-
-        .exp-header {
+        .book {
+            width: 95%;
+            height: auto;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 1rem;
+            flex-direction: column;
+            gap: 2rem;
         }
 
-        .role-title {
-            font-size: 1.25rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .company-name {
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-
-        .exp-date {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            background: rgba(128, 128, 128, 0.1);
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-        }
-
-        .exp-details {
-            list-style-type: none;
-        }
-
-        .exp-details li {
+        .page {
             position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.75rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .exp-details li::before {
-            content: "▹";
-            position: absolute;
-            left: 0;
-            color: var(--accent-color);
-        }
-
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .skill-category {
-            background-color: var(--card-bg-color);
+            width: 100%;
+            height: auto;
+            transform: none !important;
+            box-shadow: none;
             padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-soft);
-            transition: transform var(--transition-fast);
+            border-radius: 12px;
+            opacity: 1 !important;
+            display: block;
         }
 
-        .skill-category:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent-color);
+        .book-nav {
+            display: none;
         }
+    }
 
-        .skill-category h3 {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
+    /* Intro Page Styles */
+    .intro-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+    }
 
-        .skill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
+    .intro-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid var(--accent-color);
+        margin-bottom: 1.5rem;
+        padding: 3px;
+    }
 
-        .skill-item {
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--text-primary);
-            padding: 0.35rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            font-weight: 500;
-        }
-
-        .resume-actions {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
-        }
-    </style>
+    .intro-avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+</style>
 </head>
 
 <body>
@@ -221,142 +295,118 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="padding-top: 5rem;">
 
-        <header class="resume-header fade-in">
-            <h1 data-zh="專業背景" data-en="Professional Background">專業背景</h1>
-            <p data-zh="一位積極進取的軟體工程師，具備台北、台中及跨國工作經驗。<br>我已經從單純的程式實作，轉型為專注於設計具高擴展性與可維護性架構的工程師。"
-                data-en="A proactive software engineer with experience across Taipei, Taichung, and an international setting.<br>I transitioned from focusing purely on code implementation to designing scalable, maintainable architectures.">
-                一位積極進取的軟體工程師，具備台北、台中及跨國工作經驗。<br>
-                我已經從單純的程式實作，轉型為專注於設計具高擴展性與可維護性架構的工程師。
-            </p>
-        </header>
+        <div class="resume-page-wrapper">
+            <div class="book" id="resumeBook">
 
-        <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
-            <h2 class="section-title" data-zh="工作經歷" data-en="Experience">工作經歷</h2>
-
-            <div class="experience-card">
-                <div class="exp-header">
-                    <div>
-                        <div class="role-title" data-zh="後端全端工程師" data-en="Backend-focused Full-Stack Engineer">後端全端工程師
+                <!-- Page 1: Intro -->
+                <div class="page" id="p1">
+                    <div class="intro-content">
+                        <div class="intro-avatar">
+                            <img src="img/public/my.jpg" alt="Chih-Hsien Yu">
                         </div>
-                        <div class="company-name" data-zh="希格斯資訊科技有限公司"
-                            data-en="Higgs Information Technology Co., Ltd.">希格斯資訊科技有限公司</div>
+                        <div class="badge-tech">SYS_ENTRY // PROFILE</div>
+                        <h2 data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</h2>
+                        <p style="font-size: 0.9rem;" data-zh="資深軟體工程師" data-en="Senior Software Engineer">資深軟體工程師</p>
+                        <hr style="width: 50px; border-color: var(--accent-color); margin: 1.5rem auto;">
+                        <p style="font-size: 0.85rem; line-height: 1.6;"
+                            data-zh="專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。"
+                            data-en="Software Engineer specializing in scalable and maintainable architectures. Experienced in international projects, distributed systems, and cloud-native technologies.">
+                            專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。
+                        </p>
+                        <div
+                            style="margin-top: 2rem; color: var(--accent-color); font-size: 0.8rem; letter-spacing: 2px;">
+                            FLIP TO EXPLORE <i class="fa-solid fa-arrow-right"></i>
+                        </div>
                     </div>
-                    <div class="exp-date" data-zh="2023年3月 - 現在" data-en="March 2023 - Present">2023年3月 - 現在</div>
                 </div>
-                <ul class="exp-details">
-                    <li data-zh="專注於構建與演進具備可靠性、效能與可維護性的雲端原生產品系統。"
-                        data-en="Focused on building and evolving a scalable, cloud-native product system with an emphasis on reliability, performance, and maintainability.">
-                        專注於構建與演進具備可靠性、效能與可維護性的雲端原生產品系統。</li>
-                    <li data-zh="主導核心產品系統的開發與維護，並負責傳統單體架構 (Monolithic) 的重構與解耦，顯著提升開發效率與部署靈活性。"
-                        data-en="Led the development and maintenance of core product systems, refactoring legacy monolithic architectures to improve development efficiency and deployment flexibility.">
-                        主導核心產品系統的開發與維護，並負責傳統單體架構 (Monolithic) 的重構與解耦，顯著提升開發效率與部署靈活性。</li>
-                    <li data-zh="設計並實作非同步處理流程，並利用 Kafka 與 Microsoft Orleans 構建微服務溝通機制，實現服務水平擴充並降低系統風險。"
-                        data-en="Designed and implemented asynchronous processing and microservices communication using Kafka and Microsoft Orleans for scalability and risk reduction.">
-                        設計並實作非同步處理流程，並利用 Kafka 與 Microsoft Orleans 構建微服務溝進機制，實現服務水平擴充並降低系統風險。</li>
-                    <li data-zh="導入 AWS Secrets Manager 進行安全性配置管理，並建立基於 GitLab CI, Ansible 與 AWX 的 CI/CD 流水線，部署至 AWS EKS (Kubernetes) 環境。"
-                        data-en="Implemented secure configuration management via AWS Secrets Manager and built CI/CD pipelines for deployment to AWS EKS (Kubernetes) using GitLab CI and Ansible.">
-                        導入 AWS Secrets Manager 進行安全性配置管理，並建立基於 GitLab CI, Ansible 與 AWX 的 CI/CD 流水線，部署至 AWS EKS
-                        (Kubernetes) 環境。</li>
-                    <li data-zh="應用 HPA (Horizontal Pod Autoscaling) 動態優化資源利用率，並使用 ELK Stack 進行日誌分析與監控，快速診斷並解決生產環境問題。"
-                        data-en="Applied HPA for dynamic resource optimization and utilized ELK Stack for log analysis, monitoring, and rapid incident resolution.">
-                        應用 HPA (Horizontal Pod Autoscaling) 動態優化資源利用率，並使用 ELK Stack 進行日誌分析與監控，快速診斷並解決生產環境問題。</li>
-                    <li data-zh="在 Scrum 敏捷開發架構下，與跨部門團隊緊密協作，並積極參與技術討論與 Code Review 以提升工程標準。"
-                        data-en="Collaborated closely with cross-functional teams under Scrum methodology, actively participating in design discussions and code reviews.">
-                        在 Scrum 敏捷開發架構下，與跨部門團隊緊密協作，並積極參與技術討論與 Code Review 以提升工程標準。</li>
-                </ul>
+
+                <!-- Page 2: Experience 1 -->
+                <div class="page" id="p2">
+                    <h3 class="section-title" data-zh="工作經歷 I" data-en="Experience I">工作經歷 I</h3>
+                    <div class="role-title" data-zh="後端全端工程師" data-en="Backend-focused Full-Stack Engineer">後端全端工程師
+                    </div>
+                    <div class="company-name" data-zh="希格斯資訊科技有限公司" data-en="Higgs Info Tech">希格斯資訊科技有限公司</div>
+                    <span class="exp-date">2023.03 - PRESENT</span>
+                    <ul class="exp-details">
+                        <li data-zh="主導核心產品系統開發與維護，重構 Monolithic 架構為微服務。"
+                            data-en="Led core product systems development, refactoring monolithic to microservices.">
+                            主導核心產品系統開發與維護，重構 Monolithic 架構為微服務。</li>
+                        <li data-zh="設計實作 Kafka 與 Microsoft Orleans 分散式溝通機制。"
+                            data-en="Implemented Kafka and Microsoft Orleans for distributed communication.">設計實作 Kafka
+                            與 Microsoft Orleans 分散式溝通機制。</li>
+                        <li data-zh="建立 GitLab CI/CD 與 Ansible 流水線部署至 EKS 環境。"
+                            data-en="Built CI/CD pipelines with GitLab and Ansible for EKS deployment.">建立 GitLab CI/CD
+                            與 Ansible 流水線部署至 EKS 環境。</li>
+                        <li data-zh="應用 HPA 與 ELK Stack 進行監控與動態資源優化。"
+                            data-en="Applied HPA and ELK Stack for monitoring and resource optimization.">應用 HPA 與 ELK
+                            Stack 進行監控與動態資源優化。</li>
+                    </ul>
+                </div>
+
+                <!-- Page 3: Experience 2 -->
+                <div class="page" id="p3">
+                    <h3 class="section-title" data-zh="工作經歷 II" data-en="Experience II">工作經歷 II</h3>
+                    <div class="role-title" data-zh="軟體工程師 (多地駐點)" data-en="Software Engineer">軟體工程師 (多地駐點)</div>
+                    <div class="company-name" data-zh="台北, 台中, 跨國專案" data-en="Taipei, Taichung, International">台北, 台中,
+                        跨國專案</div>
+                    <span class="exp-date">FULL-TIME / INTERN</span>
+                    <ul class="exp-details">
+                        <li data-zh="從實習生晉升為全職開發者，管理完整專案生命週期。"
+                            data-en="Transitioned from intern to full-time developer, managing life cycles.">
+                            從實習生晉升為全職開發者，管理完整專案生命週期。</li>
+                        <li data-zh="使用 .NET/C# 開發後端系統並部署於 AWS/K8s 環境。"
+                            data-en="Developed backend systems via .NET/C# on AWS/K8s environments.">使用 .NET/C#
+                            開發後端系統並部署於 AWS/K8s 環境。</li>
+                        <li data-zh="整合 Kafka 即時串流資料架構。"
+                            data-en="Integrated real-time streaming architectures using Kafka.">整合 Kafka 即時串流資料架構。</li>
+                    </ul>
+                </div>
+
+                <!-- Page 4: Skills -->
+                <div class="page" id="p4">
+                    <h3 class="section-title" data-zh="核心能力" data-en="Core Skills">核心能力</h3>
+                    <div class="skills-mini-grid">
+                        <div class="skill-group">
+                            <h4 data-zh="後端開發" data-en="Backend">後端開發</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">.NET Core</span><span class="skill-tag">C#</span>
+                                <span class="skill-tag">Orleans</span><span class="skill-tag">DDD</span>
+                            </div>
+                        </div>
+                        <div class="skill-group">
+                            <h4 data-zh="基礎建設" data-en="Infrastructure">基礎建設</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">AWS</span><span class="skill-tag">Kubernetes</span>
+                                <span class="skill-tag">Docker</span><span class="skill-tag">GitLab CI</span>
+                            </div>
+                        </div>
+                        <div class="skill-group">
+                            <h4 data-zh="資料技術" data-en="Data">資料技術</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Kafka</span><span class="skill-tag">Redis</span>
+                                <span class="skill-tag">MongoDB</span><span class="skill-tag">SQL Server</span>
+                            </div>
+                        </div>
+                        <div class="skill-group">
+                            <h4 data-zh="前端技術" data-en="Frontend">前端技術</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Vue 3</span><span class="skill-tag">ES6+</span>
+                                <span class="skill-tag">Three.js</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="experience-card">
-                <div class="exp-header">
-                    <div>
-                        <div class="role-title" data-zh="軟體工程師 (多地駐點)" data-en="Software Engineer (Multiple Locations)">
-                            軟體工程師 (多地駐點)</div>
-                        <div class="company-name" data-zh="台北, 台中, 跨國專案"
-                            data-en="Taipei, Taichung, International Projects">台北, 台中, 跨國專案</div>
-                    </div>
-                    <div class="exp-date" data-zh="全職 / 實習" data-en="Full-Time & Internships">全職 / 實習</div>
-                </div>
-                <ul class="exp-details">
-                    <li data-zh="成功從實習生晉升為全職開發者，並獨立管理系統專案的完整生命週期。"
-                        data-en="Transitioned from an intern to a full-time developer managing full project lifecycles.">
-                        成功從實習生晉升為全職開發者，並獨立管理系統專案的完整生命週期。</li>
-                    <li data-zh="使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes (EKS) 環境。"
-                        data-en="Developed backend systems using .NET/C# and deployed on varied AWS and Kubernetes (EKS) environments.">
-                        使用 .NET/C# 開發後端系統，並部署於各種 AWS 與 Kubernetes (EKS) 環境。</li>
-                    <li data-zh="利用 Kafka 等分散式技術，整合即時串流資料架構。"
-                        data-en="Integrated real-time streaming architectures using distributed technologies like Kafka.">
-                        利用 Kafka 等分散式技術，整合即時串流資料架構。</li>
-                </ul>
+            <div class="book-nav">
+                <button class="page-nav-btn" id="prevBtn" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="page-indicator" id="pageIndicator">PAGE 1 / 4</div>
+                <button class="page-nav-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-        </section>
-
-        <section class="resume-section animate-on-scroll" style="opacity: 0; transform: translateY(20px);">
-            <h2 class="section-title" data-zh="核心能力" data-en="Core Competencies">核心能力</h2>
-            <div id="tech-cloud-container"
-                style="width: 100%; height: 350px; margin-bottom: 2rem; background: rgba(13, 17, 23, 0.4); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.2); overflow: hidden; position: relative;">
-                <div
-                    style="position: absolute; top: 15px; left: 15px; font-size: 0.65rem; color: var(--accent-color); opacity: 0.6; pointer-events: none; font-family: 'Courier New', monospace; letter-spacing: 1px;">
-                    <i class="fa-solid fa-microchip"></i> SYSTEM_TECH_VISUALIZER // V2.0 // DRAG_TO_ROTATE
-                </div>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3 data-zh="後端工程" data-en="Backend Engineering">後端工程</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">ASP.NET Core</span>
-                        <span class="skill-item">.NET Framework</span>
-                        <span class="skill-item">C#</span>
-                        <span class="skill-item">Microservices</span>
-                        <span class="skill-item">Domain-Driven Design (DDD)</span>
-                        <span class="skill-item">Distributed Systems</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3 data-zh="雲端與維運" data-en="Cloud & DevOps">雲端與維運</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">AWS (Amazon Web Services)</span>
-                        <span class="skill-item">Kubernetes (K8s)</span>
-                        <span class="skill-item">Docker</span>
-                        <span class="skill-item">Nginx</span>
-                        <span class="skill-item">GitLab CI/CD</span>
-                        <span class="skill-item">AWX Project / Ansible</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3 data-zh="資料與訊息" data-en="Data & Messaging">資料與訊息</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">Apache Kafka</span>
-                        <span class="skill-item">MongoDB</span>
-                        <span class="skill-item">Redis</span>
-                        <span class="skill-item">Microsoft SQL Server</span>
-                        <span class="skill-item">IIS</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3 data-zh="前端開發" data-en="Frontend Development">前端開發</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">Vue.js / Vue 3</span>
-                        <span class="skill-item">JavaScript (ES6+)</span>
-                        <span class="skill-item">jQuery</span>
-                        <span class="skill-item">HTML5 / CSS3</span>
-                        <span class="skill-item">Web Design</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3 data-zh="專業實務" data-en="Professional Practices">專業實務</h3>
-                    <div class="skill-list">
-                        <span class="skill-item">Scrum / Agile</span>
-                        <span class="skill-item">Software Development</span>
-                        <span class="skill-item">API Design</span>
-                        <span class="skill-item">System Architecture</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Removed PDF download link per user request -->
+        </div>
 
     </div>
 
@@ -364,39 +414,65 @@
         <div class="footer-tech-stats">
             <span><i class="fa-solid fa-gauge-high"></i> Performance: 100/100</span>
             <span class="separator">|</span>
-            <span><i class="fa-solid fa-code"></i> Built with .NET & Three.js</span>
-            <span style="opacity: 0.2; font-size: 0.65rem; margin-left: 1rem;">Auth: G****</span>
+            <span><i class="fa-solid fa-book-open"></i> Interactive Reader v1.0</span>
         </div>
-        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights
-            reserved.
+        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
         </p>
     </footer>
 
-    <div class="terminal-widget">
-        <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
-            <i class="fa-solid fa-terminal"></i>
-        </button>
-        <div class="terminal-window" id="terminalWindow">
-            <div class="terminal-header">
-                <div class="terminal-title">GA-RY_OS v1.0.4</div>
-                <button class="terminal-action-btn" onclick="toggleTerminal()"><i
-                        class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="terminal-body" id="terminalBody">
-                <p class="terminal-msg system">--- GA-RY TERMINAL v1.0 ---</p>
-                <p class="terminal-msg system">System: Connection established. Type 'help' for commands.</p>
-            </div>
-            <form class="terminal-footer" id="terminalForm">
-                <span class="terminal-prompt">></span>
-                <input type="text" class="terminal-input" id="terminalInput" placeholder="..." autocomplete="off">
-                <button type="submit" class="terminal-action-btn"><i class="fa-solid fa-paper-plane"></i></button>
-            </form>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="js/main.js?v=9"></script>
-    <script src="js/terminal.js"></script>
+    <script>
+        // Book Navigation Controller
+        const pages = document.querySelectorAll('.page');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const indicator = document.getElementById('pageIndicator');
+        let currentPage = 1;
+        const totalPages = pages.length;
+
+        function updateBook() {
+            pages.forEach((page, index) => {
+                const pageNum = index + 1;
+                if (pageNum < currentPage) {
+                    page.classList.add('flipped');
+                    page.classList.remove('active');
+                } else if (pageNum === currentPage) {
+                    page.classList.remove('flipped');
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('flipped');
+                    page.classList.remove('active');
+                }
+            });
+
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            indicator.innerText = `PAGE ${currentPage} / ${totalPages}`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateBook();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateBook();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextBtn.click();
+            if (e.key === 'ArrowLeft') prevBtn.click();
+        });
+
+        // Initialize
+        updateBook();
+    </script>
 </body>
 
 </html>
