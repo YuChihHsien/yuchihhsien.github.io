@@ -154,10 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="ascii-art">
    _____  _____  _____ __     __
   / ____|/ ____||  __ \\\\ \\   / /
- | |  __| (___  | |__) |\\ \\_/ / 
- | | |_ |\\___ \\ |  _  /  \\   /  
- | |__| |____) || | \\ \\   | |   
-  \\_____|_____/ |_|  \\_\\  |_|   
+ | |  __| (___  | |__) |\\\\ \\_/ / 
+ | | |_ |\\\\___ \\\\ |  _  /  \\\\   /  
+ | |__| |____) || | \\\\ \\\\   | |   
+  \\\\_____|_____/ |_|  \\\\_\\\\  |_|   
             </div>
             <div id="admin-logs"></div>
         </div>
@@ -199,7 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (i < logs.length) {
                 const p = document.createElement('p');
                 p.textContent = logs[i];
+                p.style.margin = "2px 0";
                 logsContainer.appendChild(p);
+                overlay.scrollTop = overlay.scrollHeight; // Auto-scroll
                 i++;
                 setTimeout(showNextLog, 150);
             }
@@ -305,8 +307,8 @@ function initTechCloud(container) {
     function animate() {
         requestAnimationFrame(animate);
         if (!isMouseDown) {
-            group.rotation.y += 0.005;
-            group.rotation.x += 0.002;
+            group.rotation.y += 0.003; // Slower rotation
+            group.rotation.x += 0.001;
         }
         renderer.render(scene, camera);
     }
