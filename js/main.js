@@ -233,21 +233,24 @@ function initTechCloud(container) {
     // Categories for colors and connections
     const techData = [
         { label: "AWS", cat: "cloud", color: "#FF9900" },
-        { label: ".NET", cat: "back", color: "#512bd4" },
+        { label: "ASP.NET Core", cat: "back", color: "#512bd4" },
         { label: "C#", cat: "back", color: "#239120" },
         { label: "K8s", cat: "cloud", color: "#326ce5" },
         { label: "Docker", cat: "ops", color: "#2496ed" },
-        { label: "Kafka", cat: "dist", color: "#000000" },
-        { label: "Orleans", cat: "dist", color: "#f39c12" },
-        { label: "EKS", cat: "cloud", color: "#FF9900" },
-        { label: "Redis", cat: "data", color: "#d82c20" },
-        { label: "SQL", cat: "data", color: "#336791" },
-        { label: "DevOps", cat: "ops", color: "#00c853" },
-        { label: "Scrum", cat: "proc", color: "#607d8b" },
-        { label: "CI/CD", cat: "ops", color: "#00c853" },
-        { label: "ELK", cat: "ops", color: "#005571" },
+        { label: "Apache Kafka", cat: "dist", color: "#5d4037" },
         { label: "Microservices", cat: "back", color: "#9c27b0" },
-        { label: "System Design", cat: "arch", color: "#ffeb3b" }
+        { label: "MongoDB", cat: "data", color: "#47A248" },
+        { label: "Redis", cat: "data", color: "#d82c20" },
+        { label: "Vue.js", cat: "front", color: "#4FC08D" },
+        { label: "DDD", cat: "arch", color: "#f39c12" },
+        { label: "GitLab", cat: "ops", color: "#FCA121" },
+        { label: "AWX", cat: "ops", color: "#00c853" },
+        { label: "SQL Server", cat: "data", color: "#CC2927" },
+        { label: "Nginx", cat: "ops", color: "#009639" },
+        { label: "Scrum", cat: "proc", color: "#607d8b" },
+        { label: "jQuery", cat: "front", color: "#0769AD" },
+        { label: "IIS", cat: "ops", color: "#3b82f6" },
+        { label: "Architecture", cat: "arch", color: "#ffeb3b" }
     ];
 
     const group = new THREE.Group();
