@@ -230,7 +230,96 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('bar-mem').style.width = mem + '%';
         document.getElementById('mon-net').textContent = net + 'kb/s';
     }, 2000);
+
+    // ---- Professional Gift: 3D Tech Cloud ----
+    const cloudContainer = document.getElementById('tech-cloud-container');
+    if (cloudContainer) {
+        initTechCloud(cloudContainer);
+    }
 });
+
+function initTechCloud(container) {
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    camera.position.z = 15;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    const skills = [
+        "AWS", ".NET", "C#", "K8s", "Docker", "Kafka",
+        "Orleans", "EKS", "Redis", "SQL", "DevOps", "Scrum",
+        "CI/CD", "ELK", "Microservices", "System Design"
+    ];
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const labels = [];
+    skills.forEach((skill, i) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 128;
+        canvas.height = 64;
+
+        ctx.fillStyle = '#3b82f6';
+        ctx.font = 'Bold 24px Courier New';
+        ctx.textAlign = 'center';
+        ctx.fillText(skill, 64, 40);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+        const sprite = new THREE.Sprite(material);
+
+        const phi = Math.acos(-1 + (2 * i) / skills.length);
+        const theta = Math.sqrt(skills.length * Math.PI) * phi;
+        const radius = 8;
+
+        sprite.position.set(
+            radius * Math.cos(theta) * Math.sin(phi),
+            radius * Math.sin(theta) * Math.sin(phi),
+            radius * Math.cos(phi)
+        );
+        sprite.scale.set(4, 2, 1);
+        group.add(sprite);
+        labels.push(sprite);
+    });
+
+    let isMouseDown = false;
+    let mouseX = 0, mouseY = 0;
+
+    container.addEventListener('mousedown', () => isMouseDown = true);
+    window.addEventListener('mouseup', () => isMouseDown = false);
+    container.addEventListener('mousemove', (e) => {
+        if (isMouseDown) {
+            group.rotation.y += e.movementX * 0.01;
+            group.rotation.x += e.movementY * 0.01;
+        }
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if (!isMouseDown) {
+            group.rotation.y += 0.005;
+            group.rotation.x += 0.002;
+        }
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+    });
+}
 
 // Theme Management
 function toggleTheme() {
