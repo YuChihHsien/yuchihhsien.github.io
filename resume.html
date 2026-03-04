@@ -1,270 +1,301 @@
-<style>
-    :root {
-        --book-width: 450px;
-        --book-height: 600px;
-        --page-bg: var(--card-bg-color);
-    }
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 
-    .resume-page-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: calc(100vh - 160px);
-        perspective: 2000px;
-        padding: 2rem 0;
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>履歷 Resume | 余致賢 - Chih-Hsien Yu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=21">
 
-    .book {
-        position: relative;
-        width: var(--book-width);
-        height: var(--book-height);
-        transition: transform 0.5s;
-        transform-style: preserve-3d;
-    }
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEYHDVGJ8C"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-WEYHDVGJ8C');
+    </script>
+    <style>
+        :root {
+            --book-width: 450px;
+            --book-height: 600px;
+            --page-bg: var(--card-bg-color);
+        }
 
-    .page {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: var(--page-bg);
-        border: 1px solid var(--border-color);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-        transform-origin: left;
-        transform-style: preserve-3d;
-        z-index: 1;
-        padding: 2rem;
-        overflow-y: auto;
-        border-radius: 0 10px 10px 0;
-        backface-visibility: hidden;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Customize scrollbar for pages */
-    .page::-webkit-scrollbar {
-        width: 5px;
-    }
-
-    .page::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    .page::-webkit-scrollbar-thumb {
-        background: var(--accent-color);
-        border-radius: 10px;
-    }
-
-    .page.flipped {
-        transform: rotateY(-180deg);
-        z-index: 2;
-    }
-
-    .page.active {
-        z-index: 3;
-    }
-
-    .page-content {
-        height: 100%;
-    }
-
-    .page-front,
-    .page-back {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        padding: 2.5rem;
-        backface-visibility: hidden;
-        background: var(--page-bg);
-    }
-
-    .page-back {
-        transform: rotateY(180deg);
-    }
-
-    /* Navigation Buttons */
-    .book-nav {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        margin-top: 2rem;
-        align-items: center;
-    }
-
-    .page-nav-btn {
-        background: rgba(59, 130, 246, 0.1);
-        border: 1px solid var(--accent-color);
-        color: var(--accent-color);
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 1.2rem;
-    }
-
-    .page-nav-btn:hover:not(:disabled) {
-        background: var(--accent-color);
-        color: white;
-        box-shadow: 0 0 15px var(--accent-color);
-    }
-
-    .page-nav-btn:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-        border-color: var(--border-color);
-        color: var(--text-secondary);
-    }
-
-    .page-indicator {
-        font-family: 'Space Grotesk', monospace;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-        letter-spacing: 2px;
-    }
-
-    /* Resume Section Styles */
-    .section-title {
-        font-size: 1.5rem;
-        color: var(--accent-color);
-        margin-bottom: 1.5rem;
-        display: block;
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 0.5rem;
-    }
-
-    .role-title {
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 0.25rem;
-    }
-
-    .company-name {
-        color: var(--accent-color);
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .exp-date {
-        font-size: 0.8rem;
-        opacity: 0.7;
-        margin-bottom: 1rem;
-        display: block;
-    }
-
-    .exp-details {
-        list-style: none;
-        font-size: 0.9rem;
-    }
-
-    .exp-details li {
-        position: relative;
-        padding-left: 1.2rem;
-        margin-bottom: 0.6rem;
-        color: var(--text-secondary);
-    }
-
-    .exp-details li::before {
-        content: "▹";
-        position: absolute;
-        left: 0;
-        color: var(--accent-color);
-    }
-
-    .skills-mini-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .skill-group h4 {
-        font-size: 1rem;
-        margin-bottom: 0.8rem;
-        color: var(--text-primary);
-    }
-
-    .skill-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .skill-tag {
-        font-size: 0.75rem;
-        padding: 4px 10px;
-        background: rgba(59, 130, 246, 0.05);
-        border: 1px solid rgba(59, 130, 246, 0.2);
-        border-radius: 4px;
-        color: var(--text-secondary);
-    }
-
-    /* Responsive Mobile Layout */
-    @media (max-width: 768px) {
         .resume-page-wrapper {
-            perspective: none;
-            flex-direction: column;
-            height: auto;
-            padding-top: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 160px);
+            perspective: 2000px;
+            padding: 2rem 0;
+            margin-top: 2rem;
         }
 
         .book {
-            width: 95%;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            position: relative;
+            width: var(--book-width);
+            height: var(--book-height);
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
         }
 
         .page {
-            position: relative;
+            position: absolute;
             width: 100%;
-            height: auto;
-            transform: none !important;
-            box-shadow: none;
-            padding: 1.5rem;
-            border-radius: 12px;
-            opacity: 1 !important;
-            display: block;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: var(--page-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform-origin: left;
+            transform-style: preserve-3d;
+            z-index: 1;
+            padding: 2.5rem;
+            overflow-y: auto;
+            border-radius: 0 10px 10px 0;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* Customize scrollbar for pages */
+        .page::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .page::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .page::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 10px;
+        }
+
+        .page.flipped {
+            transform: rotateY(-180deg);
+            z-index: 2;
+        }
+
+        .page.active {
+            z-index: 3;
+        }
+
+        /* Navigation Buttons */
         .book-nav {
-            display: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            align-items: center;
         }
-    }
 
-    /* Intro Page Styles */
-    .intro-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        text-align: center;
-    }
+        .page-nav-btn {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
 
-    .intro-avatar {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: 3px solid var(--accent-color);
-        margin-bottom: 1.5rem;
-        padding: 3px;
-    }
+        .page-nav-btn:hover:not(:disabled) {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: 0 0 15px var(--accent-color);
+        }
 
-    .intro-avatar img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-</style>
+        .page-nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .page-indicator {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        /* Resume Section Styles */
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+            display: block;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .role-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .company-name {
+            color: var(--accent-color);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .exp-date {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            margin-bottom: 1.25rem;
+            display: block;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        .exp-details {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .exp-details li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .exp-details li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .skills-mini-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.75rem;
+        }
+
+        .skill-group h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.9rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-group h4::before {
+            content: "";
+            width: 4px;
+            height: 12px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .skill-tag {
+            font-size: 0.75rem;
+            padding: 5px 12px;
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Responsive Mobile Layout */
+        @media (max-width: 768px) {
+            .resume-page-wrapper {
+                perspective: none;
+                display: block;
+                height: auto;
+                padding-top: 1rem;
+                margin-top: 0;
+            }
+
+            .book {
+                width: 100%;
+                height: auto;
+                transform: none !important;
+            }
+
+            .page {
+                position: relative;
+                width: 100%;
+                height: auto;
+                transform: none !important;
+                box-shadow: none;
+                padding: 2rem 1.5rem;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+                border-radius: 0;
+                opacity: 1 !important;
+                display: block;
+            }
+
+            .book-nav {
+                display: none;
+            }
+        }
+
+        /* Intro Page Styles */
+        .intro-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .intro-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-color);
+            margin-bottom: 2rem;
+            padding: 5px;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .intro-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -308,16 +339,17 @@
                         </div>
                         <div class="badge-tech">SYS_ENTRY // PROFILE</div>
                         <h2 data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</h2>
-                        <p style="font-size: 0.9rem;" data-zh="資深軟體工程師" data-en="Senior Software Engineer">資深軟體工程師</p>
-                        <hr style="width: 50px; border-color: var(--accent-color); margin: 1.5rem auto;">
-                        <p style="font-size: 0.85rem; line-height: 1.6;"
+                        <p style="font-size: 1rem; color: var(--accent-color); font-weight: 500;" data-zh="資深軟體工程師"
+                            data-en="Senior Software Engineer">資深軟體工程師</p>
+                        <hr style="width: 60px; border-color: var(--accent-color); margin: 2rem auto; opacity: 0.3;">
+                        <p style="font-size: 0.95rem; line-height: 1.8; color: var(--text-secondary);"
                             data-zh="專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。"
                             data-en="Software Engineer specializing in scalable and maintainable architectures. Experienced in international projects, distributed systems, and cloud-native technologies.">
                             專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。
                         </p>
                         <div
-                            style="margin-top: 2rem; color: var(--accent-color); font-size: 0.8rem; letter-spacing: 2px;">
-                            FLIP TO EXPLORE <i class="fa-solid fa-arrow-right"></i>
+                            style="margin-top: 3rem; color: var(--accent-color); font-size: 0.8rem; letter-spacing: 3px; font-weight: 600;">
+                            FLIP TO EXPLORE <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i>
                         </div>
                     </div>
                 </div>
@@ -328,7 +360,7 @@
                     <div class="role-title" data-zh="後端全端工程師" data-en="Backend-focused Full-Stack Engineer">後端全端工程師
                     </div>
                     <div class="company-name" data-zh="希格斯資訊科技有限公司" data-en="Higgs Info Tech">希格斯資訊科技有限公司</div>
-                    <span class="exp-date">2023.03 - PRESENT</span>
+                    <span class="exp-date">MAR 2023 - PRESENT</span>
                     <ul class="exp-details">
                         <li data-zh="主導核心產品系統開發與維護，重構 Monolithic 架構為微服務。"
                             data-en="Led core product systems development, refactoring monolithic to microservices.">
@@ -414,13 +446,13 @@
         <div class="footer-tech-stats">
             <span><i class="fa-solid fa-gauge-high"></i> Performance: 100/100</span>
             <span class="separator">|</span>
-            <span><i class="fa-solid fa-book-open"></i> Interactive Reader v1.0</span>
+            <span><i class="fa-solid fa-book-open"></i> Interactive Reader v1.0.1</span>
         </div>
         <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
         </p>
     </footer>
 
-    <script src="js/main.js?v=9"></script>
+    <script src="js/main.js?v=13"></script>
     <script>
         // Book Navigation Controller
         const pages = document.querySelectorAll('.page');
