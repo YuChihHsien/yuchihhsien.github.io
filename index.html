@@ -351,119 +351,139 @@
         <div class="hero-image slide-up delay-1">
             <canvas id="particle-canvas" class="particle-bg"></canvas>
             <div class="image-wrapper">
-                <img src="./img/public/my.jpg" alt="Profile Picture">
+                </main>
+
+                <section class="collaboration-section animate-on-scroll">
+                    <div class="collaboration-header">
+                        <h2 data-zh="聯繫與協作" data-en="Connect & Collaborate">聯繫與協作</h2>
+                        <p data-zh="期待與您交流技術、探討合作，或單純打個招呼。"
+                            data-en="Open for technical discussions, collaborations, or just a simple hello.">
+                            期待與您交流技術、探討合作，或單純打個招呼。
+                        </p>
+                    </div>
+
+                    <div class="collaboration-grid">
+                        <div class="contact-card">
+                            <form action="https://api.web3forms.com/submit" method="POST" class="premium-form">
+                                <input type="hidden" name="access_key" value="0bc0e6ba-3499-44fc-b131-f66f80bdc120">
+                                <div class="form-row">
+                                    <input type="text" name="name" placeholder="Name" required>
+                                    <input type="email" name="email" placeholder="Email" required>
+                                </div>
+                                <textarea name="message" placeholder="Your Message..." rows="4" required></textarea>
+                                <div class="h-captcha" data-captcha="true"></div>
+                                <button type="submit" class="btn btn-primary btn-premium">Send Message</button>
+                            </form>
+                        </div>
+
+                        <div class="social-compact-grid">
+                            <a href="https://www.linkedin.com/in/garyyu0511/" target="_blank" class="social-link-item">
+                                <i class="fa-brands fa-linkedin"></i>
+                                <span>LinkedIn</span>
+                            </a>
+                            <a href="https://line.me/R/ti/p/~fishdog" target="_blank" class="social-link-item">
+                                <i class="fa-brands fa-line"></i>
+                                <span>Line</span>
+                            </a>
+                            <a href="https://www.instagram.com/bebe_done/" target="_blank" class="social-link-item">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/garyyu0511/" target="_blank"
+                                class="social-btn linkedin" aria-label="LinkedIn">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                            <a href="mailto:q84511@gmail.com" class="social-btn email" aria-label="Email">
+                                <i class="fa-solid fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="banner-form form-wrapper">
+                        <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+                            <input type="hidden" name="access_key" value="0bc0e6ba-3499-44fc-b131-f66f80bdc120">
+                            <input type="hidden" name="subject"
+                                value="New Contact Form Submission from yuchihhsien.github.io">
+
+                            <div class="form-group">
+                                <label for="name" data-zh="您的稱呼 Name" data-en="Your Name">您的稱呼 Name</label>
+                                <input type="text" id="name" name="name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" data-zh="電子信箱 Email" data-en="Your Email">電子信箱 Email</label>
+                                <input type="email" id="email" name="email" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="message" data-zh="留言內容 Message" data-en="Your Message">留言內容 Message</label>
+                                <textarea id="message" name="message" rows="4" required
+                                    placeholder="Hello Gary, I would like to..."></textarea>
+                            </div>
+
+                            <!-- hCaptcha Spam Protection -->
+                            <div class="h-captcha" data-captcha="true"></div>
+
+                            <button type="submit" class="btn btn-primary form-submit-btn">
+                                <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i>
+                                <span data-zh="發送訊息 Send Message" data-en="Send Message">發送訊息 Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+                </section>
             </div>
-        </div>
-        </main>
 
-        <section class="connect-banner animate-on-scroll">
-            <div class="banner-content">
-                <h2 class="form-title" data-zh="聯繫我 Let's Connect" data-en="Let's Connect">聯繫我 Let's Connect</h2>
-                <p class="form-subtitle" data-zh="歡迎隨時透過社群或直接留言與我聯繫，不管是技術交流還是合作邀約，我都期待您的訊息！"
-                    data-en="Feel free to reach out via social media or drop a message below. Open to networking, tech discussions, or collaboration opportunities!">
-                    歡迎隨時透過社群或直接留言與我聯繫，不管是技術交流還是合作邀約，我都期待您的訊息！
+            <footer>
+                <div class="footer-tech-stats">
+                    <span><i class="fa-solid fa-gauge-high"></i> Performance: 100/100</span>
+                    <span class="separator">|</span>
+                    <span><i class="fa-solid fa-code"></i> Built with .NET & Three.js</span>
+                    <span style="opacity: 0.2; font-size: 0.65rem; margin-left: 1rem;">Auth: G****</span>
+                </div>
+                <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights
+                    reserved.
                 </p>
+            </footer>
 
-                <div class="social-links-compact">
-                    <a href="https://line.me/R/ti/p/~fishdog" target="_blank" class="social-btn line" aria-label="Line">
-                        <i class="fa-brands fa-line"></i>
-                    </a>
-                    <a href="https://www.instagram.com/bebe_done/" target="_blank" class="social-btn ig"
-                        aria-label="Instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/garyyu0511/" target="_blank" class="social-btn linkedin"
-                        aria-label="LinkedIn">
-                        <i class="fa-brands fa-linkedin-in"></i>
-                    </a>
-                    <a href="mailto:q84511@gmail.com" class="social-btn email" aria-label="Email">
-                        <i class="fa-solid fa-envelope"></i>
-                    </a>
+            <div class="terminal-widget">
+                <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
+                    <i class="fa-solid fa-terminal"></i>
+                </button>
+                <div class="terminal-window" id="terminalWindow">
+                    <div class="terminal-header">
+                        <div class="terminal-title">GA-RY_OS v1.0.4</div>
+                        <button class="terminal-action-btn" onclick="toggleTerminal()"><i
+                                class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="terminal-body" id="terminalBody">
+                        <p class="terminal-msg system">--- GA-RY TERMINAL v1.0 ---</p>
+                        <p class="terminal-msg system">System: Connection established. Type 'help' for commands.</p>
+                    </div>
+                    <form class="terminal-footer" id="terminalForm">
+                        <span class="terminal-prompt">></span>
+                        <input type="text" class="terminal-input" id="terminalInput" placeholder="..."
+                            autocomplete="off">
+                        <button type="submit" class="terminal-action-btn"><i
+                                class="fa-solid fa-paper-plane"></i></button>
+                    </form>
                 </div>
             </div>
 
-            <div class="banner-form form-wrapper">
-                <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
-                    <input type="hidden" name="access_key" value="0bc0e6ba-3499-44fc-b131-f66f80bdc120">
-                    <input type="hidden" name="subject" value="New Contact Form Submission from yuchihhsien.github.io">
+            <!-- Web3Forms Script for hCaptcha -->
+            <script src="https://web3forms.com/client/script.js" async defer></script>
+            <script src="js/main.js?v=8"></script>
+            <script src="js/terminal.js"></script>
 
-                    <div class="form-group">
-                        <label for="name" data-zh="您的稱呼 Name" data-en="Your Name">您的稱呼 Name</label>
-                        <input type="text" id="name" name="name" required placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label for="email" data-zh="電子信箱 Email" data-en="Your Email">電子信箱 Email</label>
-                        <input type="email" id="email" name="email" required placeholder="john@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="message" data-zh="留言內容 Message" data-en="Your Message">留言內容 Message</label>
-                        <textarea id="message" name="message" rows="4" required
-                            placeholder="Hello Gary, I would like to..."></textarea>
-                    </div>
-
-                    <!-- hCaptcha Spam Protection -->
-                    <div class="h-captcha" data-captcha="true"></div>
-
-                    <button type="submit" class="btn btn-primary form-submit-btn">
-                        <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i>
-                        <span data-zh="發送訊息 Send Message" data-en="Send Message">發送訊息 Send Message</span>
-                    </button>
-                </form>
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <div class="footer-tech-stats">
-            <span><i class="fa-solid fa-gauge-high"></i> Performance: 100/100</span>
-            <span class="separator">|</span>
-            <span><i class="fa-solid fa-code"></i> Built with .NET & Three.js</span>
-            <span style="opacity: 0.2; font-size: 0.65rem; margin-left: 1rem;">Auth: G****</span>
-        </div>
-        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
-        </p>
-    </footer>
-
-    <div class="terminal-widget">
-        <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
-            <i class="fa-solid fa-terminal"></i>
-        </button>
-        <div class="terminal-window" id="terminalWindow">
-            <div class="terminal-header">
-                <div class="terminal-title">GA-RY_OS v1.0.4</div>
-                <button class="terminal-action-btn" onclick="toggleTerminal()"><i
-                        class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="terminal-body" id="terminalBody">
-                <p class="terminal-msg system">--- GA-RY TERMINAL v1.0 ---</p>
-                <p class="terminal-msg system">System: Connection established. Type 'help' for commands.</p>
-            </div>
-            <form class="terminal-footer" id="terminalForm">
-                <span class="terminal-prompt">></span>
-                <input type="text" class="terminal-input" id="terminalInput" placeholder="..." autocomplete="off">
-                <button type="submit" class="terminal-action-btn"><i class="fa-solid fa-paper-plane"></i></button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Web3Forms Script for hCaptcha -->
-    <script src="https://web3forms.com/client/script.js" async defer></script>
-    <script src="js/main.js?v=8"></script>
-    <script src="js/terminal.js"></script>
-
-    <!-- Premium Texture Overlay -->
-    <svg style="display:none">
-        <filter id="grainy">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-            <feComponentTransfer>
-                <feFuncR type="linear" slope="0.35" />
-                <feFuncG type="linear" slope="0.35" />
-                <feFuncB type="linear" slope="0.35" />
-            </feComponentTransfer>
-        </filter>
-    </svg>
-    <div class="grain-overlay"></div>
+            <!-- Premium Texture Overlay -->
+            <svg style="display:none">
+                <filter id="grainy">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+                    <feColorMatrix type="saturate" values="0" />
+                    <feComponentTransfer>
+                        <feFuncR type="linear" slope="0.35" />
+                        <feFuncG type="linear" slope="0.35" />
+                        <feFuncB type="linear" slope="0.35" />
+                    </feComponentTransfer>
+                </filter>
+            </svg>
+            <div class="grain-overlay"></div>
 </body>
 
 </html>
