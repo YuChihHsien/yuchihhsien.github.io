@@ -59,11 +59,12 @@
 }
 
 .standout-text {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    /* Reduced from 1.4rem */
     line-height: 1.6;
-    margin-top: 2rem;
-    color: var(--text-primary);
-    max-width: 700px;
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    max-width: 650px;
     width: 90%;
     /* Responsive width */
     margin-left: auto;
@@ -102,17 +103,25 @@
 .tech-marquee span {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    opacity: 0.3;
+    font-weight: 800;
+    /* Bolder */
+    color: var(--text-primary);
+    opacity: 0.5;
+    /* More visible */
     margin: 0 4rem;
     white-space: nowrap;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 6px 16px;
+    border-radius: 50px;
+    background: rgba(59, 130, 246, 0.05);
+    /* Subtle pill background */
 }
 
 .tech-marquee span:hover {
     opacity: 1;
     color: var(--accent-color);
+    background: rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
 }
 
 @keyframes marquee {
@@ -235,7 +244,8 @@ h1 {
 }
 
 h2 {
-    font-size: 2.25rem;
+    font-size: 1.85rem;
+    /* Reduced from 2.25rem */
     font-weight: 600;
     line-height: 1.3;
 }
