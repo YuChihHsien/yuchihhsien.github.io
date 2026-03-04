@@ -45,13 +45,12 @@
     cursor: pointer;
 }
 
-/* Mini State (Retreated) - Fixed transition */
+/* Mini State (Retreated) - Using !important for transition duration and properties */
 .lab-overlay.mini {
-    top: auto;
-    right: auto;
-    bottom: 2rem;
-    left: 2rem;
-    transform: translate(0, 0) scale(0.65);
+    top: auto !important;
+    left: 2rem !important;
+    bottom: 2rem !important;
+    transform: translate(0, 0) scale(0.65) !important;
     transform-origin: bottom left;
     padding: 1rem 1.5rem;
     max-width: 250px;
@@ -62,7 +61,7 @@
 
 .lab-overlay.mini:hover {
     opacity: 1;
-    transform: translate(0, 0) scale(0.7);
+    transform: translate(0, 0) scale(0.7) !important;
 }
 
 .lab-overlay h2 {

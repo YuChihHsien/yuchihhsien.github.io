@@ -357,10 +357,10 @@ function initOverlayRetreat() {
                 if (isCentered) {
                     // Force Reset to Center
                     overlay.classList.remove('mini');
-                    overlay.style.top = '50%';
-                    overlay.style.left = '50%';
-                    overlay.style.bottom = 'auto';
-                    overlay.style.transform = 'translate(-50%, -50%) scale(1)';
+                    overlay.style.top = ''; // Clear JS overrides to let CSS take over
+                    overlay.style.left = '';
+                    overlay.style.bottom = '';
+                    overlay.style.transform = '';
 
                     if (timers.has(section)) clearTimeout(timers.get(section));
 
@@ -368,22 +368,20 @@ function initOverlayRetreat() {
                         const currentRect = section.getBoundingClientRect();
                         const center = window.innerHeight / 2;
                         if (currentRect.top < center && currentRect.bottom > center) {
-                            // Force Retreat to Bottom-Left
+                            // Let the .mini class handle it, but can force if needed
                             overlay.classList.add('mini');
+                            // Ensure any residual inline styles from center don't break it
                             overlay.style.top = 'auto';
-                            overlay.style.bottom = '2rem';
-                            overlay.style.left = '2rem';
-                            overlay.style.transform = 'translate(0, 0) scale(0.65)';
                         }
                     }, 3000);
                     timers.set(section, timer);
                 }
             } else {
                 overlay.classList.remove('mini');
-                overlay.style.top = '50%';
-                overlay.style.left = '50%';
-                overlay.style.bottom = 'auto';
-                overlay.style.transform = 'translate(-50%, -50%) scale(1)';
+                overlay.style.top = '';
+                overlay.style.left = '';
+                overlay.style.bottom = '';
+                overlay.style.transform = '';
 
                 if (timers.has(section)) {
                     clearTimeout(timers.get(section));
