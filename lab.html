@@ -14,52 +14,89 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             background-color: #000;
+            color: #fff;
+            scroll-behavior: smooth;
         }
 
-        canvas {
-            display: block;
-            width: 100vw;
+        /* Section Container */
+        .lab-section {
+            position: relative;
+            width: 100%;
             height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .play-overlay {
+        canvas,
+        .morph-container {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .lab-overlay {
+            position: relative;
+            z-index: 10;
             text-align: center;
             pointer-events: none;
-            z-index: 10;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .play-overlay h1 {
-            font-size: 4rem;
+        .lab-overlay h2 {
+            font-size: 3rem;
             font-weight: 800;
-            color: #fff;
             text-transform: uppercase;
-            letter-spacing: 10px;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            opacity: 0.8;
+            letter-spacing: 5px;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
         }
 
-        .play-overlay p {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 2px;
+        .lab-overlay p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 500px;
         }
 
-        .hint {
+        .scroll-hint {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.9rem;
-            z-index: 10;
-            pointer-events: none;
+            z-index: 20;
+            color: rgba(255, 255, 255, 0.3);
+            text-align: center;
+            font-size: 0.8rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
         }
     </style>
 </head>
@@ -94,16 +131,38 @@
         </div>
     </nav>
 
-    <div class="play-overlay">
-        <h1 data-zh="實驗室" data-en="TECH LAB">TECH LAB</h1>
-        <p data-zh="探索技術、流體與光影的互動實驗" data-en="Interactive Tech & Fluid Experiments">Interactive Tech & Fluid Experiments
-        </p>
-    </div>
+    <!-- Section 1: Fluid Simulation -->
+    <section class="lab-section">
+        <canvas id="fluid-canvas"></canvas>
+        <div class="lab-overlay">
+            <h2 data-zh="流體動力學" data-en="Fluid Dynamics">Fluid Dynamics</h2>
+            <p data-zh="實驗 01: 基於 WebGL 的氣流與流體運動模擬。" data-en="Exp 01: WebGL-based air and fluid motion simulation."></p>
+        </div>
+        <div class="scroll-hint">
+            <p data-zh="向下滾動探索更多" data-en="Scroll Down to Explore">Scroll Down to Explore</p>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </section>
 
-    <div class="hint" data-zh="點擊或滑動滑鼠感受流體變化" data-en="Click and move your mouse to interact">Click and move your mouse
-        to interact</div>
+    <!-- Section 2: Gravity Particles -->
+    <section class="lab-section">
+        <canvas id="gravity-canvas"></canvas>
+        <div class="lab-overlay">
+            <h2 data-zh="重力粒子" data-en="Gravity Particles">Gravity Particles</h2>
+            <p data-zh="實驗 02: 具備滑鼠斥力與引力的粒子系統，模擬微觀物理。"
+                data-en="Exp 02: Particle system with mouse repulsion and attraction."></p>
+        </div>
+    </section>
 
-    <canvas id="fluid-canvas"></canvas>
+    <!-- Section 3: 3D Morphing Sphere -->
+    <section class="lab-section">
+        <div id="morph-container" class="morph-container"></div>
+        <div class="lab-overlay">
+            <h2 data-zh="3D 幾何形變" data-en="3D Morphing">3D Morphing</h2>
+            <p data-zh="實驗 03: 使用 Three.js 構建的參數化 3D 形變幾何體。"
+                data-en="Exp 03: Parametric 3D morphing geometry built with Three.js."></p>
+        </div>
+    </section>
 
     <div class="terminal-widget">
         <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
@@ -127,13 +186,17 @@
         </div>
     </div>
 
-    <!-- Fluid Simulation Script from CDN -->
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/webgl-fluid"></script>
+
+    <!-- Scripts -->
     <script src="js/main.js?v=8"></script>
     <script src="js/terminal.js"></script>
+    <script src="js/lab_effects.js"></script>
     <script>
         // Fluid Simulation Configuration
-        window.onload = () => {
+        window.addEventListener('DOMContentLoaded', () => {
             const canvas = document.getElementById('fluid-canvas');
             if (typeof WebGLFluid !== 'undefined') {
                 WebGLFluid(canvas, {
@@ -164,10 +227,8 @@
                     SUNRAYS_RESOLUTION: 196,
                     SUNRAYS_WEIGHT: 1.0,
                 });
-            } else {
-                console.error("WebGLFluid library failed to load.");
             }
-        };
+        });
     </script>
 </body>
 
