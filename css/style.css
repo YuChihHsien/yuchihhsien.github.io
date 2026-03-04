@@ -47,10 +47,11 @@
 
 /* Mini State (Retreated) */
 .lab-overlay.mini {
-    top: 2rem;
-    left: calc(100% - 2rem);
-    transform: translate(-100%, 0) scale(0.65);
-    transform-origin: top right;
+    top: auto;
+    bottom: 2rem;
+    left: 2rem;
+    transform: translate(0, 0) scale(0.65);
+    transform-origin: bottom left;
     padding: 1rem 1.5rem;
     max-width: 250px;
     background: rgba(13, 17, 23, 0.95);
@@ -60,7 +61,7 @@
 
 .lab-overlay.mini:hover {
     opacity: 1;
-    transform: translate(-100%, 0) scale(0.7);
+    transform: translate(0, 0) scale(0.7);
 }
 
 .lab-overlay h2 {

@@ -349,19 +349,25 @@ function initOverlayRetreat() {
             const overlay = section.querySelector('.lab-overlay');
             if (!overlay) return;
 
-            if (entry.isIntersecting) {
-                // Section entered view: Start timer to retreat
-                if (!timers.has(section)) {
-                    const timer = setTimeout(() => {
-                        // Double check it's still in view before adding
-                        if (section.getBoundingClientRect().top < window.innerHeight * 0.5) {
-                            overlay.classList.add('mini');
-                        }
-                    }, 2000);
-                    timers.set(section, timer);
+            // Behavior Refinement:
+            // 1. If very visible (>60%), ensure it's NOT mini (resets on scroll back)
+            if (entry.intersectionRatio > 0.6) {
+                overlay.classList.remove('mini');
+                if (timers.has(section)) {
+                    clearTimeout(timers.get(section));
+                    timers.delete(section);
                 }
-            } else {
-                // Section left view: Reset
+
+                // Start a fresh timer to retreat if it stays visible
+                const timer = setTimeout(() => {
+                    if (section.getBoundingClientRect().top < window.innerHeight * 0.4) {
+                        overlay.classList.add('mini');
+                    }
+                }, 2500);
+                timers.set(section, timer);
+            }
+            // 2. If it leaves view, clear everything
+            else if (!entry.isIntersecting) {
                 overlay.classList.remove('mini');
                 if (timers.has(section)) {
                     clearTimeout(timers.get(section));
@@ -369,7 +375,7 @@ function initOverlayRetreat() {
                 }
             }
         });
-    }, { threshold: [0, 0.1, 0.2] });
+    }, { threshold: [0, 0.2, 0.6, 0.9] });
 
     sections.forEach(section => observer.observe(section));
 
