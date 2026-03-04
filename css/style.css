@@ -25,6 +25,75 @@
     align-items: center;
 }
 
+.lab-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(13, 17, 23, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Mini State (Retreated) */
+.lab-overlay.mini {
+    top: 2rem;
+    left: calc(100% - 2rem);
+    transform: translate(-100%, 0) scale(0.65);
+    transform-origin: top right;
+    padding: 1rem 1.5rem;
+    max-width: 250px;
+    background: rgba(13, 17, 23, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+.lab-overlay.mini:hover {
+    opacity: 1;
+    transform: translate(-100%, 0) scale(0.7);
+}
+
+.lab-overlay h2 {
+    margin-bottom: 0.75rem;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: font-size 0.5s ease;
+}
+
+.lab-overlay.mini h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+}
+
+.lab-overlay p {
+    color: var(--text-dim);
+    line-height: 1.6;
+    font-size: 1.1rem;
+    transition: all 0.5s ease;
+}
+
+.lab-overlay.mini p {
+    font-size: 0.85rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 .badge-tech {
     font-family: 'Space Grotesk', monospace;
     font-size: 0.75rem;

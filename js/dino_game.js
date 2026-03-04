@@ -84,15 +84,15 @@ function initDinoGame(canvasId, containerId) {
 
     class Obstacle {
         constructor() {
-            this.width = 30 + Math.random() * 30;
-            this.height = 40 + Math.random() * 40;
+            this.width = 30 + Math.random() * 20;
+            this.height = 40 + Math.random() * 30;
             this.x = canvas.width;
             this.y = dino.groundY - this.height;
             this.color = '#ef4444'; // Error/Obstacle color
             this.type = Math.random() > 0.8 ? 'flying' : 'static';
 
             if (this.type === 'flying') {
-                this.y -= 60; // Higher up
+                this.y -= 70;
             }
         }
 
@@ -101,23 +101,41 @@ function initDinoGame(canvasId, containerId) {
         }
 
         draw() {
-            // Draw a glitchy-looking rectangle
             ctx.fillStyle = this.color;
             ctx.shadowBlur = 10;
             ctx.shadowColor = this.color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
 
-            // Add a "glitch" line
-            if (frames % 10 < 5) {
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(this.x, this.y + 5, this.width, 2);
+            if (this.type === 'static') {
+                // Cyber Cactus Shape
+                const w = this.width;
+                const h = this.height;
+                const x = this.x;
+                const y = this.y;
+
+                // Main stem (pixelated)
+                ctx.fillRect(x + w * 0.3, y, w * 0.4, h);
+                // Left arm
+                ctx.fillRect(x, y + h * 0.3, w * 0.3, h * 0.1);
+                ctx.fillRect(x, y + h * 0.1, w * 0.1, h * 0.2);
+                // Right arm
+                ctx.fillRect(x + w * 0.7, y + h * 0.4, w * 0.3, h * 0.1);
+                ctx.fillRect(x + w * 0.9, y + h * 0.2, w * 0.1, h * 0.2);
+            } else {
+                // Cyber Drone/Bird
+                ctx.fillRect(this.x, this.y, this.width, this.height * 0.4);
+                // Animated "wings"
+                const wingPos = Math.sin(frames * 0.2) * 10;
+                ctx.fillRect(this.x + 5, this.y - 5 + wingPos, 10, 5);
+                ctx.fillRect(this.x + this.width - 15, this.y - 5 + wingPos, 10, 5);
             }
+
             ctx.shadowBlur = 0;
         }
     }
 
     function spawnObstacle() {
-        if (frames % 100 === 0) {
+        // Dynamic spawning logic
+        if (frames % Math.floor(100 - gameSpeed * 2) === 0) {
             obstacles.push(new Obstacle());
         }
     }
@@ -127,12 +145,12 @@ function initDinoGame(canvasId, containerId) {
             obstacles[i].update();
             obstacles[i].draw();
 
-            // Collision Detection
+            // Collision Detection (Narrowed hitboxes for fairness)
             if (
-                dino.x < obstacles[i].x + obstacles[i].width &&
-                dino.x + dino.width > obstacles[i].x &&
-                dino.y < obstacles[i].y + obstacles[i].height &&
-                dino.y + dino.height > obstacles[i].y
+                dino.x + 5 < obstacles[i].x + obstacles[i].width - 5 &&
+                dino.x + dino.width - 5 > obstacles[i].x + 5 &&
+                dino.y + 5 < obstacles[i].y + obstacles[i].height - 5 &&
+                dino.y + dino.height - 5 > obstacles[i].y + 5
             ) {
                 gameOver();
             }
@@ -141,27 +159,37 @@ function initDinoGame(canvasId, containerId) {
             if (obstacles[i].x + obstacles[i].width < 0) {
                 obstacles.splice(i, 1);
                 score++;
-                if (score % 10 === 0) gameSpeed += 0.5;
+                if (score % 5 === 0) gameSpeed += 0.2;
             }
         }
     }
 
     function drawDino() {
-        // Pixelated Robot/Dino
         ctx.fillStyle = dino.color;
         ctx.shadowBlur = 15;
         ctx.shadowColor = dino.color;
 
-        // Body
-        ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
+        const x = dino.x;
+        const y = dino.y;
+        const w = dino.width;
+        const h = dino.height;
 
-        // "Eye" visor
+        // Cyber T-Rex Shape (Pixel art style)
+        // Head
+        ctx.fillRect(x + w * 0.5, y, w * 0.5, h * 0.35);
+        // Snout visor
         ctx.fillStyle = '#fff';
-        ctx.fillRect(dino.x + 25, dino.y + 10, 10, 4);
+        ctx.fillRect(x + w * 0.8, y + h * 0.05, w * 0.2, h * 0.1);
 
-        // Small detail lines
-        ctx.fillStyle = 'rgba(0,0,0,0.3)';
-        ctx.fillRect(dino.x + 5, dino.y + 20, 30, 2);
+        ctx.fillStyle = dino.color;
+        // Neck/Body
+        ctx.fillRect(x + w * 0.3, y + h * 0.2, w * 0.4, h * 0.5);
+        // Tail
+        ctx.fillRect(x, y + h * 0.4, w * 0.3, h * 0.2);
+        // Legs (animated)
+        const legOffset = dino.isJumping ? 0 : Math.sin(frames * 0.5) * 5;
+        ctx.fillRect(x + w * 0.3, y + h * 0.7, w * 0.15, h * 0.3 + legOffset);
+        ctx.fillRect(x + w * 0.55, y + h * 0.7, w * 0.15, h * 0.3 - legOffset);
 
         ctx.shadowBlur = 0;
     }

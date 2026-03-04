@@ -337,10 +337,69 @@ function initOrbitalOdyssey(containerId) {
     animate(0);
 }
 
-// Global initialization when scroll happens or load
+// Overlay Retreat Logic
+function initOverlayRetreat() {
+    const overlays = document.querySelectorAll('.lab-overlay');
+    const sections = document.querySelectorAll('.lab-section');
+    const timers = new Map();
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const section = entry.target;
+            const overlay = section.querySelector('.lab-overlay');
+            if (!overlay) return;
+
+            if (entry.isIntersecting) {
+                // Section entered view: Start timer to retreat
+                if (!timers.has(section)) {
+                    const timer = setTimeout(() => {
+                        // Double check it's still in view before adding
+                        if (section.getBoundingClientRect().top < window.innerHeight * 0.5) {
+                            overlay.classList.add('mini');
+                        }
+                    }, 2000);
+                    timers.set(section, timer);
+                }
+            } else {
+                // Section left view: Reset
+                overlay.classList.remove('mini');
+                if (timers.has(section)) {
+                    clearTimeout(timers.get(section));
+                    timers.delete(section);
+                }
+            }
+        });
+    }, { threshold: [0, 0.1, 0.2] });
+
+    sections.forEach(section => observer.observe(section));
+
+    // Allow user to toggle back by clicking
+    overlays.forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (overlay.classList.contains('mini')) {
+                overlay.classList.remove('mini');
+                // Re-retreat after 5 seconds if still in view
+                const section = overlay.parentElement;
+                if (timers.has(section)) clearTimeout(timers.get(section));
+                const timer = setTimeout(() => {
+                    if (document.visibilityState === 'visible') {
+                        overlay.classList.add('mini');
+                    }
+                }, 5000);
+                timers.set(section, timer);
+            }
+        });
+    });
+}
+
+// Global initialization
 window.addEventListener('load', () => {
-    // Initial section effects (if visible)
+    // Initial section effects
     if (document.getElementById('gravity-canvas')) initGravityParticles('gravity-canvas');
     if (document.getElementById('morph-container')) initMorphingSphere('morph-container');
     if (document.getElementById('orbit-container')) initOrbitalOdyssey('orbit-container');
+
+    // UI Effects
+    initOverlayRetreat();
 });
