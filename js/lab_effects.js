@@ -350,24 +350,25 @@ function initOverlayRetreat() {
             if (!overlay) return;
 
             // Behavior Refinement:
-            // 1. If very visible (>60%), ensure it's NOT mini (resets on scroll back)
-            if (entry.intersectionRatio > 0.6) {
-                overlay.classList.remove('mini');
-                if (timers.has(section)) {
-                    clearTimeout(timers.get(section));
-                    timers.delete(section);
-                }
+            // 1. If section is visible and NOT already timing/mini, or if scrolling BACK:
+            if (entry.isIntersecting) {
+                const rect = section.getBoundingClientRect();
+                const isCentered = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4;
 
-                // Start a fresh timer to retreat if it stays visible
-                const timer = setTimeout(() => {
-                    if (section.getBoundingClientRect().top < window.innerHeight * 0.4) {
-                        overlay.classList.add('mini');
-                    }
-                }, 2500);
-                timers.set(section, timer);
-            }
-            // 2. If it leaves view, clear everything
-            else if (!entry.isIntersecting) {
+                if (isCentered) {
+                    overlay.classList.remove('mini');
+                    if (timers.has(section)) clearTimeout(timers.get(section));
+
+                    const timer = setTimeout(() => {
+                        // Re-check visibility before retreating
+                        const currentRect = section.getBoundingClientRect();
+                        if (currentRect.top < window.innerHeight * 0.5 && currentRect.bottom > window.innerHeight * 0.5) {
+                            overlay.classList.add('mini');
+                        }
+                    }, 2500);
+                    timers.set(section, timer);
+                }
+            } else {
                 overlay.classList.remove('mini');
                 if (timers.has(section)) {
                     clearTimeout(timers.get(section));
@@ -375,7 +376,7 @@ function initOverlayRetreat() {
                 }
             }
         });
-    }, { threshold: [0, 0.2, 0.6, 0.9] });
+    }, { threshold: [0, 0.1, 0.5, 0.8] });
 
     sections.forEach(section => observer.observe(section));
 
