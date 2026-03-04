@@ -258,28 +258,36 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        window.onscroll = () => {
+        // Use scroll event on window but check documentElement
+        window.addEventListener('scroll', () => {
             const btn = document.getElementById('backToTop');
             const nav = document.querySelector('nav');
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-            // Back color Top visibility
-            if (scrollTop > 300) {
+            // Back to Top visibility - More sensitive
+            if (scrollTop > 100) {
                 btn.classList.add('visible');
             } else {
                 btn.classList.remove('visible');
             }
 
-            // Navbar hiding logic
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Navbar hiding logic - Immediate hide when scrolling down
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
                 // Scrolling down
                 nav.classList.add('nav-hidden');
-            } else {
+            } else if (scrollTop < lastScrollTop) {
                 // Scrolling up
                 nav.classList.remove('nav-hidden');
             }
+
+            // Force show at the very top
+            if (scrollTop <= 10) {
+                nav.classList.remove('nav-hidden');
+            }
+
             lastScrollTop = scrollTop;
-        };
+        }, { passive: true });
+
     </script>
 </body>
 
