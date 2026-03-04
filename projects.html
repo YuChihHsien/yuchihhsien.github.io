@@ -117,8 +117,8 @@
                             data-en="Resume">履歷</span></a></li>
                 <li><a href="projects.html" class="active"><i class="fa-solid fa-laptop-code"></i> <span data-zh="專案"
                             data-en="Projects">專案</span></a></li>
-                <li><a href="play.html"><i class="fa-solid fa-gamepad"></i> <span data-zh="遊玩"
-                            data-en="Play">遊玩</span></a></li>
+                <li><a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-zh="實驗室"
+                            data-en="Lab">實驗室</span></a></li>
                 <li><a href="contact.html"><i class="fa-solid fa-mug-hot"></i> <span data-zh="贊助"
                             data-en="Support">贊助</span></a></li>
             </ul>
@@ -193,7 +193,30 @@
         </p>
     </footer>
 
+    <div class="terminal-widget">
+        <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
+            <i class="fa-solid fa-terminal"></i>
+        </button>
+        <div class="terminal-window" id="terminalWindow">
+            <div class="terminal-header">
+                <div class="terminal-title">GA-RY_OS v1.0.4</div>
+                <button class="terminal-action-btn" onclick="toggleTerminal()"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <p class="terminal-msg system">--- GA-RY TERMINAL v1.0 ---</p>
+                <p class="terminal-msg system">System: Connection established. Type 'help' for commands.</p>
+            </div>
+            <form class="terminal-footer" id="terminalForm">
+                <span class="terminal-prompt">></span>
+                <input type="text" class="terminal-input" id="terminalInput" placeholder="..." autocomplete="off">
+                <button type="submit" class="terminal-action-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
     <script src="js/main.js?v=8"></script>
+    <script src="js/terminal.js"></script>
 </body>
 
 </html>

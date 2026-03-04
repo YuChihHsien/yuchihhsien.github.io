@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play & Experiments | 余致賢 - Chih-Hsien Yu</title>
+    <title>Tech Lab | 余致賢 - Chih-Hsien Yu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css?v=11">
     <style>
@@ -76,8 +76,8 @@
                             data-en="Resume">Resume</span></a></li>
                 <li><a href="projects.html"><i class="fa-solid fa-laptop-code"></i> <span data-zh="專案"
                             data-en="Projects">Projects</span></a></li>
-                <li><a href="play.html" class="active"><i class="fa-solid fa-gamepad"></i> <span data-zh="遊玩"
-                            data-en="Play">Play</span></a></li>
+                <li><a href="lab.html" class="active"><i class="fa-solid fa-flask"></i> <span data-zh="實驗室"
+                            data-en="Lab">Lab</span></a></li>
                 <li><a href="contact.html"><i class="fa-solid fa-mug-hot"></i> <span data-zh="贊助"
                             data-en="Support">Support</span></a></li>
             </ul>
@@ -95,8 +95,9 @@
     </nav>
 
     <div class="play-overlay">
-        <h1 data-zh="互動實驗" data-en="PLAYGROUND">PLAYGROUND</h1>
-        <p data-zh="探索流體與光影的互動" data-en="Interactive Fluid Simulation">Interactive Fluid Simulation</p>
+        <h1 data-zh="實驗室" data-en="TECH LAB">TECH LAB</h1>
+        <p data-zh="探索技術、流體與光影的互動實驗" data-en="Interactive Tech & Fluid Experiments">Interactive Tech & Fluid Experiments
+        </p>
     </div>
 
     <div class="hint" data-zh="點擊或滑動滑鼠感受流體變化" data-en="Click and move your mouse to interact">Click and move your mouse
@@ -104,9 +105,32 @@
 
     <canvas id="fluid-canvas"></canvas>
 
+    <div class="terminal-widget">
+        <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
+            <i class="fa-solid fa-terminal"></i>
+        </button>
+        <div class="terminal-window" id="terminalWindow">
+            <div class="terminal-header">
+                <div class="terminal-title">GA-RY_OS v1.0.4</div>
+                <button class="terminal-action-btn" onclick="toggleTerminal()"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <p class="terminal-msg system">--- GA-RY TERMINAL v1.0 ---</p>
+                <p class="terminal-msg system">System: Connection established. Type 'help' for commands.</p>
+            </div>
+            <form class="terminal-footer" id="terminalForm">
+                <span class="terminal-prompt">></span>
+                <input type="text" class="terminal-input" id="terminalInput" placeholder="..." autocomplete="off">
+                <button type="submit" class="terminal-action-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
     <!-- Fluid Simulation Script from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/webgl-fluid"></script>
     <script src="js/main.js?v=8"></script>
+    <script src="js/terminal.js"></script>
     <script>
         // Fluid Simulation Configuration
         window.onload = () => {
