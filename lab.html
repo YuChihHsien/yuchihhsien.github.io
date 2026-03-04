@@ -17,6 +17,18 @@
             background-color: #000;
             color: #fff;
             scroll-behavior: smooth;
+            /* Snap Scrolling */
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+
+        /* Navbar Hiding Logic */
+        nav {
+            transition: transform 0.4s ease;
+        }
+
+        nav.nav-hidden {
+            transform: translateY(-100%);
         }
 
         /* Section Container */
@@ -29,6 +41,9 @@
             justify-content: center;
             overflow: hidden;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            /* Snap Scaling */
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
         }
 
         canvas,
@@ -236,18 +251,34 @@
             }
         });
 
-        // Scroll Logic for Back to Top Button
+        // Scroll Logic for Back to Top Button & Navbar Hiding
+        let lastScrollTop = 0;
+
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         window.onscroll = () => {
             const btn = document.getElementById('backToTop');
-            if (window.pageYOffset > 300) {
+            const nav = document.querySelector('nav');
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // Back color Top visibility
+            if (scrollTop > 300) {
                 btn.classList.add('visible');
             } else {
                 btn.classList.remove('visible');
             }
+
+            // Navbar hiding logic
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                nav.classList.add('nav-hidden');
+            } else {
+                // Scrolling up
+                nav.classList.remove('nav-hidden');
+            }
+            lastScrollTop = scrollTop;
         };
     </script>
 </body>

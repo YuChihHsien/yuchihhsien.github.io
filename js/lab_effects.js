@@ -22,17 +22,24 @@ function initGravityParticles(canvasId) {
 
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', (e) => {
-        mouse.x = e.x;
-        mouse.y = e.y;
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
     });
 
-    // Splat effect on click
-    window.addEventListener('mousedown', (e) => {
+    resize();
+
+    // Splat effect on click - ISOLATED to canvas
+    canvas.addEventListener('mousedown', (e) => {
         if (!particles.length) return;
+        const rect = canvas.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+
         for (let i = 0; i < 20; i++) {
             const p = new Particle();
-            p.x = e.x;
-            p.y = e.y;
+            p.x = offsetX;
+            p.y = offsetY;
             // High velocity temporary particles
             p.density = (Math.random() * 50) + 20;
             p.color = '#fff'; // White splat
@@ -41,8 +48,6 @@ function initGravityParticles(canvasId) {
             if (particles.length > 200) particles.shift();
         }
     });
-
-    resize();
 
     class Particle {
         constructor() {
@@ -147,8 +152,8 @@ function initMorphingSphere(containerId) {
     const originalPositions = geometry.attributes.position.array.slice();
     let pulseFactor = 0;
 
-    // Pulse effect on click
-    window.addEventListener('mousedown', () => {
+    // Pulse effect on click - ISOLATED to container
+    container.addEventListener('mousedown', () => {
         pulseFactor = 1.0;
     });
 
