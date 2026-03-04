@@ -193,9 +193,154 @@ function initMorphingSphere(containerId) {
     animate(0);
 }
 
+/**
+ * Section 4: Orbital Odyssey (Three.js)
+ * A 3D orbital scene with an astronaut and a spaceship circling a planet.
+ */
+function initOrbitalOdyssey(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // Starfield Background
+    const starGeometry = new THREE.BufferGeometry();
+    const starCount = 2000;
+    const starPositions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount * 3; i++) {
+        starPositions[i] = (Math.random() - 0.5) * 200;
+    }
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
+
+    // Planet
+    const planetGeometry = new THREE.SphereGeometry(2, 64, 64);
+    const planetMaterial = new THREE.MeshPhongMaterial({
+        color: 0x1e3a8a, // Deep blue
+        emissive: 0x071e4d,
+        specular: 0x3b82f6,
+        shininess: 30,
+        flatShading: false
+    });
+    const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+    scene.add(planet);
+
+    // Planet Glow/Atmosphere
+    const atmosphereGeometry = new THREE.SphereGeometry(2.1, 64, 64);
+    const atmosphereMaterial = new THREE.MeshBasicMaterial({
+        color: 0x3b82f6,
+        transparent: true,
+        opacity: 0.2,
+        side: THREE.BackSide
+    });
+    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+    scene.add(atmosphere);
+
+    // Orbital Groups
+    const astronautGroup = new THREE.Group();
+    const shipGroup = new THREE.Group();
+    scene.add(astronautGroup);
+    scene.add(shipGroup);
+
+    // Procedural Astronaut
+    const astronaut = new THREE.Group();
+
+    // Suit/Body
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.4, 0.2), new THREE.MeshPhongMaterial({ color: 0xeeeeee }));
+    astronaut.add(body);
+
+    // Helmet
+    const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), new THREE.MeshPhongMaterial({ color: 0x333333 }));
+    helmet.position.y = 0.3;
+    astronaut.add(helmet);
+
+    // Backpack
+    const pack = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.3, 0.15), new THREE.MeshPhongMaterial({ color: 0xcccccc }));
+    pack.position.z = -0.15;
+    astronaut.add(pack);
+
+    astronaut.position.set(4, 1, 0);
+    astronautGroup.add(astronaut);
+
+    // Procedural Spaceship
+    const ship = new THREE.Group();
+
+    // Body (Capsule/Cone)
+    const shipBody = new THREE.Mesh(new THREE.CylinderGeometry(0, 0.2, 0.6, 16), new THREE.MeshPhongMaterial({ color: 0x3b82f6 }));
+    shipBody.rotation.x = Math.PI / 2;
+    ship.add(shipBody);
+
+    // Wings
+    const wingGeo = new THREE.BoxGeometry(1, 0.05, 0.3);
+    const wings = new THREE.Mesh(wingGeo, new THREE.MeshPhongMaterial({ color: 0x1e40af }));
+    ship.add(wings);
+
+    ship.position.set(-6, -1, 0);
+    shipGroup.add(ship);
+
+    // Lighting
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    sunLight.position.set(5, 5, 5);
+    scene.add(sunLight);
+    scene.add(new THREE.AmbientLight(0x404040, 0.5));
+
+    camera.position.z = 10;
+
+    let shipPulse = 0;
+    container.addEventListener('mousedown', () => {
+        shipPulse = 1.0;
+    });
+
+    function animate(time) {
+        requestAnimationFrame(animate);
+        const speed = time * 0.0005;
+
+        // Rotation
+        planet.rotation.y += 0.002;
+        stars.rotation.y += 0.0001;
+
+        // Astronaut Orbit
+        astronautGroup.rotation.y += 0.01;
+        astronautGroup.rotation.z = Math.sin(speed) * 0.2;
+        astronaut.rotation.x += 0.02;
+        astronaut.rotation.z += 0.01;
+
+        // Ship Orbit
+        shipGroup.rotation.y -= 0.008;
+        shipGroup.rotation.x = Math.cos(speed * 0.5) * 0.3;
+        ship.rotation.y += 0.05;
+
+        if (shipPulse > 0) {
+            ship.scale.set(1 + shipPulse * 0.5, 1 + shipPulse * 0.5, 1 + shipPulse * 0.5);
+            shipPulse *= 0.95;
+        } else {
+            ship.scale.set(1, 1, 1);
+        }
+
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    animate(0);
+}
+
 // Global initialization when scroll happens or load
 window.addEventListener('load', () => {
     // Initial section effects (if visible)
     if (document.getElementById('gravity-canvas')) initGravityParticles('gravity-canvas');
     if (document.getElementById('morph-container')) initMorphingSphere('morph-container');
+    if (document.getElementById('orbit-container')) initOrbitalOdyssey('orbit-container');
 });
