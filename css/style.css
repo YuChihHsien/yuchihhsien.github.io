@@ -964,7 +964,6 @@ footer {
     text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
-.system-monitor-widget {
     position: fixed;
     bottom: 30px;
     left: 30px;
@@ -982,13 +981,11 @@ footer {
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.2);
 }
 
-.monitor-line {
     display: flex;
     justify-content: space-between;
     margin-bottom: 6px;
 }
 
-.monitor-bar-bg {
     width: 100%;
     height: 4px;
     background: rgba(255, 255, 255, 0.1);
@@ -997,7 +994,6 @@ footer {
     overflow: hidden;
 }
 
-.monitor-bar-fill {
     height: 100%;
     background: linear-gradient(90deg, var(--accent-color), #60a5fa);
     width: 0%;
@@ -1006,7 +1002,6 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .system-monitor-widget {
         display: none;
     }
 }

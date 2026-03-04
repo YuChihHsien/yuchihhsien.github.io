@@ -209,30 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showNextLog();
     }
 
-    // ---- Professional Gift: System Monitor ----
-    const monitor = document.createElement('div');
-    monitor.className = 'system-monitor-widget';
-    monitor.innerHTML = `
-        <div class="monitor-line"><span>CPU_LOAD</span><span id="mon-cpu">0%</span></div>
-        <div class="monitor-bar-bg"><div class="monitor-bar-fill" id="bar-cpu"></div></div>
-        <div style="margin-top:8px" class="monitor-line"><span>MEM_USAGE</span><span id="mon-mem">0%</span></div>
-        <div class="monitor-bar-bg"><div class="monitor-bar-fill" id="bar-mem"></div></div>
-        <div style="margin-top:8px" class="monitor-line"><span>NET_TRAFFIC</span><span id="mon-net">0kb/s</span></div>
-    `;
-    document.body.appendChild(monitor);
-
-    setInterval(() => {
-        const cpu = Math.floor(Math.random() * 15) + 5;
-        const mem = Math.floor(Math.random() * 10) + 40;
-        const net = (Math.random() * 50).toFixed(1);
-
-        document.getElementById('mon-cpu').textContent = cpu + '%';
-        document.getElementById('bar-cpu').style.width = cpu + '%';
-        document.getElementById('mon-mem').textContent = mem + '%';
-        document.getElementById('bar-mem').style.width = mem + '%';
-        document.getElementById('mon-net').textContent = net + 'kb/s';
-    }, 2000);
-
     // ---- Professional Gift: 3D Tech Cloud ----
     const cloudContainer = document.getElementById('tech-cloud-container');
     if (cloudContainer) {
