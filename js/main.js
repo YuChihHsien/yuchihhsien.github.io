@@ -222,68 +222,122 @@ function initTechCloud(container) {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.z = 15;
+    camera.position.z = 18;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
-    const skills = [
-        "AWS", ".NET", "C#", "K8s", "Docker", "Kafka",
-        "Orleans", "EKS", "Redis", "SQL", "DevOps", "Scrum",
-        "CI/CD", "ELK", "Microservices", "System Design"
+    // Categories for colors and connections
+    const techData = [
+        { label: "AWS", cat: "cloud", color: "#FF9900" },
+        { label: ".NET", cat: "back", color: "#512bd4" },
+        { label: "C#", cat: "back", color: "#239120" },
+        { label: "K8s", cat: "cloud", color: "#326ce5" },
+        { label: "Docker", cat: "ops", color: "#2496ed" },
+        { label: "Kafka", cat: "dist", color: "#000000" },
+        { label: "Orleans", cat: "dist", color: "#f39c12" },
+        { label: "EKS", cat: "cloud", color: "#FF9900" },
+        { label: "Redis", cat: "data", color: "#d82c20" },
+        { label: "SQL", cat: "data", color: "#336791" },
+        { label: "DevOps", cat: "ops", color: "#00c853" },
+        { label: "Scrum", cat: "proc", color: "#607d8b" },
+        { label: "CI/CD", cat: "ops", color: "#00c853" },
+        { label: "ELK", cat: "ops", color: "#005571" },
+        { label: "Microservices", cat: "back", color: "#9c27b0" },
+        { label: "System Design", cat: "arch", color: "#ffeb3b" }
     ];
 
     const group = new THREE.Group();
     scene.add(group);
 
-    const labels = [];
-    skills.forEach((skill, i) => {
+    const sprites = [];
+    techData.forEach((tech, i) => {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 128;
-        canvas.height = 64;
+        canvas.width = 256;
+        canvas.height = 128;
 
-        ctx.fillStyle = '#3b82f6';
-        ctx.font = 'Bold 24px Courier New';
+        // Draw Glow
+        const gradient = ctx.createRadialGradient(128, 64, 0, 128, 64, 100);
+        gradient.addColorStop(0, tech.color + '44');
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 256, 128);
+
+        ctx.fillStyle = tech.color;
+        ctx.font = 'Bold 36px "Courier New", monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(skill, 64, 40);
+        ctx.shadowColor = tech.color;
+        ctx.shadowBlur = 10;
+        ctx.fillText(tech.label, 128, 75);
 
         const texture = new THREE.CanvasTexture(canvas);
-        const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+        const material = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.9 });
         const sprite = new THREE.Sprite(material);
 
-        const phi = Math.acos(-1 + (2 * i) / skills.length);
-        const theta = Math.sqrt(skills.length * Math.PI) * phi;
-        const radius = 8;
+        const phi = Math.acos(-1 + (2 * i) / techData.length);
+        const theta = Math.sqrt(techData.length * Math.PI) * phi;
+        const radius = 9;
 
         sprite.position.set(
             radius * Math.cos(theta) * Math.sin(phi),
             radius * Math.sin(theta) * Math.sin(phi),
             radius * Math.cos(phi)
         );
-        sprite.scale.set(4, 2, 1);
+        sprite.scale.set(6, 3, 1);
+        sprite.userData = { category: tech.cat, color: tech.color };
         group.add(sprite);
-        labels.push(sprite);
+        sprites.push(sprite);
     });
 
+    // Add neural connections (lines between same categories)
+    const lineMaterial = new THREE.LineBasicMaterial({
+        transparent: true,
+        opacity: 0.15,
+        vertexColors: true
+    });
+
+    const points = [];
+    const colors = [];
+    for (let i = 0; i < sprites.length; i++) {
+        for (let j = i + 1; j < sprites.length; j++) {
+            if (sprites[i].userData.category === sprites[j].userData.category) {
+                points.push(sprites[i].position.clone());
+                points.push(sprites[j].position.clone());
+
+                const c1 = new THREE.Color(sprites[i].userData.color);
+                const c2 = new THREE.Color(sprites[j].userData.color);
+                colors.push(c1.r, c1.g, c1.b);
+                colors.push(c2.r, c2.g, c2.b);
+            }
+        }
+    }
+
+    const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+    lineGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+    group.add(lines);
+
+    // Interaction
     let isMouseDown = false;
-    let mouseX = 0, mouseY = 0;
+    let targetRotationX = 0, targetRotationY = 0;
 
     container.addEventListener('mousedown', () => isMouseDown = true);
     window.addEventListener('mouseup', () => isMouseDown = false);
     container.addEventListener('mousemove', (e) => {
         if (isMouseDown) {
-            group.rotation.y += e.movementX * 0.01;
-            group.rotation.x += e.movementY * 0.01;
+            group.rotation.y += e.movementX * 0.005;
+            group.rotation.x += e.movementY * 0.005;
         }
     });
 
     function animate() {
         requestAnimationFrame(animate);
         if (!isMouseDown) {
-            group.rotation.y += 0.003; // Slower rotation
+            group.rotation.y += 0.002;
             group.rotation.x += 0.001;
         }
         renderer.render(scene, camera);
