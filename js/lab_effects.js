@@ -26,6 +26,22 @@ function initGravityParticles(canvasId) {
         mouse.y = e.y;
     });
 
+    // Splat effect on click
+    window.addEventListener('mousedown', (e) => {
+        if (!particles.length) return;
+        for (let i = 0; i < 20; i++) {
+            const p = new Particle();
+            p.x = e.x;
+            p.y = e.y;
+            // High velocity temporary particles
+            p.density = (Math.random() * 50) + 20;
+            p.color = '#fff'; // White splat
+            particles.push(p);
+            // Limit total particles to prevent lag
+            if (particles.length > 200) particles.shift();
+        }
+    });
+
     resize();
 
     class Particle {
@@ -129,6 +145,12 @@ function initMorphingSphere(containerId) {
     camera.position.z = 5;
 
     const originalPositions = geometry.attributes.position.array.slice();
+    let pulseFactor = 0;
+
+    // Pulse effect on click
+    window.addEventListener('mousedown', () => {
+        pulseFactor = 1.0;
+    });
 
     function animate(time) {
         requestAnimationFrame(animate);
@@ -141,12 +163,14 @@ function initMorphingSphere(containerId) {
             const y = originalPositions[i + 1];
             const z = originalPositions[i + 2];
 
-            // Perlin-like noise movement
-            const factor = 1 + 0.2 * Math.sin(speed + (x * 2) + (y * 3) + (z * 1));
+            // Perlin-like noise movement + click pulse
+            const factor = (1 + 0.2 * Math.sin(speed + (x * 2) + (y * 3) + (z * 1))) + (pulseFactor * 0.5);
             positions[i] = x * factor;
             positions[i + 1] = y * factor;
             positions[i + 2] = z * factor;
         }
+
+        if (pulseFactor > 0) pulseFactor *= 0.92; // Decay pulse
 
         geometry.attributes.position.needsUpdate = true;
         sphere.rotation.y += 0.005;

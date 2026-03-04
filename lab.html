@@ -164,7 +164,13 @@
         </div>
     </section>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" title="Back to Top" onclick="scrollToTop()">
+        <i class="fa-solid fa-flask"></i>
+    </button>
+
     <div class="terminal-widget">
+
         <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
             <i class="fa-solid fa-terminal"></i>
         </button>
@@ -229,6 +235,20 @@
                 });
             }
         });
+
+        // Scroll Logic for Back to Top Button
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onscroll = () => {
+            const btn = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        };
     </script>
 </body>
 

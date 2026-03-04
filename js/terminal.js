@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalForm = document.getElementById('terminalForm');
     const terminalInput = document.getElementById('terminalInput');
     const terminalBody = document.getElementById('terminalBody');
+    let lastSendTime = 0;
+    const COOLDOWN_MS = 5000;
 
     if (terminalForm) {
         terminalForm.addEventListener('submit', async (e) => {
@@ -14,12 +16,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const cmd = terminalInput.value.trim();
             if (!cmd) return;
 
+            // Simple "Command" logic
+            const lowerCmd = cmd.toLowerCase();
+            const isSystemCmd = ['help', 'clear', 'hi', 'hello', 'about'].includes(lowerCmd);
+
+            if (!isSystemCmd) {
+                const now = Date.now();
+                const timeLeft = Math.ceil((COOLDOWN_MS - (now - lastSendTime)) / 1000);
+                if (timeLeft > 0) {
+                    appendLine(`System: Uplink cooling down. Wait ${timeLeft}s...`, 'system');
+                    return;
+                }
+            }
+
             // Display user command
             appendLine(`> ${cmd}`, 'user');
             terminalInput.value = '';
 
             // Simple "Command" logic
-            const lowerCmd = cmd.toLowerCase();
+
 
             if (lowerCmd === 'help') {
                 appendLine('Available commands: help, clear, about, hi', 'system');
@@ -39,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            access_key: '0bc0e6ba-3499-44fc-b131-f66f80bdc120',
+                            access_key: 'a0e9f5ca-c926-4a8e-8a09-543c7e8eec2c',
                             name: 'Terminal User',
                             email: 'terminal@lab.io',
                             message: cmd,
@@ -49,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (response.ok) {
                         appendLine('System: Transmission successful. Integrity confirmed.', 'system');
+                        lastSendTime = Date.now();
                     } else {
                         appendLine('System Error: Packet loss detected.', 'system');
                     }
