@@ -351,24 +351,40 @@ function initOverlayRetreat() {
 
             // Behavior Refinement:
             if (entry.isIntersecting) {
-                // If it becomes the dominant section (visible > 50%): Reset to center
-                if (entry.intersectionRatio > 0.5) {
+                const rect = section.getBoundingClientRect();
+                const isCentered = rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3;
+
+                if (isCentered) {
+                    // Force Reset to Center
                     overlay.classList.remove('mini');
+                    overlay.style.top = '50%';
+                    overlay.style.left = '50%';
+                    overlay.style.bottom = 'auto';
+                    overlay.style.transform = 'translate(-50%, -50%) scale(1)';
+
                     if (timers.has(section)) clearTimeout(timers.get(section));
 
                     const timer = setTimeout(() => {
-                        // Only retreat if it's still the active/dominant section
                         const currentRect = section.getBoundingClientRect();
-                        const centerOfScreen = window.innerHeight / 2;
-                        if (currentRect.top < centerOfScreen && currentRect.bottom > centerOfScreen) {
+                        const center = window.innerHeight / 2;
+                        if (currentRect.top < center && currentRect.bottom > center) {
+                            // Force Retreat to Bottom-Left
                             overlay.classList.add('mini');
+                            overlay.style.top = 'auto';
+                            overlay.style.bottom = '2rem';
+                            overlay.style.left = '2rem';
+                            overlay.style.transform = 'translate(0, 0) scale(0.65)';
                         }
-                    }, 3000); // 3 seconds for reading
+                    }, 3000);
                     timers.set(section, timer);
                 }
             } else {
-                // Completely out of view: Reset state
                 overlay.classList.remove('mini');
+                overlay.style.top = '50%';
+                overlay.style.left = '50%';
+                overlay.style.bottom = 'auto';
+                overlay.style.transform = 'translate(-50%, -50%) scale(1)';
+
                 if (timers.has(section)) {
                     clearTimeout(timers.get(section));
                     timers.delete(section);
