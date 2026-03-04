@@ -890,3 +890,123 @@ footer {
     background: var(--accent-color);
     color: white;
 }
+/* ======================
+   Interactive Gifts
+   ====================== */
+.admin-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(13, 17, 23, 0.98);
+    z-index: 20000;
+    display: none;
+    flex-direction: column;
+    padding: 3rem;
+    font-family: 'Courier New', Courier, monospace;
+    color: #4ade80;
+    overflow-y: auto;
+    backdrop-filter: blur(20px);
+}
+
+.admin-overlay.active {
+    display: flex;
+}
+
+.admin-header {
+    border-bottom: 1px solid rgba(74, 222, 128, 0.3);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header span {
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.admin-close {
+    background: transparent;
+    border: 1px solid #4ade80;
+    color: #4ade80;
+    padding: 6px 16px;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.admin-close:hover {
+    background: #4ade80;
+    color: black;
+}
+
+.admin-content {
+    flex: 1;
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #4ade80;
+}
+
+.ascii-art {
+    color: var(--accent-color);
+    margin-bottom: 2rem;
+    font-weight: bold;
+    white-space: pre;
+    font-size: 1rem;
+    line-height: 1.2;
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.system-monitor-widget {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 190px;
+    background: rgba(13, 17, 23, 0.9);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.75rem;
+    color: #4ade80;
+    z-index: 999;
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+.monitor-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.monitor-bar-bg {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 2px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.monitor-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), #60a5fa);
+    width: 0%;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 8px var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .system-monitor-widget {
+        display: none;
+    }
+}
