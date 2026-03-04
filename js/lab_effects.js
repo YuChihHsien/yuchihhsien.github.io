@@ -350,25 +350,24 @@ function initOverlayRetreat() {
             if (!overlay) return;
 
             // Behavior Refinement:
-            // 1. If section is visible and NOT already timing/mini, or if scrolling BACK:
             if (entry.isIntersecting) {
-                const rect = section.getBoundingClientRect();
-                const isCentered = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.4;
-
-                if (isCentered) {
+                // If it becomes the dominant section (visible > 50%): Reset to center
+                if (entry.intersectionRatio > 0.5) {
                     overlay.classList.remove('mini');
                     if (timers.has(section)) clearTimeout(timers.get(section));
 
                     const timer = setTimeout(() => {
-                        // Re-check visibility before retreating
+                        // Only retreat if it's still the active/dominant section
                         const currentRect = section.getBoundingClientRect();
-                        if (currentRect.top < window.innerHeight * 0.5 && currentRect.bottom > window.innerHeight * 0.5) {
+                        const centerOfScreen = window.innerHeight / 2;
+                        if (currentRect.top < centerOfScreen && currentRect.bottom > centerOfScreen) {
                             overlay.classList.add('mini');
                         }
-                    }, 2500);
+                    }, 3000); // 3 seconds for reading
                     timers.set(section, timer);
                 }
             } else {
+                // Completely out of view: Reset state
                 overlay.classList.remove('mini');
                 if (timers.has(section)) {
                     clearTimeout(timers.get(section));
@@ -376,7 +375,7 @@ function initOverlayRetreat() {
                 }
             }
         });
-    }, { threshold: [0, 0.1, 0.5, 0.8] });
+    }, { threshold: [0, 0.2, 0.5, 0.9] });
 
     sections.forEach(section => observer.observe(section));
 
