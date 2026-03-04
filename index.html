@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chih-Hsien Yu | 余致賢 - Software Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=11">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=12">
 
     <!-- Google Analytics (GA4) - Replace G-WEYHDVGJ8C with your ID -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEYHDVGJ8C"></script>
@@ -153,28 +158,115 @@
             transform: translateY(-2px);
         }
 
+        /* Premium Hero Updates */
+        .premium-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 80vh;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .hero-content.centered {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .badge-tech {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+            background: rgba(59, 130, 246, 0.1);
+            padding: 4px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+
+        .standout-text {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-top: 2rem;
+            color: var(--text-primary);
+            max-width: 700px;
+            font-weight: 400;
+        }
+
+        .btn-premium {
+            padding: 1rem 2.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        /* Tech Marquee */
+        .tech-marquee-container {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            margin-top: 5rem;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            user-select: none;
+        }
+
+        .tech-marquee {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: space-around;
+            min-width: 100%;
+            animation: marquee 30s linear infinite;
+        }
+
+        .tech-marquee span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            opacity: 0.3;
+            margin: 0 4rem;
+            white-space: nowrap;
+            transition: opacity 0.3s ease;
+        }
+
+        .tech-marquee span:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        .hero-content.centered .cta-group.centered {
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
         @media (max-width: 992px) {
-            .hero {
-                flex-direction: column-reverse;
-                text-align: center;
-                gap: 2rem;
-                padding-top: 2rem;
+            .premium-hero {
+                min-height: auto;
+                padding-top: 4rem;
             }
 
-            .hero-content {
-                align-items: center;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .hero p.zh-desc {
-                border-left: none;
-                padding-left: 0;
-            }
-
-            .cta-group,
-            .skills-preview {
-                justify-content: center;
+            .standout-text {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -209,45 +301,59 @@
     </nav>
 
     <div class="container">
-        <main class="hero">
-            <div class="hero-content">
-                <h2 class="slide-up"><span id="typing-text"></span><span class="cursor-blink">|</span></h2>
+        <main class="hero premium-hero">
+            <div class="hero-content centered">
+                <div class="badge-tech slide-up">G-R_SYSTEM_ACTIVE // ARCHITECT</div>
                 <h1 class="slide-up delay-1">Chih-Hsien Yu <span class="zh">余致賢</span></h1>
+                <h2 class="slide-up delay-1"><span id="typing-text"></span><span class="cursor-blink">|</span></h2>
 
-                <p class="slide-up delay-2"
-                    data-zh="擁有跨國環境與多地開發經驗的資深軟體工程師，專注於系統穩定性、雲端架構 (AWS/K8s) 以及分散式後端系統 (.NET/Kafka) 的最佳化設計。"
-                    data-en="Delivering high-quality, scalable solutions through a proactive and determined approach. Specialized in backend architecture, system stability, and cloud infrastructure.">
-                    擁有跨國環境與多地開發經驗的資深軟體工程師，專注於系統穩定性、雲端架構 (AWS/K8s) 以及分散式後端系統 (.NET/Kafka) 的最佳化設計。
-                </p>
-                <p class="zh-desc slide-up delay-2" data-zh="具備前瞻性的技術視野，能在團隊中推動最佳實踐與程式碼品質。"
-                    data-en="With a forward-thinking technical vision, I drive best practices and code quality within the team.">
-                    具備前瞻性的技術視野，能在團隊中推動最佳實踐與程式碼品質。
+                <p class="slide-up delay-2 standout-text" data-zh="資深軟體工程師，專注於構建高可用性分散式系統與雲端原生架構。"
+                    data-en="Senior Software Engineer specializing in resilient distributed systems and cloud-native architectures.">
+                    資深軟體工程師，專注於構建高可用性分散式系統與雲端原生架構。
                 </p>
 
-                <div class="cta-group slide-up delay-3">
-                    <a href="resume.html" class="btn btn-primary"><i class="fa-solid fa-file-invoice"
-                            style="margin-right: 8px;"></i><span data-zh="查看完整履歷"
-                            data-en="View Full Resume">查看完整履歷</span></a>
-                    <a href="contact.html" class="btn btn-outline"><i class="fa-solid fa-paper-plane"
-                            style="margin-right: 8px;"></i><span data-zh="支持與贊助"
-                            data-en="Buy me a coffee">支持與贊助</span></a>
+                <div class="cta-group slide-up delay-3 centered">
+                    <a href="resume.html" class="btn btn-primary btn-premium"><span data-zh="進入履歷檔案"
+                            data-en="Enter Resume">進入履歷檔案</span></a>
+                    <a href="contact.html" class="btn btn-outline btn-premium"><span data-zh="技術交流"
+                            data-en="Get in Touch">技術交流</span></a>
                 </div>
 
-                <div class="skills-preview slide-up delay-3">
-                    <span class="skill-tag">.NET Core / C#</span>
-                    <span class="skill-tag">AWS Cloud</span>
-                    <span class="skill-tag">Kubernetes</span>
-                    <span class="skill-tag">Microservices</span>
-                    <span class="skill-tag">Kafka</span>
+                <div class="tech-marquee-container slide-up delay-3">
+                    <div class="tech-marquee">
+                        <span>.NET</span>
+                        <span>AWS</span>
+                        <span>Kubernetes</span>
+                        <span>Kafka</span>
+                        <span>Microservices</span>
+                        <span>Docker</span>
+                        <span>Redis</span>
+                        <span>MongoDB</span>
+                        <span>PostgreSQL</span>
+                        <span>Vue.js</span>
+                    </div>
+                    <div class="tech-marquee">
+                        <span>.NET</span>
+                        <span>AWS</span>
+                        <span>Kubernetes</span>
+                        <span>Kafka</span>
+                        <span>Microservices</span>
+                        <span>Docker</span>
+                        <span>Redis</span>
+                        <span>MongoDB</span>
+                        <span>PostgreSQL</span>
+                        <span>Vue.js</span>
+                    </div>
                 </div>
             </div>
+        </main>
 
-            <div class="hero-image slide-up delay-1">
-                <canvas id="particle-canvas" class="particle-bg"></canvas>
-                <div class="image-wrapper">
-                    <img src="./img/public/my.jpg" alt="Profile Picture">
-                </div>
+        <div class="hero-image slide-up delay-1">
+            <canvas id="particle-canvas" class="particle-bg"></canvas>
+            <div class="image-wrapper">
+                <img src="./img/public/my.jpg" alt="Profile Picture">
             </div>
+        </div>
         </main>
 
         <section class="connect-banner animate-on-scroll">
@@ -344,6 +450,20 @@
     <script src="https://web3forms.com/client/script.js" async defer></script>
     <script src="js/main.js?v=8"></script>
     <script src="js/terminal.js"></script>
+
+    <!-- Premium Texture Overlay -->
+    <svg style="display:none">
+        <filter id="grainy">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer>
+                <feFuncR type="linear" slope="0.35" />
+                <feFuncG type="linear" slope="0.35" />
+                <feFuncB type="linear" slope="0.35" />
+            </feComponentTransfer>
+        </filter>
+    </svg>
+    <div class="grain-overlay"></div>
 </body>
 
 </html>
