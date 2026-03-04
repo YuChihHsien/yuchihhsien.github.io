@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech Lab | 余致賢 - Chih-Hsien Yu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=11">
+    <link rel="stylesheet" href="css/style.css?v=15">
 
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEYHDVGJ8C"></script>
@@ -210,6 +210,17 @@
             </div>
         </section>
 
+        <!-- Section 5: Cyber Runner (Dino Game) -->
+        <section class="lab-section" id="dino-game-section">
+            <canvas id="dino-canvas" style="background: #000; cursor: pointer;"></canvas>
+            <div class="lab-overlay" style="background: rgba(0,0,0,0.4);">
+                <h2 data-zh="賽博跑酷" data-en="Cyber Runner">Cyber Runner</h2>
+                <p data-zh="實驗 05: 側向捲軸障礙避開遊戲。(按下空白鍵或點擊跳躍)"
+                    data-en="Exp 05: Side-scrolling obstacle avoidance game. (Press Space or Click to Jump)">
+                </p>
+            </div>
+        </section>
+
     </div> <!-- End #lab-scroll-container -->
 
     <!-- Back to Top Button -->
@@ -244,9 +255,10 @@
     <script src="https://cdn.jsdelivr.net/npm/webgl-fluid"></script>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=8"></script>
+    <script src="js/main.js?v=9"></script>
     <script src="js/terminal.js"></script>
     <script src="js/lab_effects.js"></script>
+    <script src="js/dino_game.js"></script>
     <script>
         // Fluid Simulation Configuration
         window.addEventListener('DOMContentLoaded', () => {
@@ -320,6 +332,11 @@
 
             lastScrollTop = scrollTop;
         }, { passive: true });
+
+        // Initialize Dino Game
+        window.addEventListener('load', () => {
+            initDinoGame('dino-canvas', 'dino-game-section');
+        });
     </script>
 </body>
 
