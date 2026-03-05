@@ -239,6 +239,18 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     scroll-behavior: smooth;
+}
+
+body.custom-cursor-active {
+    cursor: none;
+}
+
+body.custom-cursor-active a,
+body.custom-cursor-active button,
+body.custom-cursor-active .btn,
+body.custom-cursor-active .icon-btn,
+body.custom-cursor-active .terminal-toggle,
+body.custom-cursor-active .social-btn {
     cursor: none;
 }
 

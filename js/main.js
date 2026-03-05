@@ -94,27 +94,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
+        let isMoving = false;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
+
+            if (!isMoving) {
+                isMoving = true;
+                cursor.style.opacity = '1';
+                document.body.classList.add('custom-cursor-active');
+                // First position should be instant to avoid jumping from (0,0)
+                cursorX = mouseX;
+                cursorY = mouseY;
+            }
         });
 
         const updateCursor = () => {
-            // Smooth lagging effect (optional but premium)
-            // If you want instant, just use cursorX = mouseX
-            cursorX += (mouseX - cursorX) * 0.2;
-            cursorY += (mouseY - cursorY) * 0.2;
-
-            cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+            if (isMoving) {
+                // Smooth lagging effect (0.15 provides a premium feel)
+                cursorX += (mouseX - cursorX) * 0.15;
+                cursorY += (mouseY - cursorY) * 0.15;
+                cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+            }
             requestAnimationFrame(updateCursor);
         };
         updateCursor();
 
-        const interactiveElements = document.querySelectorAll('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        // Use event delegation for better performance and to handle dynamic elements
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
+                cursor.classList.add('hovered');
+            }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            if (e.target.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
+                cursor.classList.add('hovered');
+                // Double check if we're actually leaving the element
+                if (!e.relatedTarget || !e.relatedTarget.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
+                    cursor.classList.remove('hovered');
+                }
+            }
         });
     }
 
