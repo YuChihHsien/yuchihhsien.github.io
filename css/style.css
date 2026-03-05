@@ -1268,7 +1268,9 @@ footer {
     pointer-events: none;
 }
 
-.hero-content {
+.hero-content,
+.collaboration-section,
+.container>*:not(.hero-orbit-container) {
     position: relative;
     z-index: 20;
 }
@@ -1336,10 +1338,7 @@ footer {
     transform: scale(0.98);
 }
 
-.hero-orbit-container canvas {
-    pointer-events: auto;
-    /* Allow clicks on the canvas (handled by raycaster) */
-}
+/* Handled by global pointer-events policy */
 
 /* Specific Small Mobile Fixes */
 @media (max-width: 768px) {
