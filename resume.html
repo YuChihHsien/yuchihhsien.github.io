@@ -23,17 +23,27 @@
     </script>
     <style>
         :root {
-            --book-width: 450px;
-            --book-height: 600px;
-            --page-bg: var(--card-bg-color);
-            --paper-texture: url("https://www.transparenttextures.com/patterns/p6.png");
+            --book-width: 600px;
+            /* Increased width */
+            --book-height: 750px;
+            /* Increased height */
+            --page-bg: #1a1a1a;
+            --paper-texture: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+        }
+
+        /* --- Full Width Container --- */
+        .container {
+            max-width: 1400px;
+            /* Wider for full-page feel */
+            width: 95%;
+            margin: 0 auto;
         }
 
         /* --- View Toggle Switch --- */
         .view-controls {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             gap: 1rem;
         }
 
@@ -48,9 +58,9 @@
         }
 
         .toggle-btn {
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 25px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
             color: var(--text-secondary);
@@ -83,15 +93,14 @@
             left: 50%;
         }
 
-        /* --- Book Layout Animations --- */
+        /* --- Book Layout --- */
         .resume-page-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 250px);
-            perspective: 2000px;
-            padding: 2rem 0;
-            transition: transform 0.5s ease, opacity 0.5s ease;
+            min-height: calc(100vh - 200px);
+            perspective: 2500px;
+            padding-bottom: 2rem;
         }
 
         .book {
@@ -100,7 +109,7 @@
             height: var(--book-height);
             transition: transform 0.5s;
             transform-style: preserve-3d;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
         }
 
         .page {
@@ -112,18 +121,19 @@
             background-color: var(--page-bg);
             background-image: var(--paper-texture);
             border: 1px solid var(--border-color);
-            transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
             transform-origin: left;
             transform-style: preserve-3d;
             z-index: 1;
             padding: 3rem;
             overflow-y: auto;
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 15px 15px 0;
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
         }
 
+        /* Soft Spine */
         .page::after {
             content: "";
             position: absolute;
@@ -131,20 +141,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            box-shadow: inset 5px 0 15px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.2);
             pointer-events: none;
-        }
-
-        /* Shadow decoration for the "spine" area */
-        .page.flipped::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 10px;
-            height: 100%;
-            background: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent);
-            z-index: 10;
         }
 
         .page.flipped {
@@ -156,7 +154,7 @@
             z-index: 3;
         }
 
-        /* --- Classic (Vertical) View --- */
+        /* --- Classic View --- */
         body.view-classic .resume-page-wrapper {
             display: block;
             perspective: none;
@@ -169,41 +167,33 @@
             transform: none !important;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 2.5rem;
             box-shadow: none;
         }
 
         body.view-classic .page {
             position: relative;
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             height: auto;
             transform: none !important;
             opacity: 1 !important;
-            border-radius: 16px;
-            background-color: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: none;
-        }
-
-        body.view-classic .page.flipped {
-            transform: none !important;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            padding: 4rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
         }
 
         body.view-classic .book-nav {
             display: none;
         }
 
-        /* --- UI Components --- */
+        /* --- Components --- */
         .page::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .page::-webkit-scrollbar-track {
-            background: transparent;
+            width: 4px;
         }
 
         .page::-webkit-scrollbar-thumb {
@@ -214,92 +204,106 @@
         .book-nav {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 2.5rem;
             margin-top: 3.5rem;
             align-items: center;
         }
 
         .page-nav-btn {
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59, 130, 246, 0.05);
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            width: 54px;
-            height: 54px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
         }
 
         .page-nav-btn:hover:not(:disabled) {
             background: var(--accent-color);
             color: white;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+            transform: scale(1.05);
         }
 
         .page-nav-btn:disabled {
-            opacity: 0.3;
+            opacity: 0.2;
             cursor: not-allowed;
-            filter: grayscale(1);
         }
 
         .page-indicator {
             font-family: 'Space Grotesk', monospace;
             font-size: 0.9rem;
             color: var(--text-secondary);
-            letter-spacing: 3px;
+            letter-spacing: 5px;
             font-weight: 500;
         }
 
-        /* Section Styles Enhancement */
+        /* Section Typography */
         .section-title {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--text-primary);
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-weight: 700;
-            letter-spacing: -1px;
+            gap: 20px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
         }
 
         .section-title::before {
             content: "";
-            width: 35px;
-            height: 4px;
+            width: 45px;
+            height: 5px;
             background: var(--accent-color);
-            border-radius: 2px;
+            border-radius: 3px;
+        }
+
+        .role-header {
+            margin-bottom: 2rem;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 1.5rem;
         }
 
         .role-title {
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 0.4rem;
-            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
             letter-spacing: -0.5px;
         }
 
-        .company-name {
+        .company-meta {
             color: var(--accent-color);
             font-size: 1rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.8rem;
             font-weight: 600;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
         }
 
-        .exp-date {
-            font-size: 0.85rem;
-            opacity: 0.5;
-            margin-bottom: 1.5rem;
-            display: block;
-            font-family: 'Space Grotesk', monospace;
+        .exp-tag {
             background: rgba(255, 255, 255, 0.05);
-            padding: 4px 12px;
+            padding: 3px 10px;
+            font-size: 0.75rem;
             border-radius: 4px;
-            width: fit-content;
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        .exp-description {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            text-align: justify;
         }
 
         .exp-details {
@@ -309,130 +313,158 @@
 
         .exp-details li {
             position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.8rem;
+            padding-left: 1.8rem;
+            margin-bottom: 1.2rem;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .exp-details li::before {
-            content: "→";
+            content: "•";
             position: absolute;
             left: 0;
             color: var(--accent-color);
-            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 1.2;
         }
 
-        .skills-mini-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .skill-group h4 {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .skill-group h4 i {
-            color: var(--accent-color);
-            font-size: 0.9rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .skill-tag {
-            font-size: 0.8rem;
-            padding: 6px 14px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-        }
-
-        .skill-tag:hover {
-            border-color: var(--accent-color);
-            color: white;
-            background: rgba(59, 130, 246, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* --- Intro Page Styles --- */
-        .intro-content {
+        /* --- Cover Page Redesign --- */
+        .cover-page {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             height: 100%;
-            text-align: center;
+            padding: 4rem;
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
         }
 
-        .intro-avatar {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 5px solid var(--accent-color);
-            margin-bottom: 2.5rem;
-            padding: 6px;
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
-            background: var(--page-bg);
+        .cover-page::before {
+            content: "CURRICULUM VITAE";
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            opacity: 0.03;
+            font-weight: 900;
+            white-space: nowrap;
+            pointer-events: none;
         }
 
-        .intro-avatar img {
+        .cover-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .cover-version {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.7rem;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            writing-mode: vertical-rl;
+        }
+
+        .cover-title {
+            text-align: left;
+        }
+
+        .cover-title h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+            background: linear-gradient(45deg, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cover-title p {
+            font-size: 1.1rem;
+            letter-spacing: 5px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .cover-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+        }
+
+        .cover-meta {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .cover-hint {
+            color: var(--accent-color);
+            font-weight: 700;
+            letter-spacing: 2px;
+            animation: pulse-hint 2s infinite;
+        }
+
+        @keyframes pulse-hint {
+            0% {
+                opacity: 0.5;
+                transform: translateX(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translateX(5px);
+            }
+
+            100% {
+                opacity: 0.5;
+                transform: translateX(0);
+            }
+        }
+
+        /* Grid Background for Cover */
+        .cover-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
         }
 
-        .intro-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -1px;
+        /* Tablet Adjustments */
+        @media (max-width: 1200px) {
+            :root {
+                --book-width: 500px;
+                --book-height: 650px;
+            }
         }
 
-        /* --- Footer Stats --- */
-        .footer-tech-stats {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-family: 'Space Grotesk', monospace;
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Responsive Mobile Layout Override */
+        /* Mobile Layout */
         @media (max-width: 768px) {
             .view-controls {
                 display: none;
-                /* Hide toggle on mobile, always vertical */
             }
 
             .resume-page-wrapper {
-                perspective: none;
                 display: block;
-                height: auto;
                 padding-top: 0;
             }
 
             .book {
                 width: 100%;
                 height: auto;
-                transform: none !important;
                 box-shadow: none;
             }
 
@@ -446,13 +478,21 @@
                 border: none;
                 border-bottom: 1px solid var(--border-color);
                 border-radius: 0;
-                opacity: 1 !important;
                 display: block;
                 background-image: none;
             }
 
             .book-nav {
                 display: none;
+            }
+
+            .cover-page {
+                border: none;
+                padding: 3rem 1rem;
+            }
+
+            .cover-title h1 {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -486,7 +526,7 @@
         </div>
     </nav>
 
-    <div class="container" style="padding-top: 5rem;">
+    <div class="container" style="padding-top: 6rem;">
 
         <!-- View Controls -->
         <div class="view-controls">
@@ -504,106 +544,204 @@
         <div class="resume-page-wrapper">
             <div class="book" id="resumeBook">
 
-                <!-- Page 1: Intro -->
+                <!-- Page 1: Cover Page -->
                 <div class="page" id="p1">
-                    <div class="intro-content">
-                        <div class="intro-avatar">
-                            <img src="img/public/my.jpg" alt="Chih-Hsien Yu">
+                    <div class="cover-page">
+                        <div class="cover-grid"></div>
+                        <div class="cover-top">
+                            <div class="cover-title">
+                                <p data-zh="余致賢 的專業檔案" data-en="PROFESSIONAL DOSSIER">余致賢 的專業檔案</p>
+                                <h1>RESUME<br>& PROFILE</h1>
+                                <p data-zh="資深軟體工程師" data-en="CHIH-HSIEN YU">CHIH-HSIEN YU</p>
+                            </div>
+                            <div class="cover-version">VER_2025.03 // GA-RY_OS</div>
                         </div>
-                        <div class="badge-tech">SYS_ENTRY // PROFILE</div>
-                        <h2 class="intro-title" data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</h2>
-                        <p style="font-size: 1.1rem; color: var(--accent-color); font-weight: 600; margin-bottom: 2rem;"
-                            data-zh="資深軟體工程師" data-en="Senior Software Engineer">資深軟體工程師</p>
-                        <p style="font-size: 1rem; line-height: 1.8; color: var(--text-secondary); max-width: 90%;"
-                            data-zh="專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。"
-                            data-en="Software Engineer specializing in scalable and maintainable architectures. Experienced in international projects, distributed systems, and cloud-native technologies.">
-                            專注於設計具高擴展性與可維護性架構的工程師。具備跨國專案開發經驗，擅長分散式系統與雲端原生技術。
-                        </p>
-                        <div class="book-nav-hint"
-                            style="margin-top: 3.5rem; color: var(--accent-color); font-size: 0.85rem; letter-spacing: 4px; font-weight: 700; text-transform: uppercase;">
-                            Start Exploring <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+                        <div class="cover-bottom">
+                            <div class="cover-meta">
+                                STATUS: AVAILABLE FOR OPPORTUNITIES<br>
+                                LOCATION: NEW TAIPEI, TAIWAN<br>
+                                LAST_UPDATE: MARCH 2025
+                            </div>
+                            <div class="cover-hint">
+                                <span data-zh="點擊翻頁" data-en="FLIP TO START">點擊翻頁</span> <i
+                                    class="fa-solid fa-chevron-right"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Page 2: Experience 1 -->
+                <!-- Page 2: Higgs Part 1 -->
                 <div class="page" id="p2">
-                    <h3 class="section-title"><span data-zh="工作經歷 I" data-en="Experience I">工作經歷 I</span></h3>
-                    <div class="role-title" data-zh="後端全端工程師" data-en="Backend-focused Full-Stack Engineer">後端全端工程師
+                    <h3 class="section-title"><span data-zh="現職經歷 I" data-en="Current Experience I">現職經歷 I</span></h3>
+                    <div class="role-header">
+                        <div class="role-title" data-zh="後端全端工程師" data-en="Backend-focused Full-Stack Engineer">後端全端工程師
+                        </div>
+                        <div class="company-meta">
+                            <i class="fa-solid fa-building"></i> 希格斯資訊科技有限公司 (Higgs Info Tech)
+                            <span class="exp-tag">2023.03 - PRESENT</span>
+                        </div>
                     </div>
-                    <div class="company-name" data-zh="希格斯資訊科技有限公司" data-en="Higgs Info Tech">希格斯資訊科技有限公司</div>
-                    <span class="exp-date">MAR 2023 - PRESENT</span>
+                    <div class="exp-description" data-zh="在現職公司，我專注於建構與演進具備高可靠性、高效能與易維護性的雲端原生產品系統。"
+                        data-en="At my current company, I focus on building and evolving a scalable, cloud-native product system with an emphasis on reliability, performance, and maintainability.">
+                        在現職公司，我專注於建構與演進具備高可靠性、高效能與易維護性的雲端原生產品系統。
+                    </div>
                     <ul class="exp-details">
-                        <li data-zh="主導核心產品系統開發與維護，重構 Monolithic 架構為微服務。"
-                            data-en="Led core product systems development, refactoring monolithic to microservices.">
-                            主導核心產品系統開發與維護，重構 Monolithic 架構為微服務。</li>
-                        <li data-zh="設計實作 Kafka 與 Microsoft Orleans 分散式溝通機制。"
-                            data-en="Implemented Kafka and Microsoft Orleans for distributed communication.">設計實作 Kafka
-                            與 Microsoft Orleans 分散式溝通機制。</li>
-                        <li data-zh="建立 GitLab CI/CD 與 Ansible 流水線部署至 EKS 環境。"
-                            data-en="Built CI/CD pipelines with GitLab and Ansible for EKS deployment.">建立 GitLab CI/CD
-                            與 Ansible 流水線部署至 EKS 環境。</li>
-                        <li data-zh="應用 HPA 與 ELK Stack 進行監控與動態資源優化。"
-                            data-en="Applied HPA and ELK Stack for monitoring and resource optimization.">應用 HPA 與 ELK
-                            Stack 進行監控與動態資源優化。</li>
+                        <li data-zh="主導核心產品系統開發與維護，確保生產環境穩定運行。"
+                            data-en="Led the development and maintenance of a core product system, ensuring stable operation in production.">
+                            主導核心產品系統開發與維護，確保生產環境穩定運行。</li>
+                        <li data-zh="重構 Monolithic 架構：透過拆分 Repo、升級 .NET 核心框架與解耦依賴，顯著提升開發效率與部署彈性。"
+                            data-en="Refactored legacy monolithic architecture by splitting repositories, upgrading .NET frameworks, and decoupling system dependencies.">
+                            重構 Monolithic 架構：透過拆分 Repo、升級 .NET 核心框架與解耦依賴，顯著提升開發效率與部署彈性。</li>
+                        <li data-zh="分散式架構設計：利用 Kafka 與 Microsoft Orleans 實作微服務間通訊，達成服務橫向擴展並降低核心數據存取風險。"
+                            data-en="Architected microservices communication using Kafka and Microsoft Orleans, enabling service scale-out and reducing risk.">
+                            分散式架構設計：利用 Kafka 與 Microsoft Orleans 實作微服務間通訊，達成服務橫向擴展並降低核心數據存取風險。</li>
                     </ul>
                 </div>
 
-                <!-- Page 3: Experience 2 -->
+                <!-- Page 3: Higgs Part 2 -->
                 <div class="page" id="p3">
-                    <h3 class="section-title"><span data-zh="工作經歷 II" data-en="Experience II">工作經歷 II</span></h3>
-                    <div class="role-title" data-zh="軟體工程師 (多地駐點)" data-en="Software Engineer">軟體工程師 (多地駐點)</div>
-                    <div class="company-name" data-zh="台北, 台中, 跨國專案" data-en="Taipei, Taichung, International">台北, 台中,
-                        跨國專案</div>
-                    <span class="exp-date">FULL-TIME / INTERN</span>
+                    <h3 class="section-title"><span data-zh="現職經歷 II" data-en="Current Experience II">現職經歷 II</span>
+                    </h3>
+                    <div class="role-header">
+                        <div class="role-title">DevOps / Performance / Quality</div>
+                    </div>
                     <ul class="exp-details">
-                        <li data-zh="從實習生晉升為全職開發者，管理完整專案生命週期。"
-                            data-en="Transitioned from intern to full-time developer, managing life cycles.">
-                            從實習生晉升為全職開發者，管理完整專案生命週期。</li>
-                        <li data-zh="使用 .NET/C# 開發後端系統並部署於 AWS/K8s 環境。"
-                            data-en="Developed backend systems via .NET/C# on AWS/K8s environments.">使用 .NET/C#
-                            開發後端系統並部署於 AWS/K8s 環境。</li>
-                        <li data-zh="整合 Kafka 即時串流資料架構。"
-                            data-en="Integrated real-time streaming architectures using Kafka.">整合 Kafka 即時串流資料架構。</li>
+                        <li data-zh="DevOps 實踐：建立 GitLab CI 流水線進行容器包裝，應用 AWX/Ansible 自動化部屬至 AWS EKS (K8s) 環境。"
+                            data-en="Built CI/CD pipelines with GitLab CI and automated deployments using AWX/Ansible to AWS EKS.">
+                            DevOps 實踐：建立 GitLab CI 流水線進行容器包裝，應用 AWX/Ansible 自動化部屬至 AWS EKS (K8s) 環境。</li>
+                        <li data-zh="資源優化：應用 Horizontal Pod Autoscaling (HPA) 根據實時負載動態優化資源配置。"
+                            data-en="Applied Horizontal Pod Autoscaling (HPA) to dynamically optimize resource usage based on real-time workloads.">
+                            資源優化：應用 Horizontal Pod Autoscaling (HPA) 根據實時負載動態優化資源配置。</li>
+                        <li data-zh="監控與診斷：利用 ELK Stack 進行日誌分析與監控，快速診斷並解決生產環境問題。"
+                            data-en="Utilized ELK Stack for log analysis and monitoring, rapidly diagnosing production issues.">
+                            監控與診斷：利用 ELK Stack 進行日誌分析與監控，快速診斷並解決生產環境問題。</li>
+                        <li data-zh="敏捷開發模式：在 Scrum 框架下與跨職能團隊合作，積極參與設計討論與 Code Review 以提升工程標準。"
+                            data-en="Collaborated in Scrum methodology, participating in design discussions and code reviews to improve engineering standards.">
+                            敏捷開發模式：在 Scrum 框架下與跨職能團隊合作，積極參與設計討論與 Code Review 以提升工程標準。</li>
                     </ul>
                 </div>
 
-                <!-- Page 4: Skills -->
+                <!-- Page 4: 智聯微網 I -->
                 <div class="page" id="p4">
-                    <h3 class="section-title"><span data-zh="核心能力" data-en="Core Skills">核心能力</span></h3>
+                    <h3 class="section-title"><span data-zh="專業工作經歷" data-en="Professional History">專業工作經歷</span></h3>
+                    <div class="role-header">
+                        <div class="role-title" data-zh="軟體工程師" data-en="Software Engineer">軟體工程師</div>
+                        <div class="company-meta">
+                            <i class="fa-solid fa-code-branch"></i> 智聯微網科技有限公司
+                            <span class="exp-tag">2018.05 - 2023.02</span>
+                        </div>
+                    </div>
+                    <h4 style="color:var(--accent-color); margin-bottom:1rem;" data-zh="平台維護與功能開發"
+                        data-en="Platform & Features">平台維護與功能開發</h4>
+                    <ul class="exp-details">
+                        <li data-zh="負責高流量平台穩定性維護與新功能開發。"
+                            data-en="Maintained platform stability and developed new features for high-traffic environments.">
+                            負責高流量平台穩定性維護與新功能開發。</li>
+                        <li data-zh="多樣化系統串接：成功整合多方第三方遊戲供應商 API。"
+                            data-en="Multi-system integration: Successfully integrated various 3rd-party game APIs.">
+                            多樣化系統串接：成功整合多方第三方遊戲供應商 API。</li>
+                        <li data-zh="活動系統開發：設計並實作客製化活動平台系統，支援多樣化行銷需求。"
+                            data-en="Activity System: Designed and implemented customized activity platforms to support marketing needs.">
+                            活動系統開發：設計並實作客製化活動平台系統，支援多樣化行銷需求。</li>
+                    </ul>
+                </div>
+
+                <!-- Page 5: 智聯微網 II -->
+                <div class="page" id="p5">
+                    <h3 class="section-title"><span data-zh="金融與金流經驗" data-en="Fintech & Payments">金融與金流經驗</span></h3>
+                    <div class="role-header">
+                        <div class="role-title">Payment & Financial Systems</div>
+                    </div>
+                    <ul class="exp-details">
+                        <li data-zh="第三方金流整合：串接多樣化金流管道，確保交易之安全性與穩定性。"
+                            data-en="Integrated diverse 3rd-party payment gateways ensuring transaction security.">
+                            第三方金流整合：串接多樣化金流管道，確保交易之安全性與穩定性。</li>
+                        <li data-zh="財務對帳系統：開發自動化對帳系統，大幅降低人工核對誤差與流程負擔。"
+                            data-en="Finance reconciliation: Developed automated systems to reduce manual auditing errors.">
+                            財務對帳系統：開發自動化對帳系統，大幅降低人工核對誤差與流程負擔。</li>
+                        <li data-zh="流程優化：簡化串接流程並開發輔助工具，顯著提高系統對接的穩定度。"
+                            data-en="Process optimization: Simplified integration workflows and developed internal tools to boost reliability.">
+                            流程優化：簡化串接流程並開發輔助工具，顯著提高系統對接的穩定度。</li>
+                    </ul>
+                </div>
+
+                <!-- Page 6: 新陽電腦 -->
+                <div class="page" id="p6">
+                    <h3 class="section-title"><span data-zh="早期職涯案例" data-en="Early Career Projects">早期職涯案例</span></h3>
+                    <div class="role-header">
+                        <div class="role-title" data-zh="軟體工程師" data-en="Software Engineer">軟體工程師</div>
+                        <div class="company-meta">
+                            <i class="fa-solid fa-terminal"></i> 新陽電腦科技
+                            <span class="exp-tag">2017.01 - 2018.05</span>
+                        </div>
+                    </div>
+                    <p class="exp-description" data-zh="負責政府單位與大型企業系統之開發與建置。"
+                        data-en="Developed and built systems for government agencies and large enterprises.">
+                        負責政府單位與大型企業系統之開發與建置。
+                    </p>
+                    <ul class="exp-details">
+                        <li data-zh="中華航空公司 TMIS 教育系統之開發與功能維護。"
+                            data-en="Developed TMIS education system for China Airlines.">中華航空公司 TMIS 教育系統之開發與功能維護。</li>
+                        <li data-zh="國民健康署新聞剪輯系統之架構建置。"
+                            data-en="Built news clipping systems for the Health Promotion Administration.">
+                            國民健康署新聞剪輯系統之架構建置。</li>
+                        <li data-zh="醫療院所預防保健暨戒菸服務系統整合。"
+                            data-en="Integrated preventive healthcare and tobacco cessation systems for medical institutions.">
+                            醫療院所預防保健暨戒菸服務系統整合。</li>
+                    </ul>
+                </div>
+
+                <!-- Page 7: Core Concepts -->
+                <div class="page" id="p7">
+                    <h3 class="section-title"><span data-zh="核心技術棧" data-en="Full Stack Tech">核心技術棧</span></h3>
                     <div class="skills-mini-grid">
                         <div class="skill-group">
-                            <h4><i class="fa-solid fa-server"></i> <span data-zh="後端開發" data-en="Backend">後端開發</span>
-                            </h4>
+                            <h4><i class="fa-solid fa-server"></i> BACKEND / ARCH</h4>
                             <div class="skill-tags">
-                                <span class="skill-tag">.NET Core</span><span class="skill-tag">C#</span>
-                                <span class="skill-tag">Orleans</span><span class="skill-tag">DDD</span>
+                                <span class="skill-tag">.NET 8/Core</span><span class="skill-tag">C# Expert</span>
+                                <span class="skill-tag">Microservices</span><span class="skill-tag">Orleans</span>
+                                <span class="skill-tag">Kafka</span><span class="skill-tag">DDD</span>
                             </div>
                         </div>
                         <div class="skill-group">
-                            <h4><i class="fa-solid fa-cloud"></i> <span data-zh="基礎建設"
-                                    data-en="Infrastructure">基礎建設</span></h4>
+                            <h4><i class="fa-solid fa-cloud"></i> CLOUD / DEVOPS</h4>
                             <div class="skill-tags">
-                                <span class="skill-tag">AWS</span><span class="skill-tag">Kubernetes</span>
+                                <span class="skill-tag">AWS (EKS, S3, Secrets)</span><span
+                                    class="skill-tag">Kubernetes</span>
                                 <span class="skill-tag">Docker</span><span class="skill-tag">GitLab CI</span>
+                                <span class="skill-tag">Ansible / AWX</span>
                             </div>
                         </div>
                         <div class="skill-group">
-                            <h4><i class="fa-solid fa-database"></i> <span data-zh="資料技術" data-en="Data">資料技術</span>
-                            </h4>
+                            <h4><i class="fa-solid fa-database"></i> DATA & CACHE</h4>
                             <div class="skill-tags">
-                                <span class="skill-tag">Kafka</span><span class="skill-tag">Redis</span>
-                                <span class="skill-tag">MongoDB</span><span class="skill-tag">SQL Server</span>
+                                <span class="skill-tag">SQL Server</span><span class="skill-tag">MongoDB</span>
+                                <span class="skill-tag">Redis</span><span class="skill-tag">ELK Stack</span>
                             </div>
                         </div>
-                        <div class="skill-group">
-                            <h4><i class="fa-solid fa-code"></i> <span data-zh="前端技術" data-en="Frontend">前端技術</span>
-                            </h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Vue 3</span><span class="skill-tag">ES6+</span>
-                                <span class="skill-tag">Three.js</span>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 8: Contact / Engineering Mindset -->
+                <div class="page" id="p8">
+                    <h3 class="section-title"><span data-zh="工程哲學" data-en="Engineering Philosophy">工程哲學</span></h3>
+                    <div class="exp-description" data-zh="追求乾淨、可擴展且具備韌性的程式碼。我不僅是一位程式開發者，更是一位致力於透過技術解決複雜業務問題的工程設計師。"
+                        data-en="Driven by clean, scalable, and resilient code. I am not just a developer, but an engineering designer dedicated to solving complex business challenges.">
+                        追求乾淨、可擴展且具備韌性的程式碼。我不僅是一位程式開發者，更是一位致力於透過技術解決複雜業務問題的工程設計師。
+                    </div>
+                    <div style="margin-top: 5rem; text-align: center;">
+                        <img src="img/public/my.jpg"
+                            style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent-color); padding: 5px; margin-bottom: 2rem;">
+                        <h4 data-zh="聯絡資訊" data-en="CONTACT">聯絡資訊</h4>
+                        <p
+                            style="font-family: 'Space Grotesk', monospace; margin-top: 1rem; color: var(--accent-color);">
+                            GITHUB.COM/YUCHIHHSIEN<br>
+                            CHIH-HSIEN YU // SENIOR ENGINEER
+                        </p>
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 3rem; right: 3rem; font-size: 0.7rem; opacity: 0.3; letter-spacing: 5px;">
+                        END_OF_TRANSCRIPT
                     </div>
                 </div>
 
@@ -611,7 +749,7 @@
 
             <div class="book-nav">
                 <button class="page-nav-btn" id="prevBtn" disabled><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="page-indicator" id="pageIndicator">PAGE 1 / 4</div>
+                <div class="page-indicator" id="pageIndicator">PAGE 1 / 8</div>
                 <button class="page-nav-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
         </div>
@@ -620,15 +758,15 @@
 
     <footer>
         <div class="footer-tech-stats">
-            <span><i class="fa-solid fa-bolt"></i> OS: GA-RY_OS v2.4</span>
+            <span><i class="fa-solid fa-bolt"></i> STATUS: SECURE</span>
             <span class="separator">|</span>
-            <span><i class="fa-solid fa-desktop"></i> GUI: Hybrid View</span>
+            <span><i class="fa-solid fa-database"></i> DATA: LOCALHOST</span>
         </div>
         <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
         </p>
     </footer>
 
-    <script src="js/main.js?v=13"></script>
+    <script src="js/main.js?v=20"></script>
     <script>
         // --- View Mode Controller ---
         const body = document.body;
@@ -646,7 +784,8 @@
                 btnBook.classList.add('active');
                 btnClassic.classList.remove('active');
                 localStorage.setItem('resumeViewMode', 'book');
-                updateBook(); // Ensure book state is correct when switching back
+                currentPage = 1; // Reset to page 1 on switch for consistency
+                updateBook();
             }
         }
 
