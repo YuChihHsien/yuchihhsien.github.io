@@ -192,31 +192,23 @@
 
 .tech-marquee span {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    opacity: 0.6;
-    margin: 0 3rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    opacity: 0.5;
+    margin: 0 4rem;
     white-space: nowrap;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 8px 20px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(4px);
-}
-
-.tech-marquee:hover {
-    animation-play-state: paused;
+    transition: all 0.3s ease;
+    padding: 6px 16px;
+    border-radius: 50px;
+    background: rgba(59, 130, 246, 0.05);
 }
 
 .tech-marquee span:hover {
     opacity: 1;
-    color: white;
-    background: rgba(59, 130, 246, 0.2);
-    border-color: var(--accent-color);
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-    transform: translateY(-5px) scale(1.1);
+    color: var(--accent-color);
+    background: rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
 }
 
 @keyframes marquee {
