@@ -975,6 +975,7 @@ footer {
     z-index: 99999;
     transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, opacity 0.3s ease;
     transform: translate(-50%, -50%);
+    will-change: transform;
     mix-blend-mode: difference;
 }
 
