@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>贊助 Support | 余致賢 - Chih-Hsien Yu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css?v=12">
+    <link rel="stylesheet" href="css/style.css?v=21">
 
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEYHDVGJ8C"></script>
@@ -30,78 +30,6 @@
         .contact-header p {
             color: var(--text-secondary);
             font-size: 1.1rem;
-        }
-
-        /* Social Links */
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 4rem;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 64px;
-            height: 64px;
-            background-color: var(--card-bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            transition: all var(--transition-fast);
-            cursor: pointer;
-            text-decoration: none;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .social-btn img {
-            width: 36px;
-            height: 36px;
-            transition: transform var(--transition-fast);
-        }
-
-        .social-btn:hover {
-            transform: translateY(-5px);
-        }
-
-        .social-btn.line:hover {
-            border-color: #00c300;
-            box-shadow: 0 10px 20px rgba(0, 195, 0, 0.2);
-        }
-
-        .social-btn.ig:hover {
-            border-color: #e1306c;
-            box-shadow: 0 10px 20px rgba(225, 48, 108, 0.2);
-        }
-
-        .social-btn.linkedin:hover i {
-            color: #0e76a8;
-        }
-
-        .social-btn.linkedin:hover {
-            border-color: #0e76a8;
-            box-shadow: 0 10px 20px rgba(14, 118, 168, 0.2);
-        }
-
-        .social-btn.email:hover i {
-            color: #ea4335;
-        }
-
-        .social-btn.email:hover {
-            border-color: #ea4335;
-            box-shadow: 0 10px 20px rgba(234, 67, 53, 0.2);
-        }
-
-        .social-btn:hover img,
-        .social-btn:hover i {
-            transform: scale(1.15);
-        }
-
-        .social-btn i {
-            font-size: 32px;
-            color: var(--text-secondary);
-            transition: transform var(--transition-fast), color var(--transition-fast);
         }
 
         /* Donation Section */
@@ -149,21 +77,6 @@
             box-shadow: var(--shadow-hover);
         }
 
-        .donation-card img {
-            width: 100%;
-            max-width: 220px;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 1.25rem;
-            cursor: pointer;
-            transition: filter var(--transition-fast);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .donation-card img:hover {
-            filter: brightness(1.05);
-        }
-
         .donation-card h4 {
             color: var(--text-primary);
             font-size: 1.1rem;
@@ -175,61 +88,6 @@
             margin-bottom: 0;
             color: var(--text-secondary);
             line-height: 1.5;
-        }
-
-        /* Modal for images */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            transition: opacity var(--transition-medium);
-        }
-
-        [data-theme="dark"] .modal {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .modal.show {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90vh;
-            text-align: center;
-        }
-
-        .modal-content img {
-            max-width: 100%;
-            max-height: 85vh;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            color: #fff;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: color var(--transition-fast);
-        }
-
-        .close-btn:hover {
-            color: var(--accent-color);
         }
 
         @media (max-width: 768px) {
@@ -247,33 +105,9 @@
 
 <body>
 
-    <nav>
-        <a href="index.html" class="nav-brand"><i class="fa-solid fa-code"></i> C-H. Yu</a>
-        <div class="nav-left">
-            <ul class="nav-links">
-                <li><a href="index.html"><i class="fa-solid fa-house"></i> <span data-zh="首頁"
-                            data-en="Home">首頁</span></a></li>
-                <li><a href="resume.html"><i class="fa-solid fa-file-lines"></i> <span data-zh="履歷"
-                            data-en="Resume">履歷</span></a></li>
-                <li><a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-zh="實驗室"
-                            data-en="Lab">實驗室</span></a></li>
-                <li><a href="contact.html" class="active"><i class="fa-solid fa-mug-hot"></i> <span data-zh="贊助"
-                            data-en="Support">贊助</span></a></li>
-            </ul>
-            <div class="nav-controls">
-                <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
-                <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
-                    title="Toggle Language">EN</button>
-                <div class="hamburger">
-                    <span class="line1"></span>
-                    <span class="line2"></span>
-                    <span class="line3"></span>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div id="nav-container"></div>
 
-    <div class="container">
+    <div class="container" style="padding-top: 6rem;">
 
         <header class="contact-header fade-in">
             <h1 data-zh="支持與贊助" data-en="Buy Me a Coffee">支持與贊助</h1>
@@ -305,16 +139,7 @@
 
     </div>
 
-    <footer>
-        <div class="footer-tech-stats">
-            <span><i class="fa-solid fa-gauge-high"></i> Performance: 100/100</span>
-            <span class="separator">|</span>
-            <span><i class="fa-solid fa-code"></i> Built with .NET & Three.js</span>
-            <span style="opacity: 0.2; font-size: 0.65rem; margin-left: 1rem;">Auth: G****</span>
-        </div>
-        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
-        </p>
-    </footer>
+    <div id="footer-container"></div>
 
     <div class="terminal-widget">
         <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
@@ -338,7 +163,8 @@
         </div>
     </div>
 
-    <script src="js/main.js?v=8"></script>
+    <script src="js/components.js"></script>
+    <script src="js/main.js?v=21"></script>
     <script src="js/terminal.js"></script>
 </body>
 

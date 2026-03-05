@@ -11,9 +11,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20">
+    <link rel="stylesheet" href="css/style.css?v=21">
 
-    <!-- Google Analytics (GA4) - Replace G-WEYHDVGJ8C with your ID -->
+    <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WEYHDVGJ8C"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -25,37 +25,13 @@
 
 <body>
 
-    <nav>
-        <a href="index.html" class="nav-brand"><i class="fa-solid fa-code"></i> C-H. Yu</a>
-        <div class="nav-left">
-            <ul class="nav-links">
-                <li><a href="index.html" class="active"><i class="fa-solid fa-house"></i> <span data-zh="首頁"
-                            data-en="Home">首頁</span></a></li>
-                <li><a href="resume.html"><i class="fa-solid fa-file-lines"></i> <span data-zh="履歷"
-                            data-en="Resume">履歷</span></a></li>
-                <li><a href="lab.html"><i class="fa-solid fa-flask"></i> <span data-zh="實驗室"
-                            data-en="Lab">實驗室</span></a></li>
-                <li><a href="contact.html"><i class="fa-solid fa-mug-hot"></i> <span data-zh="贊助"
-                            data-en="Support">贊助</span></a></li>
-            </ul>
-            <div class="nav-controls">
-                <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
-                <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
-                    title="Toggle Language">EN</button>
-                <div class="hamburger">
-                    <span class="line1"></span>
-                    <span class="line2"></span>
-                    <span class="line3"></span>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div id="nav-container"></div>
 
     <div class="container">
         <main class="hero premium-hero">
             <div class="hero-content centered">
                 <div class="hero-avatar slide-up">
-                    <img src="img/public/my.jpg" alt="Chih-Hsien Yu">
+                    <img src="img/public/my.jpg" alt="Chih-Hsien Yu" loading="lazy">
                 </div>
                 <div class="badge-tech slide-up">G-R_SYSTEM_ACTIVE // ARCHITECT</div>
                 <h1 class="slide-up delay-1">Chih-Hsien Yu <span class="zh">余致賢</span></h1>
@@ -168,16 +144,7 @@
         </section>
     </div>
 
-    <footer>
-        <div class="footer-tech-stats">
-            <span><i class="fa-solid fa-gauge-high"></i> Performance: 100/100</span>
-            <span class="separator">|</span>
-            <span><i class="fa-solid fa-code"></i> Built with .NET & Three.js</span>
-            <span style="opacity: 0.2; font-size: 0.65rem; margin-left: 1rem;">Auth: G****</span>
-        </div>
-        <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
-        </p>
-    </footer>
+    <div id="footer-container"></div>
 
     <div class="terminal-widget">
         <button class="terminal-toggle" onclick="toggleTerminal()" title="Open Terminal">
@@ -203,7 +170,8 @@
 
     <!-- Web3Forms Script for hCaptcha -->
     <script src="https://web3forms.com/client/script.js" async defer></script>
-    <script src="js/main.js?v=12"></script>
+    <script src="js/components.js"></script>
+    <script src="js/main.js?v=21"></script>
     <script src="js/terminal.js"></script>
 
     <!-- Premium Texture Overlay -->

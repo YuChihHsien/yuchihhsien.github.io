@@ -85,20 +85,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ---- Professional Polish: Custom Cursor ----
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    document.body.appendChild(cursor);
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-    });
+    if (!isTouchDevice) {
+        const cursor = document.createElement('div');
+        cursor.className = 'custom-cursor';
+        document.body.appendChild(cursor);
 
-    const interactiveElements = document.querySelectorAll('a, button, .social-btn, .skill-tag, .nav-brand');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-    });
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        const updateCursor = () => {
+            // Smooth lagging effect (optional but premium)
+            // If you want instant, just use cursorX = mouseX
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+
+            cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+            requestAnimationFrame(updateCursor);
+        };
+        updateCursor();
+
+        const interactiveElements = document.querySelectorAll('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+    }
 
     // ---- Professional Polish: Scroll Progress ----
     const progressContainer = document.createElement('div');
@@ -108,10 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
     progressContainer.appendChild(progressBar);
     document.body.appendChild(progressContainer);
 
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (window.scrollY / windowHeight) * 100;
-        progressBar.style.width = scrolled + '%';
+        if (!scrollTicking) {
+            window.requestAnimationFrame(() => {
+                const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (window.scrollY / windowHeight) * 100;
+                progressBar.style.width = scrolled + '%';
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
     });
 
     // ---- Professional Polish: Typing Effect ----
@@ -356,6 +381,21 @@ function initTechCloud(container) {
     });
 }
 
+// --- Global Namespace ---
+window.GA_RY = {
+    theme: {
+        toggle: toggleTheme,
+        set: setTheme
+    },
+    lang: {
+        toggle: toggleLanguage,
+        set: setLanguage
+    },
+    particles: {
+        instance: null
+    }
+};
+
 // Theme Management
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -385,20 +425,21 @@ function setLanguage(lang) {
         langBtn.textContent = lang === 'en' ? '中' : 'EN';
     }
 
-    // Find all elements that have bilingual data attributes
     document.querySelectorAll('[data-zh][data-en]').forEach(el => {
         el.innerHTML = el.getAttribute(`data-${lang}`);
     });
 }
 
-// Particle Network Background
+// Optimized Particle Network Background
 function initParticles(canvas) {
     const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
+    let animationId;
+    let isPaused = false;
 
-    // Config
-    const particleCount = 60;
+    // Responsive config
+    const getParticleCount = () => window.innerWidth < 768 ? 30 : 60;
     const connectionDistance = 150;
     const particleSpeed = 0.5;
 
@@ -407,9 +448,22 @@ function initParticles(canvas) {
         height = canvas.parentElement.clientHeight;
         canvas.width = width;
         canvas.height = height;
+
+        // Re-initialize particles on major resize to adjust density
+        const targetCount = getParticleCount();
+        if (particles.length !== targetCount) {
+            particles = [];
+            for (let i = 0; i < targetCount; i++) {
+                particles.push(new Particle());
+            }
+        }
     }
 
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', () => {
+        // Simple debounce-like check
+        clearTimeout(window.particleResizeTimer);
+        window.particleResizeTimer = setTimeout(resize, 200);
+    });
     resize();
 
     class Particle {
@@ -432,21 +486,18 @@ function initParticles(canvas) {
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            // Color adapts to theme natively via css variables in real implementations, 
-            // but we'll use a semi-transparent blue/gray that works on both
             ctx.fillStyle = document.documentElement.getAttribute('data-theme') === 'dark'
-                ? 'rgba(88, 166, 255, 0.5)'
-                : 'rgba(59, 130, 246, 0.5)';
+                ? 'rgba(88, 166, 255, 0.4)'
+                : 'rgba(59, 130, 246, 0.4)';
             ctx.fill();
         }
     }
 
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
-
     function animate() {
+        if (isPaused) return;
+
         ctx.clearRect(0, 0, width, height);
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
@@ -459,14 +510,10 @@ function initParticles(canvas) {
 
                 if (distance < connectionDistance) {
                     ctx.beginPath();
-                    // Line opacity based on distance
-                    const opacity = 1 - (distance / connectionDistance);
-
-                    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                    const opacity = (1 - (distance / connectionDistance)) * 0.3;
                     ctx.strokeStyle = isDark
-                        ? `rgba(88, 166, 255, ${opacity * 0.3})`
-                        : `rgba(59, 130, 246, ${opacity * 0.3})`;
-
+                        ? `rgba(88, 166, 255, ${opacity})`
+                        : `rgba(59, 130, 246, ${opacity})`;
                     ctx.lineWidth = 1;
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
@@ -474,8 +521,20 @@ function initParticles(canvas) {
                 }
             }
         }
-        requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
     }
 
+    // Performance: Pause when not visible
+    document.addEventListener('visibilitychange', () => {
+        isPaused = document.hidden;
+        if (!isPaused) animate();
+    });
+
     animate();
+
+    return {
+        stop: () => cancelAnimationFrame(animationId),
+        pause: () => { isPaused = true; },
+        resume: () => { isPaused = false; animate(); }
+    };
 }

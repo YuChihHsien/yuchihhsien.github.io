@@ -39,8 +39,8 @@
             scroll-behavior: smooth;
         }
 
-        /* Navbar Hiding Logic */
-        nav {
+        /* Navbar Hiding Logic Override */
+        #nav-container nav {
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: fixed;
             top: 0;
@@ -49,7 +49,7 @@
             z-index: 1000;
         }
 
-        nav.nav-hidden {
+        #nav-container nav.nav-hidden {
             transform: translateY(-100%);
         }
 
@@ -76,8 +76,6 @@
             height: 100%;
             z-index: 1;
         }
-
-        /* Removed internal .lab-overlay styles as they move to style.css */
 
         .scroll-hint {
             position: absolute;
@@ -114,31 +112,7 @@
 
 <body>
 
-    <nav>
-        <a href="index.html" class="nav-brand"><i class="fa-solid fa-code"></i> C-H. Yu</a>
-        <div class="nav-left">
-            <ul class="nav-links">
-                <li><a href="index.html"><i class="fa-solid fa-house"></i> <span data-zh="首頁"
-                            data-en="Home">Home</span></a></li>
-                <li><a href="resume.html"><i class="fa-solid fa-file-lines"></i> <span data-zh="履歷"
-                            data-en="Resume">Resume</span></a></li>
-                <li><a href="lab.html" class="active"><i class="fa-solid fa-flask"></i> <span data-zh="實驗室"
-                            data-en="Lab">Lab</span></a></li>
-                <li><a href="contact.html"><i class="fa-solid fa-mug-hot"></i> <span data-zh="贊助"
-                            data-en="Support">Support</span></a></li>
-            </ul>
-            <div class="nav-controls">
-                <button id="theme-toggle" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">☀️</button>
-                <button id="lang-toggle" class="icon-btn lang-btn" onclick="toggleLanguage()"
-                    title="Toggle Language">EN</button>
-                <div class="hamburger">
-                    <span class="line1"></span>
-                    <span class="line2"></span>
-                    <span class="line3"></span>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div id="nav-container"></div>
 
     <div id="lab-scroll-container">
         <!-- Section 1: Fluid Simulation -->
@@ -231,7 +205,8 @@
     <script src="https://cdn.jsdelivr.net/npm/webgl-fluid"></script>
 
     <!-- Scripts -->
-    <script src="js/main.js?v=9"></script>
+    <script src="js/components.js"></script>
+    <script src="js/main.js?v=21"></script>
     <script src="js/terminal.js"></script>
     <script src="js/lab_effects.js"></script>
     <script src="js/dino_game.js"></script>
