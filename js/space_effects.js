@@ -27,8 +27,15 @@ class SpaceFlairController {
 
     launchRocket() {
         const isRtl = Math.random() > 0.5;
-        const entryY = 10 + (Math.random() * 70); // 10% to 80% height
-        const angle = (Math.random() * 30) - 15; // -15 to +15 degrees
+        const entryY = 5 + (Math.random() * 60); // 5% to 65% height
+        const targetY = 5 + (Math.random() * 80); // Random exit height
+
+        // Calculate the angle based on trajectory
+        const travelX = window.innerWidth + 300;
+        const travelY = (targetY - entryY) * (window.innerHeight / 100);
+        // Math.atan2(y, x) gives radians. Convert to degrees.
+        const flightAngleRad = Math.atan2(travelY, travelX);
+        const flightAngleDeg = flightAngleRad * (180 / Math.PI);
 
         const rocket = document.createElement('div');
         rocket.className = `rocket-flair ${isRtl ? 'rtl' : ''}`;
@@ -41,28 +48,30 @@ class SpaceFlairController {
             </div>
         `;
 
-        // Initial setup
+        // Initial position
         rocket.style.top = `${entryY}vh`;
         if (isRtl) {
-            rocket.style.right = '-120px';
+            rocket.style.right = '-150px';
             rocket.style.left = 'auto';
-            rocket.style.transform = `scaleX(-1) rotateZ(${angle}deg)`;
+            // For RTL, we flip scaleX and negate the angle
+            rocket.style.transform = `scaleX(-1) rotateZ(${-flightAngleDeg}deg)`;
         } else {
-            rocket.style.left = '-120px';
+            rocket.style.left = '-150px';
             rocket.style.right = 'auto';
-            rocket.style.transform = `rotateZ(${angle}deg)`;
+            rocket.style.transform = `rotateZ(${flightAngleDeg}deg)`;
         }
 
         this.container.appendChild(rocket);
 
         // Animation trigger
         setTimeout(() => {
-            const travelDistance = window.innerWidth + 300;
+            const duration = 5000 + (Math.random() * 3000); // 5-8s flight
+            rocket.style.transition = `transform ${duration}ms cubic-bezier(0.25, 0.1, 0.25, 1)`;
+
             if (isRtl) {
-                // Keep the scaleX(-1) to face left, maintain angle
-                rocket.style.transform = `translateX(${-travelDistance}px) scaleX(-1) rotateZ(${angle}deg)`;
+                rocket.style.transform = `translateX(${-travelX}px) translateY(${targetY - entryY}vh) scaleX(-1) rotateZ(${-flightAngleDeg}deg)`;
             } else {
-                rocket.style.transform = `translateX(${travelDistance}px) rotateZ(${angle}deg)`;
+                rocket.style.transform = `translateX(${travelX}px) translateY(${targetY - entryY}vh) rotateZ(${flightAngleDeg}deg)`;
             }
         }, 50);
 
