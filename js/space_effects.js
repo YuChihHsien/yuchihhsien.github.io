@@ -12,15 +12,20 @@ class SpaceFlairController {
 
     init() {
         // Start the first flight after a short delay
-        this.scheduleNextFlight(15000); // 15s for first appearance
+        this.scheduleNextFlight(5000); // 5s for first appearance
     }
 
     scheduleNextFlight(delay) {
         if (this.nextFlightTimer) clearTimeout(this.nextFlightTimer);
 
-        const nextInterval = delay || 5000 + (Math.random() * 10000); // 5-15s
+        const nextInterval = delay || 3000 + (Math.random() * 7000); // 3-10s
         this.nextFlightTimer = setTimeout(() => {
-            this.launchRocket();
+            // Randomly pick between rocket and meteor
+            if (Math.random() > 0.45) {
+                this.launchRocket();
+            } else {
+                this.launchMeteor();
+            }
             this.scheduleNextFlight();
         }, nextInterval);
     }
@@ -79,7 +84,51 @@ class SpaceFlairController {
             if (rocket.parentElement) {
                 this.container.removeChild(rocket);
             }
-        }, 7000); // Flight takes 6s (CSS transition) + 1s buffer
+        }, 7000);
+    }
+
+    launchMeteor() {
+        const isRtl = Math.random() > 0.5;
+        const entryY = 5 + (Math.random() * 40); // Usually higher up
+        const targetY = 30 + (Math.random() * 60); // Descending path
+
+        const travelX = window.innerWidth + 400;
+        const travelYPx = (targetY - entryY) * (window.innerHeight / 100);
+        const flightAngleDeg = Math.atan2(travelYPx, travelX) * (180 / Math.PI);
+
+        const meteor = document.createElement('div');
+        meteor.className = `meteor-flair ${isRtl ? 'rtl' : ''}`;
+
+        // Initial setup
+        meteor.style.top = `${entryY}vh`;
+        const initialRotation = isRtl ? -flightAngleDeg : flightAngleDeg;
+
+        if (isRtl) {
+            meteor.style.right = '-200px';
+            meteor.style.left = 'auto';
+        } else {
+            meteor.style.left = '-200px';
+            meteor.style.right = 'auto';
+        }
+
+        meteor.style.transform = `rotateZ(${initialRotation}deg)`;
+        this.container.appendChild(meteor);
+
+        // Animation (Meteors are FAST but visible)
+        setTimeout(() => {
+            const duration = 1200 + (Math.random() * 800); // 1.2-2.0s
+            meteor.style.transition = `transform ${duration}ms linear`;
+
+            const targetX = isRtl ? -travelX : travelX;
+            meteor.style.transform = `translateX(${targetX}px) translateY(${targetY - entryY}vh) rotateZ(${initialRotation}deg)`;
+        }, 30);
+
+        // Cleanup
+        setTimeout(() => {
+            if (meteor.parentElement) {
+                this.container.removeChild(meteor);
+            }
+        }, 2000);
     }
 }
 

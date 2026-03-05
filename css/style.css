@@ -25,6 +25,19 @@
     align-items: center;
 }
 
+#nav-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    /* Stay on top of 3D */
+}
+
+.hero-orbit-container {
+    z-index: 1;
+    /* Stay behind nav */
+}
+
 .lab-overlay {
     position: absolute;
     bottom: 2rem !important;
@@ -1351,8 +1364,8 @@ footer {
 /* Rocket Easter Egg Styles */
 .rocket-flair {
     position: fixed;
-    z-index: 5;
-    /* Behind content, above background */
+    z-index: 999;
+    /* Behind nav(1000), above everything else */
     width: 60px;
     height: 30px;
     pointer-events: none;
@@ -1444,6 +1457,23 @@ footer {
         transform: scale(1.2);
         opacity: 1;
     }
+}
+
+/* Meteor / Shooting Star */
+.meteor-flair {
+    position: fixed;
+    width: 150px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, rgba(56, 189, 248, 0.9), #fff);
+    border-radius: 50%;
+    z-index: 999;
+    pointer-events: none;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.6), 0 0 30px #fff;
+    filter: blur(1px);
+}
+
+.meteor-flair.rtl {
+    background: linear-gradient(to left, transparent, rgba(56, 189, 248, 0.9), #fff);
 }
 
 /* For Right-to-Left flight */
