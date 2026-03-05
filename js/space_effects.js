@@ -27,33 +27,32 @@ class SpaceFlairController {
 
     launchRocket() {
         const isRtl = Math.random() > 0.5;
-        const entryY = 5 + (Math.random() * 60); // 5% to 65% height
+        const entryY = 10 + (Math.random() * 50); // 10% to 60% height
         const targetY = 5 + (Math.random() * 80); // Random exit height
 
         // Calculate the angle based on trajectory
         const travelX = window.innerWidth + 300;
-        const travelY = (targetY - entryY) * (window.innerHeight / 100);
-        // Math.atan2(y, x) gives radians. Convert to degrees.
-        const flightAngleRad = Math.atan2(travelY, travelX);
-        const flightAngleDeg = flightAngleRad * (180 / Math.PI);
+        const travelYPx = (targetY - entryY) * (window.innerHeight / 100);
+        const flightAngleDeg = Math.atan2(travelYPx, travelX) * (180 / Math.PI);
 
         const rocket = document.createElement('div');
         rocket.className = `rocket-flair ${isRtl ? 'rtl' : ''}`;
 
+        // Move trail and engine INSIDE the body for perfect grouping/rotation
         rocket.innerHTML = `
-            <div class="rocket-trail"></div>
-            <div class="rocket-engine"></div>
             <div class="rocket-body">
                 <div class="rocket-window"></div>
+                <div class="rocket-engine"></div>
+                <div class="rocket-trail"></div>
             </div>
         `;
 
-        // Initial position
+        // Initial setup
         rocket.style.top = `${entryY}vh`;
         if (isRtl) {
             rocket.style.right = '-150px';
             rocket.style.left = 'auto';
-            // For RTL, we flip scaleX and negate the angle
+            // For RTL, we flip the ship and negate the angle to maintain its pitch relative to the flight direction
             rocket.style.transform = `scaleX(-1) rotateZ(${-flightAngleDeg}deg)`;
         } else {
             rocket.style.left = '-150px';
@@ -65,7 +64,7 @@ class SpaceFlairController {
 
         // Animation trigger
         setTimeout(() => {
-            const duration = 5000 + (Math.random() * 3000); // 5-8s flight
+            const duration = 4000 + (Math.random() * 2000); // 4-6s flight (faster)
             rocket.style.transition = `transform ${duration}ms cubic-bezier(0.25, 0.1, 0.25, 1)`;
 
             if (isRtl) {

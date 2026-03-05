@@ -1415,8 +1415,8 @@ footer {
     position: absolute;
     left: -15px;
     top: 3px;
+    /* Centered in 18px body */
     box-shadow: 0 0 20px #f59e0b, 0 0 40px rgba(245, 158, 11, 0.4);
-    glow: vibrant;
     animation: flicker 0.1s infinite alternate;
 }
 
@@ -1425,7 +1425,8 @@ footer {
     left: -160px;
     width: 160px;
     height: 8px;
-    /* Thicker trail */
+    top: 5px;
+    /* Centered in 18px body */
     background: linear-gradient(to right, transparent, rgba(56, 189, 248, 0.2), rgba(56, 189, 248, 0.6), #fff);
     border-radius: 50px;
     filter: blur(4px);
