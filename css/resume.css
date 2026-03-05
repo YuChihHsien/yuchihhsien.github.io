@@ -96,8 +96,25 @@ body.view-classic .toggle-slider {
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
 }
 
+/* When open (not on page 1), move book right so spine is centered */
 .book.book-open {
     transform: translateX(50%);
+}
+
+.leaf {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.leaf.flipped {
+    transform: rotateY(-180deg);
 }
 
 .page {
@@ -109,38 +126,41 @@ body.view-classic .toggle-slider {
     background-color: var(--page-bg);
     background-image: var(--paper-texture);
     border: 1px solid var(--border-color);
-    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transform-origin: left;
-    transform-style: preserve-3d;
-    z-index: 1;
+    backface-visibility: hidden;
     padding: 3rem;
     overflow-y: auto;
     border-radius: 0 15px 15px 0;
-    backface-visibility: hidden;
     display: flex;
     flex-direction: column;
     color: var(--book-text-primary);
 }
 
-/* Soft Spine */
-.page::after {
+.page.back {
+    transform: rotateY(180deg);
+    border-radius: 15px 0 0 15px;
+}
+
+/* Soft Spine Shadows */
+.page.front::after {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.1);
     pointer-events: none;
 }
 
-.page.flipped {
-    transform: rotateY(-180deg);
-    z-index: 2;
-}
-
-.page.active {
-    z-index: 3;
+.page.back::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
 }
 
 /* --- Classic View --- */
@@ -148,6 +168,12 @@ body.view-classic .resume-page-wrapper {
     display: block;
     perspective: none;
     padding: 0;
+}
+
+body.view-classic .leaf {
+    position: relative;
+    display: contents;
+    transform: none !important;
 }
 
 body.view-classic .book {
