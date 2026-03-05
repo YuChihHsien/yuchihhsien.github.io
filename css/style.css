@@ -973,7 +973,7 @@ footer {
     left: 0;
     pointer-events: none;
     z-index: 99999;
-    transition: transform 0.15s ease-out, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+    transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, opacity 0.3s ease;
     transform: translate(-50%, -50%);
     mix-blend-mode: difference;
 }

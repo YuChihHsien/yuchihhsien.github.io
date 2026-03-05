@@ -112,9 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateCursor = () => {
             if (isMoving) {
-                // Smooth lagging effect (0.15 provides a premium feel)
-                cursorX += (mouseX - cursorX) * 0.15;
-                cursorY += (mouseY - cursorY) * 0.15;
+                // Smooth lagging effect (0.25 provides a snappy yet premium feel)
+                cursorX += (mouseX - cursorX) * 0.25;
+                cursorY += (mouseY - cursorY) * 0.25;
                 cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
             }
             requestAnimationFrame(updateCursor);
