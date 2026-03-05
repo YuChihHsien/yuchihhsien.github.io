@@ -1348,6 +1348,104 @@ footer {
 
 /* Handled by global pointer-events policy */
 
+/* Rocket Easter Egg Styles */
+.rocket-flair {
+    position: fixed;
+    z-index: 5;
+    /* Behind content, above background */
+    width: 60px;
+    height: 30px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    transition: transform 6s cubic-bezier(0.1, 0, 0.9, 1);
+    filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.4));
+}
+
+.rocket-body {
+    width: 40px;
+    height: 18px;
+    background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
+    border-radius: 50% 80% 80% 50% / 50% 50% 50% 50%;
+    position: relative;
+    box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Rocket Fins */
+.rocket-body::before,
+.rocket-body::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 8px;
+    background: var(--accent-color);
+    left: 2px;
+}
+
+.rocket-body::before {
+    top: -6px;
+    border-radius: 5px 0 0 0;
+    transform: skewX(-20deg);
+}
+
+.rocket-body::after {
+    bottom: -6px;
+    border-radius: 0 0 0 5px;
+    transform: skewX(20deg);
+}
+
+/* Rocket Window */
+.rocket-window {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #1e293b;
+    border-radius: 50%;
+    right: 12px;
+    top: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Engine Flame */
+.rocket-engine {
+    width: 15px;
+    height: 10px;
+    background: linear-gradient(to left, #f59e0b, #ef4444);
+    border-radius: 50%;
+    position: absolute;
+    left: -12px;
+    top: 4px;
+    box-shadow: 0 0 15px #f59e0b;
+    animation: flicker 0.1s infinite alternate;
+}
+
+.rocket-trail {
+    position: absolute;
+    left: -100px;
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, rgba(59, 130, 246, 0.3));
+    border-radius: 10px;
+    filter: blur(2px);
+}
+
+@keyframes flicker {
+    from {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    to {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* For Right-to-Left flight */
+.rocket-flair.rtl {
+    transform: scaleX(-1);
+}
+
 /* Specific Small Mobile Fixes */
 @media (max-width: 768px) {
     h1 {
