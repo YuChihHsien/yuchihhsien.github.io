@@ -1184,102 +1184,74 @@ footer {
 }
 
 .lab-cta-container {
-    max-width: 1200px;
+    max-width: 1000px;
     width: 100%;
     background: rgba(30, 41, 59, 0.3);
     border: 1px solid rgba(59, 130, 246, 0.2);
-    border-radius: 40px;
-    padding: 0;
-    text-align: left;
+    border-radius: 30px;
+    padding: 4rem;
+    text-align: center;
     backdrop-filter: blur(10px);
     position: relative;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
-.lab-cta-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    min-height: 500px;
-}
-
-.lab-visual-area {
-    position: relative;
-    height: 100%;
-    min-height: 400px;
-    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-    cursor: pointer;
-}
-
-.home-planet-container {
-    width: 100%;
-    height: 100%;
+.lab-cta-container::before {
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.planet-portal-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    background: transparent;
-    transition: background 0.5s ease;
-}
-
-.lab-visual-area:hover .planet-portal-overlay {
-    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05) 0%, transparent 60%);
-}
-
-.lab-info-area {
-    padding: 4rem;
+    inset: -1px;
+    border-radius: 30px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), transparent, rgba(59, 130, 246, 0.5));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
 }
 
 .lab-cta-title {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
     background: linear-gradient(135deg, #fff, var(--accent-light));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: 800;
 }
 
 .lab-cta-text {
     color: var(--text-dim);
-    font-size: 1.15rem;
-    margin-bottom: 2.5rem;
-    line-height: 1.8;
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
 }
 
 .lab-cta-badges {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     flex-wrap: wrap;
 }
 
-@media (max-width: 992px) {
-    .lab-cta-grid {
-        grid-template-columns: 1fr;
-    }
+/* Hero Orbit Effect */
+.hero-orbit-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    max-width: 1400px;
+    max-height: 900px;
+    z-index: 0;
+    pointer-events: none;
+}
 
-    .lab-visual-area {
-        min-height: 350px;
-        order: 1;
-    }
-
-    .lab-info-area {
-        order: 2;
-        padding: 3rem 2rem;
-        text-align: center;
-    }
-
-    .lab-cta-badges {
-        justify-content: center;
-    }
+.hero-orbit-container canvas {
+    pointer-events: auto;
+    cursor: default;
 }
 
 /* Specific Small Mobile Fixes */
