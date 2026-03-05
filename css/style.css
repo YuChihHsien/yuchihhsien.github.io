@@ -1258,6 +1258,79 @@ footer {
     overflow: hidden;
 }
 
+@media (max-width: 768px) {
+    .hero-orbit-container {
+        display: none !important;
+    }
+}
+
+.hero-orbit-container canvas {
+    pointer-events: auto;
+}
+
+/* Mobile-only Lab Banner */
+.mobile-lab-banner {
+    display: none;
+    margin-top: 2rem;
+    width: 100%;
+    z-index: 20;
+}
+
+@media (max-width: 768px) {
+    .mobile-lab-banner {
+        display: block;
+    }
+}
+
+.btn-lab-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 1.25rem;
+    background: rgba(14, 165, 233, 0.1);
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    border-radius: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-lab-mobile i.fa-flask-vial {
+    color: var(--accent-light);
+    font-size: 1.5rem;
+}
+
+.btn-lab-mobile i.fa-chevron-right {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
+}
+
+.lab-mobile-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.lab-mobile-title {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.lab-mobile-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    margin-top: 0.1rem;
+}
+
+.btn-lab-mobile:active {
+    background: rgba(14, 165, 233, 0.2);
+    transform: scale(0.98);
+}
+
 .hero-orbit-container canvas {
     pointer-events: auto;
     /* Allow clicks on the canvas (handled by raycaster) */

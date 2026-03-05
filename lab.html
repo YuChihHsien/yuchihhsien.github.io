@@ -107,6 +107,117 @@
                 transform: translateY(-5px) translateX(-50%);
             }
         }
+
+        /* Intro Section Styles */
+        .intro-section {
+            background: radial-gradient(circle at center, #0f172a 0%, #000 80%) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 5;
+            position: relative;
+        }
+
+        .intro-content {
+            max-width: 800px;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .lab-badge {
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 2rem;
+            color: #0ea5e9;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            margin-bottom: 2.5rem;
+        }
+
+        .intro-title {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .intro-divider {
+            width: 60px;
+            height: 4px;
+            background: #0ea5e9;
+            margin: 0 auto 2.5rem;
+            border-radius: 2px;
+        }
+
+        .intro-desc {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .scroll-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            opacity: 0.5;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .mouse {
+            width: 26px;
+            height: 42px;
+            border: 2px solid #fff;
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .wheel {
+            width: 4px;
+            height: 8px;
+            background: #fff;
+            border-radius: 2px;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll-wheel 2s infinite;
+        }
+
+        @keyframes scroll-wheel {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(18px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .intro-desc {
+                font-size: 1rem;
+                padding: 0 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -115,6 +226,25 @@
     <div id="nav-container"></div>
 
     <div id="lab-scroll-container">
+        <!-- Section 0: Introduction -->
+        <section class="lab-section intro-section">
+            <div class="intro-content slide-up">
+                <div class="lab-badge" data-zh="技術實驗室" data-en="TECH LAB">技術實驗室</div>
+                <h1 class="intro-title">Technical Playground</h1>
+                <div class="intro-divider"></div>
+                <p class="intro-desc" data-zh="這裡是我在工作之餘，用程式碼玩耍的小天地。從有趣的物理粒子互動到 3D 模擬實驗，都是我對網頁技術的熱情展現。進來一起玩玩看吧！"
+                    data-en="This is my creative corner where I play with code outside of work. From fun particle interactions to 3D experiments, it's all about passion for technology. Come and play around!">
+                    這裡是我在工作之餘，用程式碼玩耍的小天地。從有趣的物理粒子互動到 3D 模擬實驗，都是我對網頁技術的熱情展現。進來一起玩玩看吧！
+                </p>
+
+                <div class="scroll-indicator">
+                    <div class="mouse">
+                        <div class="wheel"></div>
+                    </div>
+                    <span data-zh="向下滾動探索" data-en="Scroll to Explore">向下滾動探索</span>
+                </div>
+            </div>
+        </section>
         <!-- Section 1: Fluid Simulation -->
         <section class="lab-section">
             <canvas id="fluid-canvas"></canvas>
