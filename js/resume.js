@@ -68,6 +68,15 @@ function updateBook() {
         }
     });
 
+    const bookElement = document.getElementById('resumeBook');
+    if (bookElement) {
+        if (currentPage > 1) {
+            bookElement.classList.add('book-open');
+        } else {
+            bookElement.classList.remove('book-open');
+        }
+    }
+
     if (prevBtn) prevBtn.disabled = currentPage === 1;
     if (nextBtn) nextBtn.disabled = currentPage === totalPages;
     if (indicator) indicator.innerText = `PAGE ${currentPage} / ${totalPages}`;

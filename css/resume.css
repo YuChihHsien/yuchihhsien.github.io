@@ -78,21 +78,26 @@ body.view-classic .toggle-slider {
 
 /* --- Book Layout --- */
 .resume-page-wrapper {
-    display: flex;
+    display: flex !important;
+    flex-direction: column !important;
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 200px);
     perspective: 2500px;
-    padding-bottom: 2rem;
+    padding: 2rem 0 5rem;
 }
 
 .book {
     position: relative;
     width: var(--book-width);
     height: var(--book-height);
-    transition: transform 0.5s;
+    transition: transform 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
     transform-style: preserve-3d;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+}
+
+.book.book-open {
+    transform: translateX(50%);
 }
 
 .page {
@@ -237,9 +242,10 @@ body.view-classic .book-nav-hint {
 .book-nav {
     display: flex;
     justify-content: center;
-    gap: 2.5rem;
-    margin-top: 3.5rem;
+    gap: 3rem;
+    margin-top: 5rem;
     align-items: center;
+    width: 100%;
 }
 
 .page-nav-btn {
