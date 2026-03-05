@@ -45,131 +45,7 @@ function initHomeLabOrbit(containerId) {
         opacity: 0.95
     });
 
-    const balloonMat = new THREE.MeshPhongMaterial({
-        color: 0xf59e0b, // Amber/Orange
-        emissive: 0xb45309,
-        emissiveIntensity: 0.3,
-        shininess: 40,
-        transparent: true,
-        opacity: 1
-    });
-
-    const craterMat = new THREE.MeshPhongMaterial({
-        color: 0xc2410c, // Darker orange
-        shininess: 20,
-        transparent: true,
-        opacity: 1
-    });
-
-    const lineMat = new THREE.MeshBasicMaterial({
-        color: 0x333333,
-        transparent: true,
-        opacity: 1
-    });
-
     const lightMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6 }); // Blue chest dot
-
-    // --- 1. The "Balloon" (Moon) ---
-    const balloonGroup = new THREE.Group();
-    // Positioned vertically above the horizontal right hand
-    balloonGroup.position.set(3.7, 9.2, 1.2);
-    astro.add(balloonGroup);
-
-    // Main Sphere (Using Icosahedron for better vertex distribution for noise)
-    const balloonGeo = new THREE.IcosahedronGeometry(3.5, 5);
-
-    // Procedurally perturb vertices to create a lumpy, realistic moon surface
-    const posAttribute = balloonGeo.attributes.position;
-    const vertex = new THREE.Vector3();
-    for (let i = 0; i < posAttribute.count; i++) {
-        vertex.fromBufferAttribute(posAttribute, i);
-        // More complex topographical noise: blend of low and high frequency
-        const noise = (Math.sin(vertex.x * 1.5) * Math.cos(vertex.y * 1.5) * 0.1) +
-            (Math.sin(vertex.x * 4.0) * Math.sin(vertex.z * 4.0) * 0.05);
-        vertex.add(vertex.clone().normalize().multiplyScalar(noise));
-        posAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
-    }
-    balloonGeo.computeVertexNormals();
-
-    // Realistic moon material (grey with slight roughness and faint glow)
-    const moonMat = new THREE.MeshStandardMaterial({
-        color: 0xcbd5e1,
-        roughness: 0.95,
-        metalness: 0.0,
-        flatShading: true,
-        emissive: 0xffffff,
-        emissiveIntensity: 0.05, // Very subtle glow to make it "pop"
-    });
-    const balloon = new THREE.Mesh(balloonGeo, moonMat);
-    balloonGroup.add(balloon);
-
-    // Add realistic 3D craters (Floor + Raised Rim)
-    const craterFloorMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 1.0 });
-    const craterRimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.8 });
-
-    const craterData = [
-        { radius: 1.2, lat: 0.3, lon: 0.5, rays: true }, // Main "Tycho" crater with rays
-        { radius: 0.6, lat: -0.2, lon: 0.8 },
-        { radius: 0.8, lat: 0.6, lon: -0.4 },
-        { radius: 0.5, lat: -0.5, lon: -0.6 },
-        { radius: 0.7, lat: 0.1, lon: -0.9 },
-        { radius: 0.9, lat: -0.4, lon: 0.2 },
-    ];
-
-    craterData.forEach(data => {
-        const phi = (90 - data.lat * 180) * (Math.PI / 180);
-        const theta = (data.lon * 180) * (Math.PI / 180);
-        const r = 3.42;
-
-        // Crater Floor
-        const innerGeo = new THREE.CircleGeometry(data.radius, 16);
-        const innerMesh = new THREE.Mesh(innerGeo, craterFloorMat);
-        innerMesh.position.setFromSphericalCoords(r, phi, theta);
-        const normal = innerMesh.position.clone().normalize();
-        innerMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
-
-        // Crater Rim
-        const rimGeo = new THREE.TorusGeometry(data.radius, 0.12, 8, 16);
-        const rimMesh = new THREE.Mesh(rimGeo, craterRimMat);
-        rimMesh.position.copy(innerMesh.position);
-        rimMesh.quaternion.copy(innerMesh.quaternion);
-
-        balloonGroup.add(innerMesh, rimMesh);
-
-        // Add "Crater Rays" for the largest crater
-        if (data.rays) {
-            for (let i = 0; i < 8; i++) {
-                const rayLen = 2 + Math.random() * 3;
-                const rayGeo = new THREE.PlaneGeometry(0.08, rayLen);
-                const rayMesh = new THREE.Mesh(rayGeo, new THREE.MeshBasicMaterial({
-                    color: 0xffffff,
-                    transparent: true,
-                    opacity: 0.15
-                }));
-                // Position and orient ray
-                rayMesh.position.copy(innerMesh.position).add(normal.clone().multiplyScalar(0.05));
-                rayMesh.quaternion.copy(innerMesh.quaternion);
-                rayMesh.rotateZ((i / 8) * Math.PI * 2);
-                rayMesh.translateY(rayLen / 2 + data.radius);
-                balloonGroup.add(rayMesh);
-            }
-        }
-    });
-
-    // Balloon Knot (Tie)
-    const knotGeo = new THREE.ConeGeometry(0.3, 0.5, 8);
-    const knotMesh = new THREE.Mesh(knotGeo, moonMat);
-    knotMesh.position.set(0, -3.5, 0);
-    knotMesh.rotation.x = Math.PI;
-    balloonGroup.add(knotMesh);
-
-    // String (Connecting from balloon bottom to hand)
-    const stringLength = 5.8;
-    const stringGeo = new THREE.CylinderGeometry(0.03, 0.03, stringLength, 8);
-    stringGeo.translate(0, -stringLength / 2, 0);
-    const stringMesh = new THREE.Mesh(stringGeo, lineMat);
-    stringMesh.position.set(0, -3.5, 0);
-    balloonGroup.add(stringMesh);
 
     // --- 2. The Astronaut Character ---
     const charGroup = new THREE.Group();
@@ -179,6 +55,7 @@ function initHomeLabOrbit(containerId) {
 
     // Head
     const headGeo = new THREE.SphereGeometry(2.3, 32, 32);
+    const head = new THREE.Mesh(headGeo, suitMat);
     head.position.y = 1.8;
     charGroup.add(head);
 
@@ -247,13 +124,13 @@ function initHomeLabOrbit(containerId) {
     lArm.rotation.x = -0.2; // Hang forward
     charGroup.add(lArm);
 
-    // Right Arm (Reaching horizontally to the right to hold string)
-    const rArmLength = 1.8;
+    // Right Arm (Relaxed/Dangling)
+    const rArmLength = 1.6;
     const rArm = createCapsule(0.45, rArmLength);
     rArm.children.forEach(c => c.position.y -= rArmLength / 2);
     rArm.position.set(1.4, 0.5, 0.2);
-    rArm.rotation.z = Math.PI / 2; // Point exactly right (horizontal)
-    rArm.rotation.x = 0;
+    rArm.rotation.z = 0.5; // Hang slightly out to the right
+    rArm.rotation.x = 0.2; // Hang forward
     charGroup.add(rArm);
 
     // Left Leg (Dangling)
@@ -294,6 +171,16 @@ function initHomeLabOrbit(containerId) {
     let angle = 0;
 
     window.addEventListener('mousemove', (event) => {
+        // Ignore if mouse is over navbar elements
+        if (event.target.tagName.toLowerCase() !== 'canvas') {
+            if (isHovering) {
+                isHovering = false;
+                document.body.classList.remove('is-astro-hovering');
+                lightMat.color.setHex(0x3b82f6);
+            }
+            return;
+        }
+
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -315,8 +202,16 @@ function initHomeLabOrbit(containerId) {
         }
     });
 
-    window.addEventListener('click', () => {
-        if (isHovering) {
+    window.addEventListener('click', (event) => {
+        // Redo raycast on click for maximum reliability
+        const clickMouse = new THREE.Vector2();
+        clickMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        clickMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(clickMouse, camera);
+        const intersects = raycaster.intersectObjects(astro.children, true);
+
+        if (intersects.length > 0) {
             window.location.href = 'lab.html';
         }
     });
@@ -341,12 +236,14 @@ function initHomeLabOrbit(containerId) {
         // Gentle vertical drift
         astro.position.y = Math.sin(angle * 0.5) * 3;
 
-        // Front-Facing Orientation
-        astro.lookAt(camera.position);
+        // --- 360 Degree Space Tumble ---
+        // Instead of strict lookAt, we use a slow, weightless tumbling effect
+        charGroup.rotation.y += 0.003;
+        charGroup.rotation.x += 0.002;
+        charGroup.rotation.z += 0.001;
 
-        // Floaty wiggle simulating being pulled by the balloon
-        astro.rotation.z += Math.sin(time * 0.001) * 0.1;
-        astro.rotation.x += Math.cos(time * 0.0015) * 0.05;
+        // Slight floaty wiggle based on time
+        charGroup.position.y = -1 + Math.sin(time * 0.001) * 0.2;
 
         // --- Occlusion/Depth Management ---
         const zPos = astro.position.z;
@@ -356,20 +253,15 @@ function initHomeLabOrbit(containerId) {
             // Passing behind
             targetOpacity = Math.max(0.15, 1 + (zPos / 15));
             suitMat.transparent = true;
-            balloonMat.transparent = true;
         } else {
             // Passing in front
             targetOpacity = 1;
             suitMat.transparent = false;
-            balloonMat.transparent = false;
         }
 
         // Apply opacities
         suitMat.opacity = targetOpacity;
         darkMat.opacity = Math.max(0.1, targetOpacity * 0.95);
-        balloonMat.opacity = targetOpacity;
-        craterMat.opacity = targetOpacity;
-        lineMat.opacity = targetOpacity * targetOpacity; // Make string fade faster
 
         // Distance scale effect (Make it slightly smaller overall so the taller model fits on screen)
         const distScale = 0.7 + (zPos / 25);
