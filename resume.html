@@ -516,6 +516,7 @@
             letter-spacing: -2px;
             background: linear-gradient(45deg, var(--book-text-primary), var(--accent-color));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -1006,10 +1007,11 @@
 
         // --- Initialize ---
         const savedMode = localStorage.getItem('resumeViewMode');
-        if (savedMode === 'classic') {
-            setViewMode('classic');
+        // Default to 'classic' if no saved preference is found
+        if (savedMode === 'book') {
+            setViewMode('book');
         } else {
-            updateBook();
+            setViewMode('classic');
         }
     </script>
 </body>
