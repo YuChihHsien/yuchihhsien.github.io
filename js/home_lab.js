@@ -24,20 +24,25 @@ function initHomeLabOrbit(containerId) {
     const astro = new THREE.Group();
     voyagerGroup.add(astro);
 
-    // 1. Body (Rounded Suit)
-    const bodyGeo = new THREE.SphereGeometry(1.5, 32, 32);
+    // 1. Body (Rounded Suit) - Significantly Increased Size
+    const bodyGeo = new THREE.SphereGeometry(2.5, 32, 32);
     bodyGeo.scale(1, 1.2, 0.8);
-    const suitMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 80 });
+    const suitMat = new THREE.MeshPhongMaterial({
+        color: 0xffffff,
+        shininess: 80,
+        transparent: true,
+        opacity: 1
+    });
     const body = new THREE.Mesh(bodyGeo, suitMat);
     astro.add(body);
 
     // 2. Helmet (Clear Visor + White Frame)
-    const helmetGeo = new THREE.SphereGeometry(1.2, 32, 32);
+    const helmetGeo = new THREE.SphereGeometry(2.0, 32, 32);
     const helmet = new THREE.Mesh(helmetGeo, suitMat);
-    helmet.position.y = 1.6;
+    helmet.position.y = 2.5;
     astro.add(helmet);
 
-    const visorGeo = new THREE.SphereGeometry(0.9, 32, 32);
+    const visorGeo = new THREE.SphereGeometry(1.6, 32, 32);
     visorGeo.scale(1, 0.7, 0.5);
     const visorMat = new THREE.MeshPhongMaterial({
         color: 0x0ea5e9,
@@ -47,62 +52,60 @@ function initHomeLabOrbit(containerId) {
         opacity: 0.9
     });
     const visor = new THREE.Mesh(visorGeo, visorMat);
-    visor.position.set(0, 1.6, 0.7);
+    visor.position.set(0, 2.5, 1.2);
     astro.add(visor);
 
     // 3. Backpack (Jetpack)
-    const packGeo = new THREE.BoxGeometry(1.8, 2.2, 0.8);
+    const packGeo = new THREE.BoxGeometry(3.0, 3.5, 1.2);
     const pack = new THREE.Mesh(packGeo, suitMat);
-    pack.position.set(0, 0.3, -0.9);
+    pack.position.set(0, 0.5, -1.5);
     astro.add(pack);
 
     // 4. Limbs (Stubby Q-version)
-    const limbGeo = new THREE.SphereGeometry(0.45, 16, 16);
+    const limbGeo = new THREE.SphereGeometry(0.8, 16, 16);
 
     const lArm = new THREE.Mesh(limbGeo, suitMat);
-    lArm.position.set(1.6, 0.3, 0);
+    lArm.position.set(2.8, 0.5, 0);
     astro.add(lArm);
 
     const rArm = new THREE.Mesh(limbGeo, suitMat);
-    rArm.position.set(-1.6, 0.3, 0);
+    rArm.position.set(-2.8, 0.5, 0);
     astro.add(rArm);
 
     const lLeg = new THREE.Mesh(limbGeo, suitMat);
-    lLeg.position.set(0.7, -1.6, 0);
+    lLeg.position.set(1.2, -2.8, 0);
     astro.add(lLeg);
 
     const rLeg = new THREE.Mesh(limbGeo, suitMat);
-    rLeg.position.set(-0.7, -1.6, 0);
+    rLeg.position.set(-1.2, -2.8, 0);
     astro.add(rLeg);
 
     // 5. Backpack Light (Interactive)
-    const lightGeo = new THREE.BoxGeometry(0.6, 0.3, 0.1);
+    const lightGeo = new THREE.BoxGeometry(1.0, 0.5, 0.2);
     const lightMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6 });
     const packLight = new THREE.Mesh(lightGeo, lightMat);
-    packLight.position.set(0, 1.2, -1.3);
+    packLight.position.set(0, 2.0, -2.1);
     astro.add(packLight);
 
     // --- Lighting ---
     const lightFront = new THREE.DirectionalLight(0xffffff, 1.2);
-    lightFront.position.set(5, 5, 10);
+    lightFront.position.set(5, 5, 20);
     scene.add(lightFront);
 
     const lightBack = new THREE.DirectionalLight(0x3b82f6, 0.8);
-    lightBack.position.set(-5, -5, -10);
+    lightBack.position.set(-5, -5, -20);
     scene.add(lightBack);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambient);
 
     camera.position.z = 25;
-
-    // --- Orbit Parameters ---
-    let angle = 0;
 
     // --- Interaction ---
     const mouse = new THREE.Vector2();
     const raycaster = new THREE.Raycaster();
     let isHovering = false;
+    let angle = 0;
 
     window.addEventListener('mousemove', (event) => {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -137,26 +140,32 @@ function initHomeLabOrbit(containerId) {
 
         angle += 0.005;
 
-        // Tightened Elliptical Orbit (Keeps him mostly within the hero bounds)
-        // Adjusting based on standard viewports (roughly 12-14 scene units)
-        const curOrbitX = 12;
+        // Dynamic Orbit Range (constrained to 70% of viewport width)
+        const aspect = window.innerWidth / window.innerHeight;
+        const visibleWidthAtZ0 = 28.8 * aspect;
+        const targetRadiusX = (visibleWidthAtZ0 * 0.7) / 2; // 70% width radius
+
+        const curOrbitX = Math.min(22, targetRadiusX);
         const curOrbitZ = 12;
 
         astro.position.x = Math.cos(angle) * curOrbitX;
         astro.position.z = Math.sin(angle) * curOrbitZ;
-        astro.position.y = Math.sin(angle * 0.5) * 3;
+        astro.position.y = Math.sin(angle * 0.5) * 3.5;
 
-        // Auto-rotation (Looking where he's going)
-        astro.rotation.y = -angle + Math.PI / 2;
-        astro.rotation.z = Math.sin(time * 0.002) * 0.2; // Float wobble
+        // Front-Facing Orientation: Always face the camera/user
+        astro.lookAt(camera.position);
+
+        // Add a slight "floaty" tilt relative to the camera-facing orientation
+        astro.rotation.z += Math.sin(time * 0.001) * 0.1;
+        astro.rotation.x += Math.cos(time * 0.001) * 0.05;
 
         // --- Occlusion/Depth Management ---
         const zPos = astro.position.z;
-        if (zPos < -1) {
+        if (zPos < 0) {
             // Passing behind content
-            suitMat.opacity = Math.max(0.3, 1 + (zPos / 15));
+            suitMat.opacity = Math.max(0.2, 1 + (zPos / 15));
             suitMat.transparent = true;
-            visorMat.opacity = Math.max(0.2, 0.9 + (zPos / 15));
+            visorMat.opacity = Math.max(0.1, 0.9 + (zPos / 15));
         } else {
             // Passing in front of content
             suitMat.opacity = 1;
@@ -164,9 +173,9 @@ function initHomeLabOrbit(containerId) {
             visorMat.opacity = 0.9;
         }
 
-        // Scale boost when close to camera for extra impact
-        const scale = 1.3 + (zPos / 10);
-        voyagerGroup.scale.set(scale, scale, scale);
+        // Final scale boost based on distance
+        const distScale = 1.0 + (zPos / 15);
+        voyagerGroup.scale.set(distScale, distScale, distScale);
 
         renderer.render(scene, camera);
     }
