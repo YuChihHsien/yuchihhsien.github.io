@@ -71,8 +71,8 @@ function initHomeLabOrbit(containerId) {
 
     // --- 1. The Balloon (Moon/Cheese) ---
     const balloonGroup = new THREE.Group();
-    // Positioned high up and slightly forward
-    balloonGroup.position.set(0, 7.5, 0.5);
+    // Positioned high up to clear the head
+    balloonGroup.position.set(0, 9.5, 0.5);
     astro.add(balloonGroup);
 
     const balloonGeo = new THREE.SphereGeometry(3.5, 32, 32);
@@ -101,15 +101,15 @@ function initHomeLabOrbit(containerId) {
     });
 
     // String (Connecting from balloon bottom to hand)
-    const stringLength = 4.5;
-    const stringGeo = new THREE.CylinderGeometry(0.06, 0.06, stringLength, 8);
+    const stringLength = 4.8;
+    const stringGeo = new THREE.CylinderGeometry(0.04, 0.04, stringLength, 8); // Thinner string
     // Shift geometry so origin is at top
     stringGeo.translate(0, -stringLength / 2, 0);
     const stringMesh = new THREE.Mesh(stringGeo, lineMat);
-    stringMesh.position.set(0, -3.4, 0);
-    // Angle string slightly towards the right hand
-    stringMesh.rotation.z = -0.15;
-    stringMesh.rotation.x = 0.1;
+    stringMesh.position.set(0, -3.4, 0); // Start at bottom edge of balloon
+    // Angle string slightly towards the right to meet the hand
+    stringMesh.rotation.z = 0.08;
+    stringMesh.rotation.x = 0;
     balloonGroup.add(stringMesh);
 
     // --- 2. The Astronaut Character ---
@@ -183,15 +183,12 @@ function initHomeLabOrbit(containerId) {
     }
 
     // Left Arm (Reaching up to hold string)
-    // Adjusting position to meet string end
-    const lArmLength = 1.4;
-    const lArm = createCapsule(0.5, lArmLength);
-    // Shift origin to shoulder
+    const lArmLength = 1.8;
+    const lArm = createCapsule(0.45, lArmLength);
     lArm.children.forEach(c => c.position.y += lArmLength / 2);
-    lArm.position.set(-1.6, 0.5, 0.2);
-    // Rotate to point up and slightly in towards center string
-    lArm.rotation.z = -1.2; // Point up
-    lArm.rotation.x = -0.2;
+    lArm.position.set(-1.4, 0.5, 0.2); // Shoulder moved slightly right
+    lArm.rotation.z = -1.0; // Point up and right towards string
+    lArm.rotation.x = -0.3; // Lean slightly forward
     charGroup.add(lArm);
 
     // Right Arm (Relaxed/Dangling)
@@ -316,10 +313,10 @@ function initHomeLabOrbit(containerId) {
         darkMat.opacity = Math.max(0.1, targetOpacity * 0.95);
         balloonMat.opacity = targetOpacity;
         craterMat.opacity = targetOpacity;
-        lineMat.opacity = targetOpacity;
+        lineMat.opacity = targetOpacity * targetOpacity; // Make string fade faster
 
-        // Distance scale effect (Adjusted to be slightly smaller baseline to fit balloon)
-        const distScale = 0.8 + (zPos / 20);
+        // Distance scale effect (Make it slightly smaller overall so the taller model fits on screen)
+        const distScale = 0.7 + (zPos / 25);
         voyagerGroup.scale.set(distScale, distScale, distScale);
 
         renderer.render(scene, camera);
