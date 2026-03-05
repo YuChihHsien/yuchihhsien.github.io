@@ -969,6 +969,8 @@ footer {
     border: 2px solid var(--accent-color);
     border-radius: 50%;
     position: fixed;
+    top: 0;
+    left: 0;
     pointer-events: none;
     z-index: 99999;
     transition: transform 0.15s ease-out, width 0.3s ease, height 0.3s ease, background 0.3s ease;
