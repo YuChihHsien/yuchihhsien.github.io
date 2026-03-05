@@ -71,7 +71,8 @@ function initHomeLabOrbit(containerId) {
 
     // --- 1. The "Balloon" (Moon) ---
     const balloonGroup = new THREE.Group();
-    balloonGroup.position.y = 8;
+    // Positioned vertically above the horizontal right hand
+    balloonGroup.position.set(3.7, 9.2, 1.2);
     astro.add(balloonGroup);
 
     // Main Sphere (Using Icosahedron for better vertex distribution for noise)
@@ -82,93 +83,102 @@ function initHomeLabOrbit(containerId) {
     const vertex = new THREE.Vector3();
     for (let i = 0; i < posAttribute.count; i++) {
         vertex.fromBufferAttribute(posAttribute, i);
-        // Generate pseudo-random topographical noise based on coordinates
-        const noise = Math.sin(vertex.x * 1.5) * Math.cos(vertex.y * 1.5) * Math.sin(vertex.z * 1.5) * 0.15;
+        // More complex topographical noise: blend of low and high frequency
+        const noise = (Math.sin(vertex.x * 1.5) * Math.cos(vertex.y * 1.5) * 0.1) +
+            (Math.sin(vertex.x * 4.0) * Math.sin(vertex.z * 4.0) * 0.05);
         vertex.add(vertex.clone().normalize().multiplyScalar(noise));
         posAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
     }
     balloonGeo.computeVertexNormals();
 
-    // Realistic moon material (grey with slight roughness)
+    // Realistic moon material (grey with slight roughness and faint glow)
     const moonMat = new THREE.MeshStandardMaterial({
-        color: 0xcbd5e1, // Light silvery grey
-        roughness: 0.9,
-        metalness: 0.05,
-        flatShading: true, // Enhances the rugged topological look
+        color: 0xcbd5e1,
+        roughness: 0.95,
+        metalness: 0.0,
+        flatShading: true,
+        emissive: 0xffffff,
+        emissiveIntensity: 0.05, // Very subtle glow to make it "pop"
     });
     const balloon = new THREE.Mesh(balloonGeo, moonMat);
     balloonGroup.add(balloon);
 
     // Add realistic 3D craters (Floor + Raised Rim)
-    const craterFloorMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 1.0 }); // Darker inside
-    const craterRimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.8 }); // Lighter edge
+    const craterFloorMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 1.0 });
+    const craterRimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.8 });
 
-    const craterSizes = [
-        { radius: 0.8, lat: 0.3, lon: 0.5 },
+    const craterData = [
+        { radius: 1.2, lat: 0.3, lon: 0.5, rays: true }, // Main "Tycho" crater with rays
         { radius: 0.6, lat: -0.2, lon: 0.8 },
-        { radius: 1.1, lat: 0.6, lon: -0.4 },
+        { radius: 0.8, lat: 0.6, lon: -0.4 },
         { radius: 0.5, lat: -0.5, lon: -0.6 },
         { radius: 0.7, lat: 0.1, lon: -0.9 },
         { radius: 0.9, lat: -0.4, lon: 0.2 },
-        { radius: 0.4, lat: 0.8, lon: 0.1 },
     ];
 
-    craterSizes.forEach(data => {
+    craterData.forEach(data => {
         const phi = (90 - data.lat * 180) * (Math.PI / 180);
         const theta = (data.lon * 180) * (Math.PI / 180);
-
-        // Position slightly embedded in the bumpy surface
         const r = 3.42;
 
         // Crater Floor
         const innerGeo = new THREE.CircleGeometry(data.radius, 16);
         const innerMesh = new THREE.Mesh(innerGeo, craterFloorMat);
         innerMesh.position.setFromSphericalCoords(r, phi, theta);
-
-        // Orient crater normal outwards
         const normal = innerMesh.position.clone().normalize();
         innerMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
 
-        // Crater Rim (Raised torus around the edge)
+        // Crater Rim
         const rimGeo = new THREE.TorusGeometry(data.radius, 0.12, 8, 16);
         const rimMesh = new THREE.Mesh(rimGeo, craterRimMat);
         rimMesh.position.copy(innerMesh.position);
         rimMesh.quaternion.copy(innerMesh.quaternion);
 
-        balloonGroup.add(innerMesh);
-        balloonGroup.add(rimMesh);
+        balloonGroup.add(innerMesh, rimMesh);
+
+        // Add "Crater Rays" for the largest crater
+        if (data.rays) {
+            for (let i = 0; i < 8; i++) {
+                const rayLen = 2 + Math.random() * 3;
+                const rayGeo = new THREE.PlaneGeometry(0.08, rayLen);
+                const rayMesh = new THREE.Mesh(rayGeo, new THREE.MeshBasicMaterial({
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.15
+                }));
+                // Position and orient ray
+                rayMesh.position.copy(innerMesh.position).add(normal.clone().multiplyScalar(0.05));
+                rayMesh.quaternion.copy(innerMesh.quaternion);
+                rayMesh.rotateZ((i / 8) * Math.PI * 2);
+                rayMesh.translateY(rayLen / 2 + data.radius);
+                balloonGroup.add(rayMesh);
+            }
+        }
     });
 
-    // Balloon Knot (Tie) at the bottom
+    // Balloon Knot (Tie)
     const knotGeo = new THREE.ConeGeometry(0.3, 0.5, 8);
-    const knotMenu = new THREE.Mesh(knotGeo, moonMat);
-    knotMenu.position.set(0, -3.5, 0);
-    knotMenu.rotation.x = Math.PI;
-    balloonGroup.add(knotMenu);
+    const knotMesh = new THREE.Mesh(knotGeo, moonMat);
+    knotMesh.position.set(0, -3.5, 0);
+    knotMesh.rotation.x = Math.PI;
+    balloonGroup.add(knotMesh);
 
     // String (Connecting from balloon bottom to hand)
-    const stringLength = 5.2;
-    const stringGeo = new THREE.CylinderGeometry(0.04, 0.04, stringLength, 8); // Thinner string
-    // Shift geometry so origin is at top
+    const stringLength = 5.8;
+    const stringGeo = new THREE.CylinderGeometry(0.03, 0.03, stringLength, 8);
     stringGeo.translate(0, -stringLength / 2, 0);
     const stringMesh = new THREE.Mesh(stringGeo, lineMat);
-    stringMesh.position.set(0, -3.4, 0); // Start at bottom edge of balloon
-    // Straight down to meet the horizontal right hand perfectly
-    stringMesh.rotation.z = 0;
-    stringMesh.rotation.x = 0;
+    stringMesh.position.set(0, -3.5, 0);
     balloonGroup.add(stringMesh);
 
     // --- 2. The Astronaut Character ---
     const charGroup = new THREE.Group();
-    // Tilt the astronaut slightly backwards/sideways to show dangling effect
-    charGroup.rotation.z = 0.1; // Lean slightly
-    charGroup.rotation.x = -0.15; // Lean back
-    charGroup.position.set(0.5, 0, 1.0); // Offset to align with angled string
+    // Correct dangling offset: center of astronaut closer to 0,0
+    charGroup.position.set(0, -1, 0);
     astro.add(charGroup);
 
     // Head
     const headGeo = new THREE.SphereGeometry(2.3, 32, 32);
-    const head = new THREE.Mesh(headGeo, suitMat);
     head.position.y = 1.8;
     charGroup.add(head);
 
