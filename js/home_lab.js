@@ -69,36 +69,82 @@ function initHomeLabOrbit(containerId) {
 
     const lightMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6 }); // Blue chest dot
 
-    // --- 1. The Balloon (Moon/Cheese) ---
+    // --- 1. The "Balloon" (Moon) ---
     const balloonGroup = new THREE.Group();
-    // Positioned horizontally to the right, exactly above the right hand
-    balloonGroup.position.set(3.63, 9.5, 1.07);
+    balloonGroup.position.y = 8;
     astro.add(balloonGroup);
 
-    const balloonGeo = new THREE.SphereGeometry(3.5, 32, 32);
-    const balloon = new THREE.Mesh(balloonGeo, balloonMat);
+    // Main Sphere (Using Icosahedron for better vertex distribution for noise)
+    const balloonGeo = new THREE.IcosahedronGeometry(3.5, 5);
+
+    // Procedurally perturb vertices to create a lumpy, realistic moon surface
+    const posAttribute = balloonGeo.attributes.position;
+    const vertex = new THREE.Vector3();
+    for (let i = 0; i < posAttribute.count; i++) {
+        vertex.fromBufferAttribute(posAttribute, i);
+        // Generate pseudo-random topographical noise based on coordinates
+        const noise = Math.sin(vertex.x * 1.5) * Math.cos(vertex.y * 1.5) * Math.sin(vertex.z * 1.5) * 0.15;
+        vertex.add(vertex.clone().normalize().multiplyScalar(noise));
+        posAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
+    }
+    balloonGeo.computeVertexNormals();
+
+    // Realistic moon material (grey with slight roughness)
+    const moonMat = new THREE.MeshStandardMaterial({
+        color: 0xcbd5e1, // Light silvery grey
+        roughness: 0.9,
+        metalness: 0.05,
+        flatShading: true, // Enhances the rugged topological look
+    });
+    const balloon = new THREE.Mesh(balloonGeo, moonMat);
     balloonGroup.add(balloon);
 
-    // Craters (Smaller flattened spheres)
-    const craterPos = [
-        { x: 1.5, y: 1.5, z: 2.5, s: 0.7 },
-        { x: -1.2, y: 2.2, z: 2.2, s: 0.9 },
-        { x: 0.5, y: -1.2, z: 2.8, s: 0.6 },
-        { x: -2.2, y: -0.5, z: 2.0, s: 0.8 },
-        { x: 2.5, y: -0.5, z: 1.5, s: 0.7 },
-        { x: 0, y: 1.0, z: -3.2, s: 0.8 } // One on back
+    // Add realistic 3D craters (Floor + Raised Rim)
+    const craterFloorMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 1.0 }); // Darker inside
+    const craterRimMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.8 }); // Lighter edge
+
+    const craterSizes = [
+        { radius: 0.8, lat: 0.3, lon: 0.5 },
+        { radius: 0.6, lat: -0.2, lon: 0.8 },
+        { radius: 1.1, lat: 0.6, lon: -0.4 },
+        { radius: 0.5, lat: -0.5, lon: -0.6 },
+        { radius: 0.7, lat: 0.1, lon: -0.9 },
+        { radius: 0.9, lat: -0.4, lon: 0.2 },
+        { radius: 0.4, lat: 0.8, lon: 0.1 },
     ];
 
-    craterPos.forEach(pos => {
-        const craterGeo = new THREE.SphereGeometry(pos.s, 16, 16);
-        craterGeo.scale(1, 1, 0.3); // Flatten into a disc-like dent
-        const crater = new THREE.Mesh(craterGeo, craterMat);
-        crater.position.set(pos.x, pos.y, pos.z);
-        // Orient crater normal to the surface center
-        crater.lookAt(0, 0, 0);
-        crater.rotateY(Math.PI);
-        balloonGroup.add(crater);
+    craterSizes.forEach(data => {
+        const phi = (90 - data.lat * 180) * (Math.PI / 180);
+        const theta = (data.lon * 180) * (Math.PI / 180);
+
+        // Position slightly embedded in the bumpy surface
+        const r = 3.42;
+
+        // Crater Floor
+        const innerGeo = new THREE.CircleGeometry(data.radius, 16);
+        const innerMesh = new THREE.Mesh(innerGeo, craterFloorMat);
+        innerMesh.position.setFromSphericalCoords(r, phi, theta);
+
+        // Orient crater normal outwards
+        const normal = innerMesh.position.clone().normalize();
+        innerMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
+
+        // Crater Rim (Raised torus around the edge)
+        const rimGeo = new THREE.TorusGeometry(data.radius, 0.12, 8, 16);
+        const rimMesh = new THREE.Mesh(rimGeo, craterRimMat);
+        rimMesh.position.copy(innerMesh.position);
+        rimMesh.quaternion.copy(innerMesh.quaternion);
+
+        balloonGroup.add(innerMesh);
+        balloonGroup.add(rimMesh);
     });
+
+    // Balloon Knot (Tie) at the bottom
+    const knotGeo = new THREE.ConeGeometry(0.3, 0.5, 8);
+    const knotMenu = new THREE.Mesh(knotGeo, moonMat);
+    knotMenu.position.set(0, -3.5, 0);
+    knotMenu.rotation.x = Math.PI;
+    balloonGroup.add(knotMenu);
 
     // String (Connecting from balloon bottom to hand)
     const stringLength = 5.2;
