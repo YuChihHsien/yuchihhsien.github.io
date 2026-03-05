@@ -202,18 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ---- Professional Gift: Easter Egg Console ----
-    let keySequence = "";
-    const secretWord = "gary";
-
-    document.addEventListener('keydown', (e) => {
-        keySequence += e.key.toLowerCase();
-        if (keySequence.length > 4) keySequence = keySequence.slice(-4);
-
-        if (keySequence === secretWord) {
+    const heroAvatar = document.querySelector('.hero-avatar img');
+    if (heroAvatar) {
+        heroAvatar.style.cursor = 'pointer';
+        heroAvatar.addEventListener('click', () => {
             toggleAdminOverlay();
-            keySequence = "";
-        }
-    });
+        });
+    }
 
     const overlay = document.createElement('div');
     overlay.className = 'admin-overlay';
@@ -224,12 +219,12 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="admin-content">
             <div class="ascii-art">
-   _____  _____  _____ __     __
-  / ____|/ ____||  __ \\\\ \\   / /
- | |  __| (___  | |__) |\\\\ \\_/ / 
- | | |_ |\\\\___ \\\\ |  _  /  \\\\   /  
- | |__| |____) || | \\\\ \\\\   | |   
-  \\\\_____|_____/ |_|  \\\\_\\\\  |_|   
+    _____  _____  _____ __     __
+   / ____|/ ____||  __ \\\\ \\   / /
+  | |  __| (___  | |__) |\\\\ \\_/ / 
+  | | |_ |\\\\___ \\\\ |  _  /  \\\\   /  
+  | |__| |____) || | \\\\ \\\\   | |   
+   \\\\_____|_____/ |_|  \\\\_\\\\  |_|   
             </div>
             <div id="admin-logs"></div>
         </div>
