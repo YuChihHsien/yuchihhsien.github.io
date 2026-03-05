@@ -18,7 +18,7 @@ class SpaceFlairController {
     scheduleNextFlight(delay) {
         if (this.nextFlightTimer) clearTimeout(this.nextFlightTimer);
 
-        const nextInterval = delay || 20000 + (Math.random() * 25000); // 20-45s
+        const nextInterval = delay || 10000 + (Math.random() * 20000); // 10-30s
         this.nextFlightTimer = setTimeout(() => {
             this.launchRocket();
             this.scheduleNextFlight();
@@ -28,6 +28,7 @@ class SpaceFlairController {
     launchRocket() {
         const isRtl = Math.random() > 0.5;
         const entryY = 10 + (Math.random() * 70); // 10% to 80% height
+        const angle = (Math.random() * 30) - 15; // -15 to +15 degrees
 
         const rocket = document.createElement('div');
         rocket.className = `rocket-flair ${isRtl ? 'rtl' : ''}`;
@@ -43,23 +44,25 @@ class SpaceFlairController {
         // Initial setup
         rocket.style.top = `${entryY}vh`;
         if (isRtl) {
-            rocket.style.right = '-100px';
+            rocket.style.right = '-120px';
             rocket.style.left = 'auto';
+            rocket.style.transform = `scaleX(-1) rotateZ(${angle}deg)`;
         } else {
-            rocket.style.left = '-100px';
+            rocket.style.left = '-120px';
             rocket.style.right = 'auto';
+            rocket.style.transform = `rotateZ(${angle}deg)`;
         }
 
         this.container.appendChild(rocket);
 
         // Animation trigger
-        // Small timeout to ensure DOM placement before transform
         setTimeout(() => {
-            const targetX = window.innerWidth + 200;
+            const travelDistance = window.innerWidth + 300;
             if (isRtl) {
-                rocket.style.transform = `translateX(${-targetX}px) scaleX(-1)`;
+                // Keep the scaleX(-1) to face left, maintain angle
+                rocket.style.transform = `translateX(${-travelDistance}px) scaleX(-1) rotateZ(${angle}deg)`;
             } else {
-                rocket.style.transform = `translateX(${targetX}px)`;
+                rocket.style.transform = `translateX(${travelDistance}px) rotateZ(${angle}deg)`;
             }
         }, 50);
 
