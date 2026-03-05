@@ -24,17 +24,24 @@
     <style>
         :root {
             --book-width: 600px;
-            /* Increased width */
             --book-height: 750px;
-            /* Increased height */
             --page-bg: #1a1a1a;
             --paper-texture: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+            --book-text-primary: #ffffff;
+            --book-text-secondary: #a0aec0;
+        }
+
+        /* Light Mode Specific Overrides for Book Pages */
+        [data-theme="light"] {
+            --page-bg: #f8fafc;
+            --book-text-primary: #1e293b;
+            --book-text-secondary: #475569;
+            --paper-texture: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.02) 0%, transparent 100%);
         }
 
         /* --- Full Width Container --- */
         .container {
             max-width: 1400px;
-            /* Wider for full-page feel */
             width: 95%;
             margin: 0 auto;
         }
@@ -131,6 +138,7 @@
             backface-visibility: hidden;
             display: flex;
             flex-direction: column;
+            color: var(--book-text-primary);
         }
 
         /* Soft Spine */
@@ -185,10 +193,56 @@
             padding: 4rem;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        [data-theme="light"] body.view-classic .page {
+            background-color: rgba(0, 0, 0, 0.02);
+            color: var(--text-primary);
         }
 
         body.view-classic .book-nav {
             display: none;
+        }
+
+        /* Hide Hints in Classic Mode */
+        body.view-classic .cover-hint,
+        body.view-classic .book-nav-hint {
+            display: none !important;
+        }
+
+        /* --- Back to Top Button --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.6);
         }
 
         /* --- Components --- */
@@ -247,13 +301,17 @@
         /* Section Typography */
         .section-title {
             font-size: 2rem;
-            color: var(--text-primary);
+            color: var(--book-text-primary);
             margin-bottom: 3rem;
             display: flex;
             align-items: center;
             gap: 20px;
             font-weight: 800;
             letter-spacing: -1.5px;
+        }
+
+        body.view-classic .section-title {
+            color: var(--text-primary);
         }
 
         .section-title::before {
@@ -272,10 +330,14 @@
 
         .role-title {
             font-weight: 800;
-            color: var(--text-primary);
+            color: var(--book-text-primary);
             margin-bottom: 0.5rem;
             font-size: 1.4rem;
             letter-spacing: -0.5px;
+        }
+
+        body.view-classic .role-title {
+            color: var(--text-primary);
         }
 
         .company-meta {
@@ -294,16 +356,24 @@
             padding: 3px 10px;
             font-size: 0.75rem;
             border-radius: 4px;
-            color: var(--text-secondary);
+            color: var(--book-text-secondary);
             font-family: 'Space Grotesk', monospace;
+        }
+
+        body.view-classic .exp-tag {
+            color: var(--text-secondary);
         }
 
         .exp-description {
             font-size: 1rem;
             line-height: 1.8;
-            color: var(--text-secondary);
+            color: var(--book-text-secondary);
             margin-bottom: 1.5rem;
             text-align: justify;
+        }
+
+        body.view-classic .exp-description {
+            color: var(--text-secondary);
         }
 
         .exp-details {
@@ -315,8 +385,12 @@
             position: relative;
             padding-left: 1.8rem;
             margin-bottom: 1.2rem;
-            color: var(--text-secondary);
+            color: var(--book-text-secondary);
             line-height: 1.7;
+        }
+
+        body.view-classic .exp-details li {
+            color: var(--text-secondary);
         }
 
         .exp-details li::before {
@@ -328,7 +402,68 @@
             line-height: 1.2;
         }
 
-        /* --- Cover Page Redesign --- */
+        /* --- Full Stack Tech Grid Fix --- */
+        .skills-mini-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .skill-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .skill-group h4 {
+            font-size: 0.95rem;
+            color: var(--book-text-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        body.view-classic .skill-group h4 {
+            color: var(--text-primary);
+        }
+
+        .skill-group h4 i {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .skill-tag {
+            font-size: 0.75rem;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--book-text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        body.view-classic .skill-tag {
+            color: var(--text-secondary);
+        }
+
+        .skill-tag:hover {
+            border-color: var(--accent-color);
+            color: white;
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* --- Cover Page --- */
         .cover-page {
             display: flex;
             flex-direction: column;
@@ -338,6 +473,7 @@
             border: 2px solid var(--border-color);
             position: relative;
             overflow: hidden;
+            color: var(--book-text-primary);
         }
 
         .cover-page::before {
@@ -378,7 +514,7 @@
             line-height: 1;
             margin-bottom: 1rem;
             letter-spacing: -2px;
-            background: linear-gradient(45deg, #fff, var(--accent-color));
+            background: linear-gradient(45deg, var(--book-text-primary), var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -386,7 +522,7 @@
         .cover-title p {
             font-size: 1.1rem;
             letter-spacing: 5px;
-            color: var(--text-secondary);
+            color: var(--book-text-secondary);
             text-transform: uppercase;
         }
 
@@ -401,7 +537,7 @@
         .cover-meta {
             font-family: 'Space Grotesk', monospace;
             font-size: 0.75rem;
-            color: var(--text-secondary);
+            color: var(--book-text-secondary);
             line-height: 1.8;
         }
 
@@ -429,25 +565,15 @@
             }
         }
 
-        /* Grid Background for Cover */
-        .cover-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -1;
-        }
-
         /* Tablet Adjustments */
         @media (max-width: 1200px) {
             :root {
                 --book-width: 500px;
                 --book-height: 650px;
+            }
+
+            .skills-mini-grid {
+                gap: 1.5rem;
             }
         }
 
@@ -493,6 +619,15 @@
 
             .cover-title h1 {
                 font-size: 2.5rem;
+            }
+
+            .skills-mini-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cover-hint,
+            .book-nav-hint {
+                display: none !important;
             }
         }
     </style>
@@ -706,10 +841,9 @@
                         <div class="skill-group">
                             <h4><i class="fa-solid fa-cloud"></i> CLOUD / DEVOPS</h4>
                             <div class="skill-tags">
-                                <span class="skill-tag">AWS (EKS, S3, Secrets)</span><span
-                                    class="skill-tag">Kubernetes</span>
+                                <span class="skill-tag">AWS (EKS, S3, Secrets)</span><span class="skill-tag">K8s</span>
                                 <span class="skill-tag">Docker</span><span class="skill-tag">GitLab CI</span>
-                                <span class="skill-tag">Ansible / AWX</span>
+                                <span class="skill-tag">Ansible</span>
                             </div>
                         </div>
                         <div class="skill-group">
@@ -717,6 +851,13 @@
                             <div class="skill-tags">
                                 <span class="skill-tag">SQL Server</span><span class="skill-tag">MongoDB</span>
                                 <span class="skill-tag">Redis</span><span class="skill-tag">ELK Stack</span>
+                            </div>
+                        </div>
+                        <div class="skill-group">
+                            <h4><i class="fa-solid fa-code"></i> FRONTEND</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Vue 3</span><span class="skill-tag">ES6+</span>
+                                <span class="skill-tag">Three.js</span><span class="skill-tag">Vite</span>
                             </div>
                         </div>
                     </div>
@@ -739,7 +880,7 @@
                             CHIH-HSIEN YU // SENIOR ENGINEER
                         </p>
                     </div>
-                    <div
+                    <div class="book-nav-hint"
                         style="position: absolute; bottom: 3rem; right: 3rem; font-size: 0.7rem; opacity: 0.3; letter-spacing: 5px;">
                         END_OF_TRANSCRIPT
                     </div>
@@ -756,22 +897,28 @@
 
     </div>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to Top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
     <footer>
         <div class="footer-tech-stats">
-            <span><i class="fa-solid fa-bolt"></i> STATUS: SECURE</span>
+            <span><i class="fa-solid fa-bolt"></i> OS: GA-RY_OS v1.0.4</span>
             <span class="separator">|</span>
-            <span><i class="fa-solid fa-database"></i> DATA: LOCALHOST</span>
+            <span><i class="fa-solid fa-desktop"></i> STATUS: SECURE</span>
         </div>
         <p>&copy; <span id="year"></span> <span data-zh="余致賢" data-en="Chih-Hsien Yu">余致賢</span>. All rights reserved.
         </p>
     </footer>
 
-    <script src="js/main.js?v=20"></script>
+    <script src="js/main.js?v=21"></script>
     <script>
         // --- View Mode Controller ---
         const body = document.body;
         const btnBook = document.getElementById('btnBook');
         const btnClassic = document.getElementById('btnClassic');
+        const backToTopBtn = document.getElementById('backToTop');
 
         function setViewMode(mode) {
             if (mode === 'classic') {
@@ -779,15 +926,32 @@
                 btnClassic.classList.add('active');
                 btnBook.classList.remove('active');
                 localStorage.setItem('resumeViewMode', 'classic');
+                handleClassicScroll(); // Check if button should be visible
             } else {
                 body.classList.remove('view-classic');
                 btnBook.classList.add('active');
                 btnClassic.classList.remove('active');
                 localStorage.setItem('resumeViewMode', 'book');
-                currentPage = 1; // Reset to page 1 on switch for consistency
+                currentPage = 1;
                 updateBook();
+                backToTopBtn.classList.remove('visible'); // Always hide in book mode
             }
         }
+
+        // --- Back to Top Logic ---
+        function handleClassicScroll() {
+            if (!body.classList.contains('view-classic')) return;
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('scroll', handleClassicScroll);
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // --- Book Navigation Controller ---
         const pages = document.querySelectorAll('.page');
