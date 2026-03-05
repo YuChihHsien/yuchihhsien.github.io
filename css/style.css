@@ -74,6 +74,7 @@
     text-transform: uppercase;
 }
 
+/* Periodical Rotating Light Sweep - Subtle Border Style */
 .hero-avatar {
     width: 140px;
     height: 140px;
@@ -87,26 +88,28 @@
     padding: 3px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    /* Only show light on the border */
 }
 
 .hero-avatar:hover {
     transform: scale(1.05);
 }
 
-/* Periodical Rotating Light Sweep */
 .hero-avatar::before {
     content: '';
     position: absolute;
-    width: 150%;
-    height: 150%;
+    width: 200%;
+    height: 200%;
     background: conic-gradient(transparent,
             transparent,
             transparent,
             var(--accent-color),
-            transparent);
-    animation: rotate-light-sweep 6s linear infinite;
+            transparent 20%);
+    animation: rotate-light-sweep 7s linear infinite;
     z-index: 0;
-    opacity: 0;
+    top: -50%;
+    left: -50%;
 }
 
 @keyframes rotate-light-sweep {
@@ -115,16 +118,16 @@
         opacity: 0;
     }
 
-    10% {
+    5% {
         opacity: 1;
     }
 
-    40% {
+    30% {
+        opacity: 1;
+    }
+
+    35% {
         transform: rotate(360deg);
-        opacity: 1;
-    }
-
-    50% {
         opacity: 0;
     }
 
