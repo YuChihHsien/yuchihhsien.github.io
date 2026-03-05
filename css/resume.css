@@ -266,47 +266,69 @@ body.view-classic .book-nav-hint {
 }
 
 .book-nav {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    margin-top: 5rem;
-    align-items: center;
-    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(var(--book-width) * 2 + 150px);
+    height: 100%;
+    pointer-events: none;
+    /* Allow clicks through to the book unless on buttons */
 }
 
 .page-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     background: rgba(59, 130, 246, 0.05);
     border: 1px solid var(--accent-color);
     color: var(--accent-color);
-    width: 58px;
-    height: 58px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1.4rem;
+    pointer-events: auto;
+    z-index: 100;
+}
+
+#prevBtn {
+    left: 0;
+}
+
+#nextBtn {
+    right: 0;
 }
 
 .page-nav-btn:hover:not(:disabled) {
     background: var(--accent-color);
     color: white;
-    box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
-    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+    transform: translateY(-50%) scale(1.1);
 }
 
 .page-nav-btn:disabled {
-    opacity: 0.2;
+    opacity: 0.1;
     cursor: not-allowed;
+    filter: grayscale(1);
 }
 
 .page-indicator {
+    position: absolute;
+    top: -5rem;
+    left: 50%;
+    transform: translateX(-50%);
     font-family: 'Space Grotesk', monospace;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    letter-spacing: 5px;
-    font-weight: 500;
+    font-size: 1rem;
+    color: var(--accent-color);
+    letter-spacing: 8px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0.8;
 }
 
 /* Section Typography */
