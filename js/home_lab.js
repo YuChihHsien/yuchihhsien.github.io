@@ -25,19 +25,19 @@ function initHomeLabOrbit(containerId) {
     voyagerGroup.add(astro);
 
     // 1. Body (Rounded Suit)
-    const bodyGeo = new THREE.SphereGeometry(1, 32, 32);
+    const bodyGeo = new THREE.SphereGeometry(1.5, 32, 32);
     bodyGeo.scale(1, 1.2, 0.8);
     const suitMat = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 80 });
     const body = new THREE.Mesh(bodyGeo, suitMat);
     astro.add(body);
 
     // 2. Helmet (Clear Visor + White Frame)
-    const helmetGeo = new THREE.SphereGeometry(0.8, 32, 32);
+    const helmetGeo = new THREE.SphereGeometry(1.2, 32, 32);
     const helmet = new THREE.Mesh(helmetGeo, suitMat);
-    helmet.position.y = 1.1;
+    helmet.position.y = 1.6;
     astro.add(helmet);
 
-    const visorGeo = new THREE.SphereGeometry(0.6, 32, 32);
+    const visorGeo = new THREE.SphereGeometry(0.9, 32, 32);
     visorGeo.scale(1, 0.7, 0.5);
     const visorMat = new THREE.MeshPhongMaterial({
         color: 0x0ea5e9,
@@ -47,39 +47,39 @@ function initHomeLabOrbit(containerId) {
         opacity: 0.9
     });
     const visor = new THREE.Mesh(visorGeo, visorMat);
-    visor.position.set(0, 1.1, 0.45);
+    visor.position.set(0, 1.6, 0.7);
     astro.add(visor);
 
     // 3. Backpack (Jetpack)
-    const packGeo = new THREE.BoxGeometry(1.2, 1.5, 0.6);
+    const packGeo = new THREE.BoxGeometry(1.8, 2.2, 0.8);
     const pack = new THREE.Mesh(packGeo, suitMat);
-    pack.position.set(0, 0.2, -0.6);
+    pack.position.set(0, 0.3, -0.9);
     astro.add(pack);
 
     // 4. Limbs (Stubby Q-version)
-    const limbGeo = new THREE.SphereGeometry(0.3, 16, 16);
+    const limbGeo = new THREE.SphereGeometry(0.45, 16, 16);
 
     const lArm = new THREE.Mesh(limbGeo, suitMat);
-    lArm.position.set(1.1, 0.2, 0);
+    lArm.position.set(1.6, 0.3, 0);
     astro.add(lArm);
 
     const rArm = new THREE.Mesh(limbGeo, suitMat);
-    rArm.position.set(-1.1, 0.2, 0);
+    rArm.position.set(-1.6, 0.3, 0);
     astro.add(rArm);
 
     const lLeg = new THREE.Mesh(limbGeo, suitMat);
-    lLeg.position.set(0.5, -1.1, 0);
+    lLeg.position.set(0.7, -1.6, 0);
     astro.add(lLeg);
 
     const rLeg = new THREE.Mesh(limbGeo, suitMat);
-    rLeg.position.set(-0.5, -1.1, 0);
+    rLeg.position.set(-0.7, -1.6, 0);
     astro.add(rLeg);
 
     // 5. Backpack Light (Interactive)
-    const lightGeo = new THREE.BoxGeometry(0.4, 0.2, 0.1);
+    const lightGeo = new THREE.BoxGeometry(0.6, 0.3, 0.1);
     const lightMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6 });
     const packLight = new THREE.Mesh(lightGeo, lightMat);
-    packLight.position.set(0, 0.8, -0.9);
+    packLight.position.set(0, 1.2, -1.3);
     astro.add(packLight);
 
     // --- Lighting ---
@@ -97,8 +97,6 @@ function initHomeLabOrbit(containerId) {
     camera.position.z = 25;
 
     // --- Orbit Parameters ---
-    let orbitX = window.innerWidth / 40; // Full screen width based
-    let orbitZ = 12; // Z-depth to go behind content
     let angle = 0;
 
     // --- Interaction ---
@@ -139,38 +137,35 @@ function initHomeLabOrbit(containerId) {
 
         angle += 0.005;
 
-        // Elliptical Orbit
-        const curOrbitX = Math.max(12, window.innerWidth / 50); // Scale with width
-        const curOrbitZ = 15;
+        // Tightened Elliptical Orbit (Keeps him mostly within the hero bounds)
+        // Adjusting based on standard viewports (roughly 12-14 scene units)
+        const curOrbitX = 12;
+        const curOrbitZ = 12;
 
         astro.position.x = Math.cos(angle) * curOrbitX;
         astro.position.z = Math.sin(angle) * curOrbitZ;
-        astro.position.y = Math.sin(angle * 0.5) * 4;
+        astro.position.y = Math.sin(angle * 0.5) * 3;
 
         // Auto-rotation (Looking where he's going)
         astro.rotation.y = -angle + Math.PI / 2;
         astro.rotation.z = Math.sin(time * 0.002) * 0.2; // Float wobble
 
         // --- Occlusion/Depth Management ---
-        // If the astronaut is behind the text (Z < 0), we can make him semi-transparent
-        // or just let him be smaller to simulate depth.
-        // Actually, since z-index is higher than content, he'll cover the content.
-        // We simulate "Behind" by reducing opacity if he's far.
         const zPos = astro.position.z;
-        if (zPos < -2) {
-            // Far away (Passing behind)
-            suitMat.opacity = Math.max(0.2, 1 + (zPos / 15));
+        if (zPos < -1) {
+            // Passing behind content
+            suitMat.opacity = Math.max(0.3, 1 + (zPos / 15));
             suitMat.transparent = true;
-            visorMat.opacity = Math.max(0.1, 0.9 + (zPos / 15));
+            visorMat.opacity = Math.max(0.2, 0.9 + (zPos / 15));
         } else {
-            // Close (Passing in front)
+            // Passing in front of content
             suitMat.opacity = 1;
             suitMat.transparent = false;
             visorMat.opacity = 0.9;
         }
 
-        // Scale up when close to camera
-        const scale = 1 + (zPos / 15);
+        // Scale boost when close to camera for extra impact
+        const scale = 1.3 + (zPos / 10);
         voyagerGroup.scale.set(scale, scale, scale);
 
         renderer.render(scene, camera);
