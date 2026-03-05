@@ -382,7 +382,8 @@ function initTechCloud(container) {
 }
 
 // --- Global Namespace ---
-window.GA_RY = {
+window.GA_RY = window.GA_RY || {};
+Object.assign(window.GA_RY, {
     theme: {
         toggle: toggleTheme,
         set: setTheme
@@ -394,7 +395,7 @@ window.GA_RY = {
     particles: {
         instance: null
     }
-};
+});
 
 // Theme Management
 function toggleTheme() {
