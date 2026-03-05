@@ -71,8 +71,8 @@ function initHomeLabOrbit(containerId) {
 
     // --- 1. The Balloon (Moon/Cheese) ---
     const balloonGroup = new THREE.Group();
-    // Positioned high up to clear the head
-    balloonGroup.position.set(0, 9.5, 0.5);
+    // Positioned horizontally to the right, exactly above the right hand
+    balloonGroup.position.set(3.63, 9.5, 1.07);
     astro.add(balloonGroup);
 
     const balloonGeo = new THREE.SphereGeometry(3.5, 32, 32);
@@ -101,14 +101,14 @@ function initHomeLabOrbit(containerId) {
     });
 
     // String (Connecting from balloon bottom to hand)
-    const stringLength = 4.8;
+    const stringLength = 5.2;
     const stringGeo = new THREE.CylinderGeometry(0.04, 0.04, stringLength, 8); // Thinner string
     // Shift geometry so origin is at top
     stringGeo.translate(0, -stringLength / 2, 0);
     const stringMesh = new THREE.Mesh(stringGeo, lineMat);
     stringMesh.position.set(0, -3.4, 0); // Start at bottom edge of balloon
-    // Angle string slightly towards the right to meet the hand
-    stringMesh.rotation.z = 0.08;
+    // Straight down to meet the horizontal right hand perfectly
+    stringMesh.rotation.z = 0;
     stringMesh.rotation.x = 0;
     balloonGroup.add(stringMesh);
 
@@ -182,22 +182,22 @@ function initHomeLabOrbit(containerId) {
         return group;
     }
 
-    // Left Arm (Reaching up to hold string)
-    const lArmLength = 1.8;
+    // Left Arm (Relaxed/Dangling)
+    const lArmLength = 1.3;
     const lArm = createCapsule(0.45, lArmLength);
-    lArm.children.forEach(c => c.position.y += lArmLength / 2);
-    lArm.position.set(-1.4, 0.5, 0.2); // Shoulder moved slightly right
-    lArm.rotation.z = -1.0; // Point up and right towards string
-    lArm.rotation.x = -0.3; // Lean slightly forward
+    lArm.children.forEach(c => c.position.y -= lArmLength / 2);
+    lArm.position.set(-1.6, 0.3, 0.2);
+    lArm.rotation.z = -0.3; // Hang slightly out to the left
+    lArm.rotation.x = -0.2; // Hang forward
     charGroup.add(lArm);
 
-    // Right Arm (Relaxed/Dangling)
-    const rArmLength = 1.2;
-    const rArm = createCapsule(0.5, rArmLength);
+    // Right Arm (Reaching horizontally to the right to hold string)
+    const rArmLength = 1.8;
+    const rArm = createCapsule(0.45, rArmLength);
     rArm.children.forEach(c => c.position.y -= rArmLength / 2);
-    rArm.position.set(1.6, 0.2, 0.5);
-    rArm.rotation.z = -0.3; // Hang down out
-    rArm.rotation.x = -0.4; // Hang forward
+    rArm.position.set(1.4, 0.5, 0.2);
+    rArm.rotation.z = Math.PI / 2; // Point exactly right (horizontal)
+    rArm.rotation.x = 0;
     charGroup.add(rArm);
 
     // Left Leg (Dangling)
