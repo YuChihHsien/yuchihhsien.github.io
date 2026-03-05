@@ -163,14 +163,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---- Professional Polish: Typing Effect ----
     const typingElement = document.getElementById('typing-text');
     if (typingElement) {
-        const text = "Senior Software Engineer";
-        let index = 0;
+        const titles = [
+            "Software Creator",
+            "Senior Software Engineer",
+            "Cloud Architect",
+            "Digital Craftsman"
+        ];
+        let titleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
         function type() {
-            if (index < text.length) {
-                typingElement.textContent += text.charAt(index);
-                index++;
-                setTimeout(type, 100);
+            const currentTitle = titles[titleIndex];
+
+            if (isDeleting) {
+                typingElement.textContent = currentTitle.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50;
+            } else {
+                typingElement.textContent = currentTitle.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
             }
+
+            if (!isDeleting && charIndex === currentTitle.length) {
+                isDeleting = true;
+                typeSpeed = 2000; // Pause at end
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                titleIndex = (titleIndex + 1) % titles.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(type, typeSpeed);
         }
         type();
     }
