@@ -1265,7 +1265,12 @@ footer {
 }
 
 .hero-orbit-container canvas {
-    pointer-events: auto;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 20;
 }
 
 /* Mobile-only Lab Banner */

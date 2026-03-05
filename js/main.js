@@ -112,10 +112,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateCursor = () => {
             if (isMoving) {
-                // High-performance interpolation (0.4 provides a very snappy, zero-lag feel)
+                // High-performance interpolation
                 cursorX += (mouseX - cursorX) * 0.4;
                 cursorY += (mouseY - cursorY) * 0.4;
                 cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+
+                // Also check for astronaut hover class from home_lab.js
+                if (document.body.classList.contains('is-astro-hovering')) {
+                    cursor.classList.add('hovered');
+                } else {
+                    // Only remove if not also over a button/link (handled by delegation below)
+                    const hoveredElement = document.elementFromPoint(mouseX, mouseY);
+                    if (!hoveredElement || !hoveredElement.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
+                        cursor.classList.remove('hovered');
+                    }
+                }
             }
             requestAnimationFrame(updateCursor);
         };

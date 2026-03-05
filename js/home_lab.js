@@ -247,13 +247,13 @@ function initHomeLabOrbit(containerId) {
         if (intersects.length > 0) {
             if (!isHovering) {
                 isHovering = true;
-                container.style.cursor = 'pointer';
+                document.body.classList.add('is-astro-hovering');
                 lightMat.color.setHex(0x4ade80); // Success green
             }
         } else {
             if (isHovering) {
                 isHovering = false;
-                container.style.cursor = 'default';
+                document.body.classList.remove('is-astro-hovering');
                 lightMat.color.setHex(0x3b82f6);
             }
         }
