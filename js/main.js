@@ -293,7 +293,7 @@ function initTechCloud(container) {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
 
@@ -393,8 +393,6 @@ function initTechCloud(container) {
 
     // Interaction
     let isMouseDown = false;
-    let targetRotationX = 0, targetRotationY = 0;
-
     container.addEventListener('mousedown', () => isMouseDown = true);
     window.addEventListener('mouseup', () => isMouseDown = false);
     container.addEventListener('mousemove', (e) => {
@@ -404,7 +402,16 @@ function initTechCloud(container) {
         }
     });
 
+    // Visibility Culling for performance
+    let isPaused = false;
+    const observer = new IntersectionObserver((entries) => {
+        isPaused = !entries[0].isIntersecting;
+        if (!isPaused) animate();
+    }, { threshold: 0.1 });
+    observer.observe(container);
+
     function animate() {
+        if (isPaused) return; // Stop rendering if not visible
         requestAnimationFrame(animate);
         if (!isMouseDown) {
             group.rotation.y += 0.002;
@@ -412,7 +419,7 @@ function initTechCloud(container) {
         }
         renderer.render(scene, camera);
     }
-    animate();
+    // animate(); // Handled by observer
 
     window.addEventListener('resize', () => {
         const w = container.clientWidth;
