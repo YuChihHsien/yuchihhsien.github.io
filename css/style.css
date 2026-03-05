@@ -74,7 +74,7 @@
     text-transform: uppercase;
 }
 
-/* Periodical Rotating Light Sweep - Subtle Border Style */
+/* Periodical Rotating Light Sweep - Rainbow Border Style */
 .hero-avatar {
     width: 140px;
     height: 140px;
@@ -84,12 +84,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
+    /* Restore the original colorful gradient background */
+    background: linear-gradient(135deg, var(--accent-color), #a855f7, #ec4899, var(--success-color));
     padding: 3px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
-    /* Only show light on the border */
 }
 
 .hero-avatar:hover {
@@ -101,11 +101,12 @@
     position: absolute;
     width: 200%;
     height: 200%;
+    /* Bright sweep to highlight the rainbow colors underneath */
     background: conic-gradient(transparent,
             transparent,
             transparent,
-            var(--accent-color),
-            transparent 20%);
+            rgba(255, 255, 255, 0.8),
+            transparent 15%);
     animation: rotate-light-sweep 7s linear infinite;
     z-index: 0;
     top: -50%;
