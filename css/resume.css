@@ -634,6 +634,12 @@ body.view-classic .skill-tag {
         transform: none !important;
     }
 
+    .leaf {
+        position: relative;
+        display: contents;
+        transform: none !important;
+    }
+
     .page {
         position: relative;
         width: 100%;
@@ -642,35 +648,44 @@ body.view-classic .skill-tag {
         box-shadow: none;
         padding: 1.5rem 1rem !important;
         border: none;
-        border-bottom: 1px solid var(--border-color) !important;
+        border-bottom: 2px dashed rgba(255, 255, 255, 0.1) !important;
         border-radius: 0;
+        margin-bottom: 2rem !important;
+        /* SEPARATION FIX */
         display: block;
         background-image: none;
     }
 
-    .book-nav {
-        display: none !important;
-    }
+    border-radius: 0;
+    margin-bottom: 2rem !important;
+    /* SEPARATION FIX */
+    display: block;
+    background-image: none;
+}
 
-    .cover-page {
-        border: none;
-        padding: 2rem 1rem;
-    }
+.book-nav {
+    display: none !important;
+}
 
-    .cover-title h1 {
-        font-size: 2.2rem;
-    }
+.cover-page {
+    border: none;
+    padding: 2rem 1rem;
+}
 
-    .skills-mini-grid {
-        grid-template-columns: 1fr;
-    }
+.cover-title h1 {
+    font-size: 2.2rem;
+}
 
-    .cover-hint,
-    .book-nav-hint {
-        display: none !important;
-    }
+.skills-mini-grid {
+    grid-template-columns: 1fr;
+}
 
-    .page-indicator {
-        top: -3rem !important;
-    }
+.cover-hint,
+.book-nav-hint {
+    display: none !important;
+}
+
+.page-indicator {
+    top: -3rem !important;
+}
 }
