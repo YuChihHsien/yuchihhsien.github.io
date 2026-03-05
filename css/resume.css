@@ -620,12 +620,18 @@ body.view-classic .skill-tag {
     .resume-page-wrapper {
         display: block;
         padding-top: 0;
+        margin: 0;
     }
 
     .book {
-        width: 100%;
-        height: auto;
-        box-shadow: none;
+        width: 100% !important;
+        height: auto !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .book.book-open {
+        transform: none !important;
     }
 
     .page {
@@ -634,25 +640,25 @@ body.view-classic .skill-tag {
         height: auto;
         transform: none !important;
         box-shadow: none;
-        padding: 2.5rem 1.5rem;
+        padding: 1.5rem 1rem !important;
         border: none;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color) !important;
         border-radius: 0;
         display: block;
         background-image: none;
     }
 
     .book-nav {
-        display: none;
+        display: none !important;
     }
 
     .cover-page {
         border: none;
-        padding: 3rem 1rem;
+        padding: 2rem 1rem;
     }
 
     .cover-title h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
 
     .skills-mini-grid {
@@ -662,5 +668,9 @@ body.view-classic .skill-tag {
     .cover-hint,
     .book-nav-hint {
         display: none !important;
+    }
+
+    .page-indicator {
+        top: -3rem !important;
     }
 }
