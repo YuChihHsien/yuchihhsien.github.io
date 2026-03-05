@@ -18,7 +18,7 @@ class SpaceFlairController {
     scheduleNextFlight(delay) {
         if (this.nextFlightTimer) clearTimeout(this.nextFlightTimer);
 
-        const nextInterval = delay || 10000 + (Math.random() * 20000); // 10-30s
+        const nextInterval = delay || 5000 + (Math.random() * 10000); // 5-15s
         this.nextFlightTimer = setTimeout(() => {
             this.launchRocket();
             this.scheduleNextFlight();
@@ -29,6 +29,7 @@ class SpaceFlairController {
         const isRtl = Math.random() > 0.5;
         const entryY = 10 + (Math.random() * 50); // 10% to 60% height
         const targetY = 5 + (Math.random() * 80); // Random exit height
+        const scale = 0.6 + (Math.random() * 0.7); // Randomized size (0.6x to 1.3x)
 
         // Calculate the angle based on trajectory
         const travelX = window.innerWidth + 300;
@@ -49,29 +50,28 @@ class SpaceFlairController {
 
         // Initial setup
         rocket.style.top = `${entryY}vh`;
+        const initialScaleX = isRtl ? -scale : scale;
+        const initialRotation = isRtl ? -flightAngleDeg : flightAngleDeg;
+
         if (isRtl) {
             rocket.style.right = '-150px';
             rocket.style.left = 'auto';
-            // For RTL, we flip the ship and negate the angle to maintain its pitch relative to the flight direction
-            rocket.style.transform = `scaleX(-1) rotateZ(${-flightAngleDeg}deg)`;
         } else {
             rocket.style.left = '-150px';
             rocket.style.right = 'auto';
-            rocket.style.transform = `rotateZ(${flightAngleDeg}deg)`;
         }
+
+        rocket.style.transform = `scale(${initialScaleX}, ${scale}) rotateZ(${initialRotation}deg)`;
 
         this.container.appendChild(rocket);
 
         // Animation trigger
         setTimeout(() => {
-            const duration = 4000 + (Math.random() * 2000); // 4-6s flight (faster)
+            const duration = 4000 + (Math.random() * 2000); // 4-6s flight
             rocket.style.transition = `transform ${duration}ms cubic-bezier(0.25, 0.1, 0.25, 1)`;
 
-            if (isRtl) {
-                rocket.style.transform = `translateX(${-travelX}px) translateY(${targetY - entryY}vh) scaleX(-1) rotateZ(${-flightAngleDeg}deg)`;
-            } else {
-                rocket.style.transform = `translateX(${travelX}px) translateY(${targetY - entryY}vh) rotateZ(${flightAngleDeg}deg)`;
-            }
+            const targetX = isRtl ? -travelX : travelX;
+            rocket.style.transform = `translateX(${targetX}px) translateY(${targetY - entryY}vh) scale(${initialScaleX}, ${scale}) rotateZ(${initialRotation}deg)`;
         }, 50);
 
         // Cleanup
