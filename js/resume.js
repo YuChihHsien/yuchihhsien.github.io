@@ -118,5 +118,5 @@ function updateBook() {
 // Terminal toggle helper
 window.toggleTerminal = function () {
     const win = document.getElementById('terminalWindow');
-    if (win) win.classList.toggle('active');
+    if (win) win.classList.toggle('open');
 };

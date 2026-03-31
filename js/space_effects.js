@@ -18,7 +18,7 @@ class SpaceFlairController {
     scheduleNextFlight(delay) {
         if (this.nextFlightTimer) clearTimeout(this.nextFlightTimer);
 
-        const nextInterval = delay || 3000 + (Math.random() * 7000); // 3-10s
+        const nextInterval = delay || 5000 + (Math.random() * 8000); // 5-13s
         this.nextFlightTimer = setTimeout(() => {
             // Randomly pick between rocket and meteor
             if (Math.random() > 0.45) {

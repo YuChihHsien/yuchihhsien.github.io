@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(spanWrapper.dataset.interval);
 
                 spanWrapper.dataset.interval = setInterval(() => {
-                    event.target.innerText = originalText
-                        .split("")
+                    const chars = originalText.split("");
+                    event.target.innerText = chars
                         .map((letter, index) => {
                             if (index < iterations) {
                                 return originalText[index];
@@ -84,71 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ---- Professional Polish: Custom Cursor ----
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-    if (!isTouchDevice) {
-        const cursor = document.createElement('div');
-        cursor.className = 'custom-cursor';
-        document.body.appendChild(cursor);
-
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        let isMoving = false;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            if (!isMoving) {
-                isMoving = true;
-                cursor.style.opacity = '1';
-                document.body.classList.add('custom-cursor-active');
-                // First position should be instant to avoid jumping from (0,0)
-                cursorX = mouseX;
-                cursorY = mouseY;
-            }
-        });
-
-        const updateCursor = () => {
-            if (isMoving) {
-                // High-performance interpolation
-                cursorX += (mouseX - cursorX) * 0.4;
-                cursorY += (mouseY - cursorY) * 0.4;
-                cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
-
-                // Also check for astronaut hover class from home_lab.js
-                if (document.body.classList.contains('is-astro-hovering')) {
-                    cursor.classList.add('hovered');
-                } else {
-                    // Only remove if not also over a button/link (handled by delegation below)
-                    const hoveredElement = document.elementFromPoint(mouseX, mouseY);
-                    if (!hoveredElement || !hoveredElement.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
-                        cursor.classList.remove('hovered');
-                    }
-                }
-            }
-            requestAnimationFrame(updateCursor);
-        };
-        updateCursor();
-
-        // Use event delegation for better performance and to handle dynamic elements
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
-                cursor.classList.add('hovered');
-            }
-        });
-
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
-                cursor.classList.add('hovered');
-                // Double check if we're actually leaving the element
-                if (!e.relatedTarget || !e.relatedTarget.closest('a, button, .social-btn, .skill-tag, .nav-brand, .toggle-btn, .icon-btn, .terminal-toggle')) {
-                    cursor.classList.remove('hovered');
-                }
-            }
-        });
-    }
 
     // ---- Professional Polish: Scroll Progress ----
     const progressContainer = document.createElement('div');
@@ -500,8 +436,8 @@ function initParticles(canvas) {
     let isPaused = false;
 
     // Responsive config
-    const getParticleCount = () => window.innerWidth < 768 ? 30 : 60;
-    const connectionDistance = 150;
+    const getParticleCount = () => window.innerWidth < 768 ? 20 : 40;
+    const connectionDistance = 140;
     const particleSpeed = 0.5;
 
     function resize() {

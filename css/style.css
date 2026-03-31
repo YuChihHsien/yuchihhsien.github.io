@@ -276,8 +276,7 @@
     --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.03);
     --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
 
-    --cursor-size: 20px;
-    --cursor-border: rgba(59, 130, 246, 0.5);
+
 }
 
 [data-theme="dark"] {
@@ -314,18 +313,7 @@ body {
     scroll-behavior: smooth;
 }
 
-body.custom-cursor-active {
-    cursor: none;
-}
 
-body.custom-cursor-active a,
-body.custom-cursor-active button,
-body.custom-cursor-active .btn,
-body.custom-cursor-active .icon-btn,
-body.custom-cursor-active .terminal-toggle,
-body.custom-cursor-active .social-btn {
-    cursor: none;
-}
 
 h1,
 h2,
@@ -347,14 +335,7 @@ h3,
     filter: url(#grainy);
 }
 
-@media (max-width: 992px) {
 
-    html,
-    body {
-        cursor: auto;
-        /* Show default cursor on mobile */
-    }
-}
 
 /* Typography */
 h1 {
@@ -1036,28 +1017,7 @@ footer {
 /* ======================
    Professional Polish
    ====================== */
-.custom-cursor {
-    width: var(--cursor-size);
-    height: var(--cursor-size);
-    border: 2px solid var(--accent-color);
-    border-radius: 50%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 99999;
-    transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, opacity 0.3s ease;
-    transform: translate(-50%, -50%);
-    will-change: transform;
-    mix-blend-mode: difference;
-}
 
-.custom-cursor.hovered {
-    transform: translate(-50%, -50%) scale(2.5);
-    background: var(--accent-color);
-    border-color: transparent;
-    opacity: 0.5;
-}
 
 .scroll-progress-container {
     position: fixed;
@@ -1075,11 +1035,7 @@ footer {
     width: 0%;
 }
 
-@media (max-width: 992px) {
-    .custom-cursor {
-        display: none;
-    }
-}
+
 
 /* ======================
    Lab Enhancements
